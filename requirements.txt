@@ -7,11 +7,14 @@ cachetools==5.5.2
 certifi==2025.4.26
 cffi==1.17.1
 charset-normalizer==3.4.2
+cloudinary==1.44.0
 cryptography==45.0.3
 dj-database-url==3.0.0
 Django==5.2.2
 django-allauth==65.9.0
 django-axes==8.0.0
+django-cloudinary-storage==0.3.0
+django-crispy-forms==2.4
 flake8==7.2.0
 google-ai-generativelanguage==0.6.15
 google-api-core==2.25.0
@@ -44,6 +47,7 @@ pyparsing==3.2.3
 python-dotenv==1.1.0
 requests==2.32.3
 rsa==4.9.1
+six==1.17.0
 sqlparse==0.5.3
 tqdm==4.67.1
 typing-inspection==0.4.1
