@@ -1,6 +1,40 @@
+
+# Byte-compiled / optimized / DLL files
+*.pyc
+*.pyo
+__pycache__/
+
+# Virtual environment directories (if you have one)
+venv/
+env/
+.env
+.env.save
+
+# Django settings local files
 .env
 env.py
-venv
-venv/
 
-__pycache__
+# Django migrations cache files
+*/migrations/__pycache__/
+
+# Static files (Django)
+media/
+
+# PostgreSQL specific
+pgdata/
+*.pgsql
+*.pg_backup
+
+# Logs
+*.log
+
+# IDE files
+.vscode/
+.idea/
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Node modules (if applicable)
+node_modules/
