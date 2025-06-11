@@ -42,7 +42,7 @@ AXES_FAILURE_LIMIT = 3
 AXES_COOLOFF_TIME = timedelta(hours=1)
 
 # Count failures by both username and IP (optional; default is True)
-AXES_ONLY_USER_FAILURES = True
+AXES_LOCK_OUT_BY_COMBINATION_USER_AND_IP = True
 
 # Optional Dev Tools
 # e.g. Django Debug Toolbar

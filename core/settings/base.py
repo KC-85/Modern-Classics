@@ -4,6 +4,8 @@ import os
 from pathlib import Path
 import dj_database_url
 
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
 # ─── PATHS ─────────────────────────────────────────────────────
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
@@ -82,7 +84,7 @@ TEMPLATES = [
     },
 ]
 
-# ─── DATABASE (PostgreSQL via DATABASE_URL) ────────────────────
+# DATABASE (PostgreSQL via DATABASE_URL)
 DATABASES = {
     "default": dj_database_url.config(
         default=get_env(
@@ -94,7 +96,7 @@ DATABASES = {
     )
 }
 
-# ─── PASSWORD VALIDATORS ──────────────────────────────────────
+# PASSWORD VALIDATORS
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},    #noqa
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},    #noqa
@@ -102,14 +104,14 @@ AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},    #noqa
 ]
 
-# ─── INTERNATIONALIZATION ─────────────────────────────────────
+# INTERNATIONALIZATION
 LANGUAGE_CODE = "en-us"
 TIME_ZONE     = "UTC"
 USE_I18N      = True
 USE_L10N      = True
 USE_TZ        = True
 
-# ─── STATIC & MEDIA FILES ─────────────────────────────────────
+# STATIC & MEDIA FILES
 STATIC_URL        = "/static/"
 STATICFILES_DIRS  = [BASE_DIR / "static"]
 STATIC_ROOT       = BASE_DIR / "staticfiles"
@@ -125,7 +127,7 @@ CLOUDINARY_STORAGE = {
     "API_SECRET": get_env("CLOUDINARY_API_SECRET"),
 }
 
-# ─── AUTHENTICATION BACKENDS ─────────────────────────────────
+# AUTHENTICATION BACKENDS
 AUTHENTICATION_BACKENDS = [
     "axes.backends.AxesBackend",                           # brute-force guard
     "django.contrib.auth.backends.ModelBackend",           # default
@@ -133,13 +135,13 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 # django-allauth settings
-LOGIN_REDIRECT_URL                    = "/"
-ACCOUNT_AUTHENTICATION_METHOD         = "email"
-ACCOUNT_EMAIL_REQUIRED                = True
-ACCOUNT_EMAIL_VERIFICATION            = "optional"
-ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION   = True
+LOGIN_REDIRECT_URL = "/"
+ACCOUNT_LOGIN_METHODS = {"email"}
+ACCOUNT_SIGNUP_FIELDS = ["email*", "username*", "password1*", "password2*"]
+ACCOUNT_EMAIL_VERIFICATION = "optional"
+ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
 
-# ─── STRIPE CONFIGURATION ────────────────────────────────────
+# STRIPE CONFIGURATION
 # Install stripe with: pip install stripe
 STRIPE_PUBLISHABLE_KEY = get_env("STRIPE_PUBLISHABLE_KEY", "")
 STRIPE_SECRET_KEY      = get_env("STRIPE_SECRET_KEY", "")
