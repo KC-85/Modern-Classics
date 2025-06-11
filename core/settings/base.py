@@ -17,7 +17,11 @@ def get_env(var_name, default=None):
 SECRET_KEY = get_env("SECRET_KEY", "change-me-in-env")
 DEBUG      = True
 # Comma-separated list, e.g. "localhost,example.com"
-ALLOWED_HOSTS = get_env("ALLOWED_HOSTS", "").split(",")
+ALLOWED_HOSTS = [
+    '127.0.0.1'
+    'localhost'
+    'https://modern-classics-b10468fd6f55.herokuapp.com/'
+]
 
 # ─── INSTALLED APPS ───────────────────────────────────────────
 INSTALLED_APPS = [
