@@ -1,4 +1,8 @@
 # Database Models (Postgres)
+from django.db import models
+from cloudinary.models import CloudinaryField
+from django.utils.text import slugify
+from django.urls import reverse
 
 class CarMake(models.Model):
     name = models.CharField(max_length=100, unique=True)

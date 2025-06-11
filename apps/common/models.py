@@ -1,4 +1,5 @@
 # Database models (Postgres)
+from django.db import models
 
 # Newsletter
 class Newsletter(models.Model):
