@@ -23,7 +23,6 @@ httplib2==0.22.0
 idna==3.10
 mccabe==0.7.0
 packaging==25.0
-postgres==4.0
 prettier==0.0.7
 proto-plus==1.26.1
 protobuf==5.29.5
