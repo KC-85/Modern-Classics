@@ -7,7 +7,7 @@ os.environ.setdefault(
 
 os_environ_get(
     "DJANGO_SETTINGS_MODULE",
-    "core.settings.development"),
+    "core.settings"),
 )
 
 application = get_asgi_application()
