@@ -67,8 +67,13 @@ INSTALLED_APPS = [
     "apps.common.apps.CommonConfig",
     "apps.users.apps.UsersConfig",
     "apps.showroom.apps.ShowroomConfig",
-    "apps.orders.apps.OrderConfig",
+    "apps.orders.apps.OrdersConfig",
+    "apps.trailer.apps.TrailerConfig",
+    "apps.delivery.apps.DeliveryConfig"
 ]
+
+# Tell Django to use your custom user model
+AUTH_USER_MODEL = "users.CustomUser"
 
 SITE_ID = 1
 
