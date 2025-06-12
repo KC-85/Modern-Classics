@@ -64,10 +64,10 @@ INSTALLED_APPS = [
     "whitenoise.runserver_nostatic",
 
     # Your Apps
-    "apps.common",
-    "apps.users",
-    "apps.showroom",
-    "apps.orders",
+    "apps.common.apps.CommonConfig",
+    "apps.users.apps.UsersConfig",
+    "apps.showroom.apps.ShowroomConfig",
+    "apps.orders.apps.OrderConfig",
 ]
 
 SITE_ID = 1
