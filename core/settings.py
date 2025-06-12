@@ -25,7 +25,7 @@ ALLOWED_HOSTS = config(
 )
 CSRF_TRUSTED_ORIGINS = config(
     "CSRF_TRUSTED_ORIGINS",
-    default="https://127.0.0.1,https://localhost,https://modern-classics-b10468fd6f55.herokuapp.com/",
+    default="https://127.0.0.1,https://localhost,https://modern-classics-b10468fd6f55.herokuapp.com/"
     cast=Csv(),
 )
 
