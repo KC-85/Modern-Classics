@@ -316,94 +316,122 @@ I have used `Mermaid` to generate an interactive ERD of my project.
 
 ```mermaid
 erDiagram
-    User {
-        int id PK
+    CUSTOMUSER {
+        BigInt id PK
         varchar username
         varchar email
         varchar password
-    }
-
-    UserProfile {
-        int id PK
-        varchar default_phone_number
-        varchar default_street_address1
-        varchar default_street_address2
-        varchar default_town_or_city
-        varchar default_county
-        varchar default_postcode
-        varchar default_country
-    }
-
-    User ||--|| UserProfile : has_one
-
-    Category {
-        int id PK
-        varchar name
-        varchar friendly_name
-    }
-
-    Product {
-        int id PK
-        varchar sku
-        varchar name
-        text description
-        bool has_sizes
-        decimal price
-        decimal rating
-        varchar image_url
-        image image
-    }
-
-    Product ||--o| Category : belongs_to
-
-    Order {
-        int id PK
-        varchar order_number
-        varchar full_name
-        varchar email
+        varchar first_name
+        varchar last_name
         varchar phone_number
+        date    date_of_birth
+        varchar address_line1
+        varchar address_line2
+        varchar city
+        varchar postal_code
         varchar country
-        varchar postcode
-        varchar town_or_city
-        varchar street_address1
-        varchar street_address2
-        varchar county
-        datetime date
-        decimal delivery_cost
-        decimal order_total
-        decimal grand_total
-        text original_bag
-        varchar stripe_pid
+        varchar profile_image
+        datetime date_joined
     }
+    CUSTOMUSER ||--o{ CART            : owns
+    CUSTOMUSER ||--o{ ORDERS_ORDER    : places
 
-    OrderLineItem {
-        int id PK
-        int quantity
-        decimal lineitem_total
-        varchar product_size
+    %% Showroom (Cars)
+    CARMAKE {
+        BigInt id PK
+        varchar name
     }
+    CARMODEL {
+        BigInt id PK
+        BigInt make_id FK
+        varchar name
+    }
+    CAR {
+        BigInt id PK
+        BigInt make_id FK
+        BigInt model_id FK
+        int    year
+        text   specifications
+        varchar performance
+        varchar condition
+        varchar image
+        decimal price
+        datetime created_at
+        datetime updated_at
+        varchar slug
+    }
+    CARMAKE ||--o{ CARMODEL : has
+    CARMODEL ||--o{ CAR      : has
 
-    Order ||--o| OrderLineItem : has_many
-    OrderLineItem ||--o| Product : belongs_to
+    %% Cart / Trailer
+    CART {
+        BigInt id PK
+        BigInt user_id FK
+        datetime created_at
+    }
+    CARTITEM {
+        BigInt id PK
+        BigInt cart_id FK
+        BigInt car_id FK
+        int     quantity
+    }
+    CART ||--o{ CARTITEM : contains
+    CAR  ||--o{ CARTITEM : referenced_by
 
-    Order ||--o| UserProfile : belongs_to
+    %% Orders & Checkout
+    ORDERS_ORDER {
+        BigInt id PK
+        BigInt user_id FK
+        numeric total_amount
+        varchar status
+        varchar stripe_session_id
+        datetime created_at
+        datetime updated_at
+    }
+    ORDERS_ORDERITEM {
+        BigInt id PK
+        BigInt order_id FK
+        BigInt car_id FK
+        int      quantity
+        decimal  price
+    }
+    CART   ||--o{ ORDERS_ORDER    : converted_to
+    ORDERS_ORDER ||--o{ ORDERS_ORDERITEM : includes
+    CAR    ||--o{ ORDERS_ORDERITEM : referenced_by
 
-    Newsletter {
-        int id PK
+    %% Delivery
+    DELIVERYOPTION {
+        BigInt id PK
+        varchar name
+        decimal fee
+        text    description
+    }
+    ORDERDELIVERY {
+        BigInt id PK
+        BigInt order_id FK
+        BigInt option_id FK
+        varchar tracking_id
+        datetime shipped_at
+    }
+    DELIVERYOPTION ||--o{ ORDERDELIVERY : available_choice
+    ORDERS_ORDER   ||--o{ ORDERDELIVERY : ships_via
+
+    %% Common (misc)
+    COMMON_NEWSLETTER {
+        BigInt id PK
         varchar email
     }
-
-    Contact {
-        int id PK
+    COMMON_CONTACT {
+        BigInt id PK
         varchar name
         varchar email
-        text message
+        text    message
+        datetime date_sent
     }
-
-    FAQ {
-        int id PK
+    COMMON_FAQ {
+        BigInt id PK
         varchar question
-        text answer
+        text    answer
     }
 ```
 
