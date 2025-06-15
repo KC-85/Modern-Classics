@@ -11,6 +11,8 @@ urlpatterns = [
     path("users/", include("apps.users.urls")),
     path("orders/", include("apps.orders.urls")),
     path("common/", include("apps.common.urls")),
+    path("trailer/", include("apps.trailer.urls")),
+    path("delivery/", include("apps.delivery.urls")),
 ]
 
 if settings.DEBUG:
