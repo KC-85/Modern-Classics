@@ -6,6 +6,7 @@ __pycache__/
 
 # Virtual environment directories (if you have one)
 venv/
+.venv/
 env/
 .env
 .env.save
