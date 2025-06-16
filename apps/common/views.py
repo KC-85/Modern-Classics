@@ -31,3 +31,22 @@ class NewsletterSignupView(FormView):
 # Newsletter success view
 class NewsletterSuccessView(TemplateView):
     template_name = "common/newsletter_success.html"
+
+# FAQ list view
+class FAQListView(ListView):
+    model               = FAQ
+    template_name       = "common/faq_list.html"
+    context_object_name = "faqs"
+    paginate_by         = 10
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        form = FAQSearchForm(self.request.GET)
+        if form.is_valid() and form.cleaned_data["query"]:
+            qs = qs.filter(question__icontains=form.cleaned_data["query"])
+        return qs
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx["search_form"] = FAQSearchForm(self.request.GET)
+        return ctx
