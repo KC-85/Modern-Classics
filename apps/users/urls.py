@@ -1,11 +1,13 @@
+# apps/users/urls.py
 from django.urls import path
-from django.http import HttpResponse
+from .views import RegisterView, ProfileView
 
 app_name = "users"
 
-def placeholder(request):
-    return HttpResponse("👤 Users app placeholder")
-
 urlpatterns = [
-    path("", placeholder, name="index"),
+    # Custom registration (if you still want it)
+    path("register/", RegisterView.as_view(), name="register"),
+
+    # Profile view & edit
+    path("profile/",  ProfileView.as_view(),  name="profile"),
 ]
