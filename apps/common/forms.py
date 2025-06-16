@@ -21,3 +21,10 @@ class NewsletterForm(forms.Form):
         self.helper = FormHelper()
         self.helper.form_method = "post"
         self.helper.add_input(Submit("subscribe", "Subscribe"))
+
+class FAQSearchForm(forms.Form):
+    query = forms.CharField(
+        required=False,
+        label="Search FAQs",
+        widget=forms.TextInput(attrs={"placeholder": "Search FAQs…"})
+    )
