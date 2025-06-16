@@ -1,11 +1,17 @@
+# apps/common/urls.py
 from django.urls import path
-from django.http import HttpResponse
+from .views import (
+    ContactView, ContactSuccessView,
+    NewsletterSignupView, NewsletterSuccessView,
+    FAQListView
+)
 
 app_name = "common"
 
-def placeholder(request):
-    return HttpResponse("🔧 Common app placeholder")
-
 urlpatterns = [
-    path("", placeholder, name="index"),
+    path("contact/",             ContactView.as_view(),            name="contact"),
+    path("contact/success/",     ContactSuccessView.as_view(),     name="contact_success"),
+    path("newsletter/",          NewsletterSignupView.as_view(),   name="newsletter"),
+    path("newsletter/success/",  NewsletterSuccessView.as_view(),  name="newsletter_success"),
+    path("faq/",                 FAQListView.as_view(),            name="faq_list"),
 ]
