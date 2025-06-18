@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Order #{{ order.id }}{% endblock %}
+
+{% block content %}
+<h1>Order #{{ order.id }}</h1>
+<p><strong>Date:</strong> {{ order.created_at }}</p>
+<p><strong>Status:</strong> {{ order.get_status_display }}</p>
+
+<h2>Items</h2>
+<table class="table">
+  <thead>
+    <tr><th>Car</th><th>Qty</th><th>Unit Price</th><th>Line Total</th></tr>
+  </thead>
+  <tbody>
+    {% for item in order.items.all %}
+    <tr>
+      <td>{{ item.car }}</td>
+      <td>{{ item.quantity }}</td>
+      <td>${{ item.price }}</td>
+      <td>${{ item.quantity|mul:item.price }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h3>Summary</h3>
+<ul class="list-unstyled">
+  <li>Subtotal: ${{ order.subtotal }}</li>
+  <li>Delivery: ${{ order.delivery_fee }}</li>
+  <li><strong>Total: ${{ order.total_amount }}</strong></li>
+</ul>
+
+{% if order.can_cancel %}
+  <form method="post" action="{% url 'orders:cancel' order.id %}">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Cancel Order</button>
+  </form>
+{% endif %}
+
+<a href="{% url 'orders:list' %}" class="btn btn-link mt-3">← Back to all orders</a>
+{% endblock %}
