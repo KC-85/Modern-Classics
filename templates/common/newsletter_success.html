@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Subscription Confirmed{% endblock %}
+
+{% block content %}
+<div class="alert alert-success" role="alert">
+  <h1>Subscribed!</h1>
+  <p>You’ve been added to our newsletter. Keep an eye on your inbox for updates.</p>
+</div>
+<a href="{% url 'common:newsletter' %}" class="btn btn-link">Subscribe another email</a>
+{% endblock %}

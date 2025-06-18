@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Message Sent{% endblock %}
+
+{% block content %}
+<div class="alert alert-success" role="alert">
+  <h1>Thank you!</h1>
+  <p>Your message has been sent successfully. We’ll get back to you shortly.</p>
+</div>
+<a href="{% url 'common:contact' %}" class="btn btn-link">Send another message</a>
+{% endblock %}
