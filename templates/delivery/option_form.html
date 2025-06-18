@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+  {% if form.instance.pk %}Edit Delivery Option{% else %}Add Delivery Option{% endif %}
+{% endblock %}
+
+{% block content %}
+<h1>{% if form.instance.pk %}Edit{% else %}Add{% endif %} Delivery Option</h1>
+<form method="post">
+  {% csrf_token %}
+  {{ form|crispy }}
+  <button type="submit" class="btn btn-primary">
+    {% if form.instance.pk %}Save Changes{% else %}Create Option{% endif %}
+  </button>
+  <a href="{% url 'delivery:option_list' %}" class="btn btn-link">Cancel</a>
+</form>
+{% endblock %}

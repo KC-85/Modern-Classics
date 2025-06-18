@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Delivery Options{% endblock %}
+
+{% block content %}
+<h1>Delivery Options</h1>
+<ul class="list-group">
+  {% for opt in object_list %}
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      {{ opt.name }} – £{{ opt.price }}
+      <span>
+        <a href="{% url 'delivery:option_edit' opt.pk %}" class="btn btn-sm btn-outline-secondary">Edit</a>
+        <a href="{% url 'delivery:option_confirm_delete' opt.pk %}" class="btn btn-sm btn-outline-danger">Delete</a>
+      </span>
+    </li>
+  {% empty %}
+    <li class="list-group-item">No delivery options defined.</li>
+  {% endfor %}
+</ul>
+
+<a href="{% url 'delivery:option_add' %}" class="btn btn-primary mt-3">Add New Option</a>
+{% endblock %}
