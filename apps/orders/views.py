@@ -7,7 +7,7 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.generic import TemplateView
 
-from trailer.models import Cart
+from ..trailer.models import Cart
 from .models import Order
 
 # initialize Stripe

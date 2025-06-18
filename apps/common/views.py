@@ -1,6 +1,7 @@
 from django.urls import reverse_lazy
-from django.views.generic import FormView, TemplateView
-from .forms import ContactForm, NewsletterForm
+from django.views.generic import FormView, TemplateView, ListView
+from .forms import ContactForm, NewsletterForm, FAQSearchForm
+from .models import FAQ
 
 """
 In here, we will have the views for both the contact form,
@@ -12,7 +13,7 @@ class ContactView(FormView):
     form_class    = ContactForm
     success_url   = reverse_lazy("common:contact_success")
 
-    def form_valid(self, form)
+    def form_valid(self, form):
         return super().form_valid(form)
 
 # Contact success view (contact form)
