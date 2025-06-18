@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}{{ object }}{% endblock %}
+{% block content %}
+<h1>{{ object }}</h1>
+<img src="{{ object.image.url }}" alt="{{ object }}">
+<p><strong>Performance:</strong> {{ object.performance }}</p>
+<p><strong>Condition:</strong> {{ object.get_condition_display }}</p>
+<p><strong>Specs:</strong></p>
+<pre>{{ object.specifications }}</pre>
+{% if user.is_superuser %}
+  <p>
+    <a href="{% url 'showroom:update' object.slug %}">Edit</a> |
+    <a href="{% url 'showroom:delete' object.slug %}">Delete</a>
+  </p>
+{% endif %}
+<a href="{% url 'showroom:list' %}">← Back to list</a>
+{% endblock %}
