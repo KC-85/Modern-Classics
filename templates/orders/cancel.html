@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Order Canceled{% endblock %}
+
+{% block content %}
+<div class="alert alert-warning" role="alert">
+  <h1>Order Canceled</h1>
+  <p>Your order <strong>#{{ order.id }}</strong> has been successfully canceled.</p>
+</div>
+<a href="{% url 'orders:list' %}" class="btn btn-link">Back to My Orders</a>
+{% endblock %}
