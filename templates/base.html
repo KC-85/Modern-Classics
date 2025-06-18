@@ -1,0 +1,60 @@
+{# templates/base.html #}
+{% load static %}
+{% load tz %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>{% block title %}Modern Classics{% endblock %}</title>
+  <meta name="description" content="{% block meta_description %}Buy &amp; sell classic cars online.{% endblock %}">
+  <link rel="canonical" href="{{ request.build_absolute_uri }}">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type"        content="{% block og_type %}website{% endblock %}">
+  <meta property="og:title"       content="{% block og_title %}Modern Classics{% endblock %}">
+  <meta property="og:description" content="{% block og_description %}Buy &amp; sell classic cars online.{% endblock %}">
+  <meta property="og:url"         content="{{ request.build_absolute_uri }}">
+  <meta property="og:image"       content="{% block og_image %}{% static 'images/og-default.jpg' %}{% endblock %}">
+
+  {% block head_extra %}{% endblock %}
+
+  <link rel="stylesheet" href="{% static 'css/main.css' %}">
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <ul class="nav-left">
+        <li><a href="{% url 'showroom:car_list' %}">Showroom</a></li>
+        <li><a href="{% url 'trailer:cart_detail' %}">Cart</a></li>
+        <li><a href="{% url 'common:faq_list' %}">FAQ</a></li>
+        <li><a href="{% url 'common:contact' %}">Contact</a></li>
+        <li><a href="{% url 'common:newsletter' %}">Newsletter</a></li>
+      </ul>
+      <ul class="nav-right">
+        {% if user.is_authenticated %}
+          <li><a href="{% url 'users:profile' %}">Profile</a></li>
+          <li><a href="{% url 'account_logout' %}">Logout</a></li>
+        {% else %}
+          <li><a href="{% url 'account_login' %}">Login</a></li>
+          <li><a href="{% url 'account_signup' %}">Sign Up</a></li>
+        {% endif %}
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer>
+    <p>&copy; {% now "Y" %} Modern Classics. All rights reserved.</p>
+  </footer>
+
+  <script src="{% static 'js/main.js' %}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>
