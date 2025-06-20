@@ -69,8 +69,15 @@ INSTALLED_APPS = [
     "apps.showroom.apps.ShowroomConfig",
     "apps.orders.apps.OrdersConfig",
     "apps.trailer.apps.TrailerConfig",
-    "apps.delivery.apps.DeliveryConfig"
+    "apps.delivery.apps.DeliveryConfig",
+
+    # Crispy
+    "crispy_forms",
+    "crispy_bootstrap5",
 ]
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 # Tell Django to use your custom user model
 AUTH_USER_MODEL = "users.CustomUser"
