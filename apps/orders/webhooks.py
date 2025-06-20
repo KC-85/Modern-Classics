@@ -21,11 +21,12 @@ ENDPOINT_SECRET = settings.STRIPE_WEBHOOK_SECRET
 @require_POST
 def stripe_webhook(request):
     # 1) Decode & log the raw payload
-    payload = request.body.decode("utf-8")
+    payload = request.body
     logger.debug("Stripe webhook payload: %s", payload)
 
     # 2) Grab signature header & log it
     sig_header = request.META.get("HTTP_STRIPE_SIGNATURE", "")
+    logger.debug("🔍 Raw payload (bytes): %r", payload)
     logger.debug("Stripe signature header: %s", sig_header)
 
     # 3) Try constructing the Event, catching parse or sig errors
