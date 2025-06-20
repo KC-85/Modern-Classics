@@ -1,6 +1,6 @@
 # apps/orders/urls.py
 from django.urls import path
-from .webhooks import stripe_webhooks
+from .webhooks import stripe_webhook
 from .views import (
     CreateOrderView, CheckoutView,
     SuccessView, CancelView
