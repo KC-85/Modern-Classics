@@ -187,7 +187,7 @@ AXES_RESET_ON_SUCCESS           = True
 # === Stripe Configuration ===
 STRIPE_PUBLISHABLE_KEY = config("STRIPE_PUBLISHABLE_KEY", default="")
 STRIPE_SECRET_KEY      = config("STRIPE_SECRET_KEY", default="")
-STRIPE_WEBHOOK_SECRET = config("STRIPE_WH_SECRET")
+STRIPE_WEBHOOK_SECRET = config("STRIPE_WEBHOOK_SECRET")
 
 # === Default Primary Key Field Type ===
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
