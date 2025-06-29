@@ -4,7 +4,6 @@ from django.db import models
 from django.conf import settings
 from apps.showroom.models import Car
 
-
 class Order(models.Model):
     class Status(models.TextChoices):
         PENDING   = 'pending',   'Pending'
@@ -25,6 +24,23 @@ class Order(models.Model):
                         )
     total_amount      = models.DecimalField(max_digits=10, decimal_places=2)
 
+    # delivery integration (string ref to avoid circular import)
+    delivery_option   = models.ForeignKey(
+                            'delivery.DeliveryOption',
+                            null=True,
+                            blank=True,
+                            on_delete=models.SET_NULL,
+                            related_name="orders"
+                        )
+
+    @property
+    def delivery_fee(self):
+        return self.delivery_option.price if self.delivery_option else 0
+
+    @property
+    def total_with_delivery(self):
+        return self.total_amount + self.delivery_fee
+
     # Stripe references
     stripe_session_id = models.CharField(
                             max_length=255,
@@ -43,13 +59,11 @@ class Order(models.Model):
     paid_amount       = models.DecimalField(
                             max_digits=10,
                             decimal_places=2,
-                            blank=True,
-                            null=True
+                            blank=True, null=True
                         )
     currency          = models.CharField(
                             max_length=3,
-                            blank=True,
-                            null=True,
+                            blank=True, null=True,
                             help_text="ISO currency code, e.g. GBP, USD"
                         )
 
@@ -82,7 +96,7 @@ class OrderItem(models.Model):
     unit_price = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):
-        return f"{self.quantity} × {self.car} @ {self.unit_price}"
+        return f"{self.quantity} × {self.car} @ £{self.unit_price:.2f}"
 
     @property
     def line_total(self):
