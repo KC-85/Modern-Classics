@@ -5,7 +5,7 @@ from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.views import View
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView, DetailView
 
 from ..trailer.models import Cart
 from .models import Order
@@ -27,12 +27,40 @@ class CreateOrderView(View):
         cart = Cart.objects.get(user=request.user)
         order = Order.objects.create(
             user=request.user,
-            total_amount=cart.get_total(),  # you’ll need a get_total() helper
+            total_amount=cart.total_amount,
             status="pending",
         )
         # move cart items → order items here if you have OrderItem model…
         cart.items.all().delete()
         return redirect("orders:checkout", order_id=order.pk)
+
+
+@login_req
+class OrderListView(ListView):
+    model = Order
+    template_name = "orders/order_list.html"
+    context_object_name = "orders"
+    paginate_by = 10
+
+    def get_queryset(self):
+        # show only the current user’s orders, most recent first
+        return (
+            Order.objects
+            .filter(user=self.request.user)
+            .order_by("-created_at")
+        )
+
+
+@login_req
+class OrderDetailView(DetailView):
+    model = Order
+    template_name = "orders/order_detail.html"
+    context_object_name = "order"
+    pk_url_kwarg = "pk"
+
+    def get_queryset(self):
+        # ensure a user can only view their own orders
+        return Order.objects.filter(user=self.request.user)
 
 
 @login_req
@@ -54,18 +82,51 @@ class CheckoutView(View):
                 "quantity": 1,
             }],
             mode="payment",
-            success_url=request.build_absolute_uri(reverse("orders:success")),
-            cancel_url= request.build_absolute_uri(reverse("orders:cancel")),
+            # This bit will attach your order.pk to the PaymentIntent
+            payment_intent_data={
+                "metadata": {
+                    "order_id": order.pk,
+                }
+            },
+            success_url=request.build_absolute_uri(reverse("orders:success", args=[order.pk])),
+            cancel_url= request.build_absolute_uri(reverse("orders:cancel", args=[order.pk])),
         )
+
+        # Save the Stripe PaymentIntent ID so the webhook can find this order
+        order.stripe_intent_id = session.payment_intent
+        order.save(update_fields=["stripe_intent_id"])
+
         return redirect(session.url, code=303)
 
 
 @login_req
 class SuccessView(TemplateView):
-    """
-    GET → show a “Thank you for your order” page.
-    """
     template_name = "orders/success.html"
+
+    def get(self, request, *args, **kwargs):
+        # 1) load the order (URL is success/<int:pk>/)
+        order = get_object_or_404(
+            Order, pk=kwargs["pk"], user=request.user
+        )
+
+        # 2) send confirmation email
+        send_mail(
+            subject=f"[Modern Classics] Order #{order.id} Confirmed",
+            message=(
+                f"Hi {request.user.username},\n\n"
+                f"Thank you for your purchase! "
+                f"Your order #{order.id} for £{order.total_amount:.2f} "
+                "has been received and is now being processed.\n\n"
+                "We’ll let you know as soon as it ships.\n\n"
+                "— Modern Classics"
+            ),
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[request.user.email],
+            fail_silently=False,
+        )
+
+        # 3) render the page passing 'order' into context
+        return self.render_to_response({"order": order})
 
 
 @login_req
