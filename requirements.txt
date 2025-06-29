@@ -17,6 +17,7 @@ dj-database-url==3.0.0
 Django==5.2.2
 django-allauth==65.9.0
 django-axes==8.0.0
+django-bootstrap-pagination==1.7.1
 django-cloudinary-storage==0.3.0
 django-crispy-forms==2.4
 django-timedelta==2020.12.30
