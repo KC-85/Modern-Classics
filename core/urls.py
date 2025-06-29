@@ -39,7 +39,11 @@ urlpatterns = [
     path("trailer/", include("apps.trailer.urls")),
 
     # Delivery / shipping
-    path("delivery/", include("apps.delivery.urls")),
+    path(
+    "delivery/",
+    include(("apps.delivery.urls", "delivery")),
+    namespace="delivery"
+    ),
 ]
 
 if settings.DEBUG:
