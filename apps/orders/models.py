@@ -1,5 +1,6 @@
 # apps/orders/models.py
 
+import math
 from django.db import models
 from django.conf import settings
 from apps.showroom.models import Car
@@ -22,20 +23,35 @@ class Order(models.Model):
                             choices=Status.choices,
                             default=Status.PENDING
                         )
-    total_amount      = models.DecimalField(max_digits=10, decimal_places=2)
+    total_amount      = models.DecimalField(
+                            max_digits=10, decimal_places=2
+                        )
 
-    # delivery integration (string ref to avoid circular import)
-    delivery_option   = models.ForeignKey(
-                            'delivery.DeliveryOption',
-                            null=True,
-                            blank=True,
-                            on_delete=models.SET_NULL,
-                            related_name="orders"
+    # delivery distance in miles
+    delivery_distance = models.PositiveIntegerField(
+                            null=True, blank=True,
+                            help_text="Miles from showroom to delivery address"
                         )
 
     @property
     def delivery_fee(self):
-        return self.delivery_option.price if self.delivery_option else 0
+        """
+        Free for <=25 miles,
+        £50 for 26–100 miles,
+        then +£10 for each complete 50-mile block beyond 100:
+          101–149 → £50
+          150–199 → £60
+          200–249 → £70
+          etc.
+        """
+        dist = self.delivery_distance or 0
+        if dist <= 25:
+            return 0
+        if dist <= 100:
+            return 50
+        extra = dist - 100
+        chunks = extra // 50
+        return 50 + (chunks * 10)
 
     @property
     def total_with_delivery(self):
@@ -44,26 +60,22 @@ class Order(models.Model):
     # Stripe references
     stripe_session_id = models.CharField(
                             max_length=255,
-                            blank=True,
-                            null=True,
+                            blank=True, null=True,
                             help_text="Stripe Checkout Session ID"
                         )
     stripe_intent_id  = models.CharField(
                             max_length=255,
-                            blank=True,
-                            null=True,
+                            blank=True, null=True,
                             help_text="Stripe PaymentIntent ID"
                         )
 
     # Post-payment details
     paid_amount       = models.DecimalField(
-                            max_digits=10,
-                            decimal_places=2,
+                            max_digits=10, decimal_places=2,
                             blank=True, null=True
                         )
     currency          = models.CharField(
-                            max_length=3,
-                            blank=True, null=True,
+                            max_length=3, blank=True, null=True,
                             help_text="ISO currency code, e.g. GBP, USD"
                         )
 
@@ -93,7 +105,9 @@ class OrderItem(models.Model):
                      related_name="order_items"
                  )
     quantity   = models.PositiveIntegerField(default=1)
-    unit_price = models.DecimalField(max_digits=10, decimal_places=2)
+    unit_price = models.DecimalField(
+                     max_digits=10, decimal_places=2
+                 )
 
     def __str__(self):
         return f"{self.quantity} × {self.car} @ £{self.unit_price:.2f}"
