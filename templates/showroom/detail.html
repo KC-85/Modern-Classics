@@ -1,17 +1,35 @@
 {% extends "base.html" %}
 {% block title %}{{ object }}{% endblock %}
 {% block content %}
+
 <h1>{{ object }}</h1>
 <img src="{{ object.image.url }}" alt="{{ object }}">
-<p><strong>Performance:</strong> {{ object.performance }}</p>
-<p><strong>Condition:</strong> {{ object.get_condition_display }}</p>
-<p><strong>Specs:</strong></p>
+<p>
+  <strong>Performance:</strong> {{ object.performance }}
+</p>
+<p>
+  <strong>Condition:</strong> {{ object.get_condition_display }}
+</p>
+<p>
+  <strong>Specs:</strong>
+</p>
+<form
+  method="post"
+  action="{% url 'trailer:add_to_cart' object.pk %}"
+  class="d-inline-block my-3"
+>
+  {% csrf_token %}
+  <input type="hidden" name="quantity" value="1">
+  <button type="submit" class="btn btn-primary">
+    Add to Cart
+  </button>
+</form>
 <pre>{{ object.specifications }}</pre>
 {% if user.is_superuser %}
   <p>
-    <a href="{% url 'showroom:update' object.slug %}">Edit</a> |
-    <a href="{% url 'showroom:delete' object.slug %}">Delete</a>
+    <a href="{% url 'showroom:car_edit'   object.slug %}">Edit</a> |
+    <a href="{% url 'showroom:car_delete' object.slug %}">Delete</a>
   </p>
 {% endif %}
-<a href="{% url 'showroom:list' %}">← Back to list</a>
+<a href="{% url 'showroom:car_list' %}">← Back to list</a>
 {% endblock %}
