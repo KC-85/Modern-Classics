@@ -9,7 +9,7 @@
       {{ opt.name }} – £{{ opt.price }}
       <span>
         <a href="{% url 'delivery:option_edit' opt.pk %}" class="btn btn-sm btn-outline-secondary">Edit</a>
-        <a href="{% url 'delivery:option_confirm_delete' opt.pk %}" class="btn btn-sm btn-outline-danger">Delete</a>
+        <a href="{% url 'delivery:option_delete' opt.pk %}" class="btn btn-sm btn-outline-danger">Delete</a>
       </span>
     </li>
   {% empty %}
