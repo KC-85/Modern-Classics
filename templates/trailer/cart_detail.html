@@ -1,19 +1,46 @@
 {% extends "base.html" %}
 {% block title %}Your Cart{% endblock %}
+
 {% block content %}
-<h1>Shopping Cart</h1>
-{% if cart.items.exists %}
-  <ul>
-    {% for item in cart.items.all %}
-      <li>
-        {{ item.car }} — Quantity: {{ item.quantity }}
-        <a href="{% url 'trailer:remove' item.pk %}">Remove</a>
-      </li>
-    {% endfor %}
-  </ul>
-  <p><strong>Total:</strong> {{ cart.total_amount }}</p>
-  <a href="{% url 'orders:create' %}" class="btn btn-success">Checkout</a>
-{% else %}
-  <p>Your cart is empty.</p>
-{% endif %}
+  <h1>Shopping Cart</h1>
+
+  {% if cart.items.exists %}
+    <ul>
+      {% for item in cart.items.all %}
+        <li>
+          {# Car name and unit price #}
+          {{ item.car.make.name }}
+          {{ item.car.model.name }} ({{ item.car.year }})
+          — £{{ item.car.price|floatformat:2 }}
+          — Quantity: {{ item.quantity }}
+
+          {# Remove form #}
+          <form
+            method="post"
+            action="{% url 'trailer:update_cart_item' item.pk %}"
+            style="display:inline"
+          >
+            {% csrf_token %}
+            <input type="hidden" name="quantity" value="0">
+            <button type="submit" class="btn btn-link p-0 align-baseline">
+              Remove
+            </button>
+          </form>
+        </li>
+      {% endfor %}
+    </ul>
+
+    {# Cart total, formatted #}
+    <p>
+      <strong>Total:</strong>
+      £{{ cart.total_amount|floatformat:2 }}
+    </p>
+
+    <form method="post" action="{% url 'orders:create_order' %}" style="display:inline">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-success">Checkout</button>
+    </form>
+  {% else %}
+    <p>Your cart is empty.</p>
+  {% endif %}
 {% endblock %}
