@@ -78,7 +78,7 @@ class CheckoutView(View):
             reverse("orders:success", args=[order.pk])
         )
         cancel_url = request.build_absolute_uri(
-            reverse("orders:cancel", args=[order.pk])
+            reverse("orders:cancel", [order.pk])
         )
 
         session = stripe.checkout.Session.create(
