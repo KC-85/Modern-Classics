@@ -1,26 +1,19 @@
+# apps/delivery/forms.py
+
 from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
-from .models import DeliveryOption, OrderDelivery
 
-class DeliveryOptionForm(forms.ModelForm):
-    class Meta:
-        model = DeliveryOption
-        fields = ("name", "fee", "description")
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.form_method = "post"
-        self.helper.add_input(Submit("save", "Save Option"))
-
-class OrderDeliveryForm(forms.ModelForm):
-    class Meta:
-        model = OrderDelivery
-        fields = ("option", "tracking_id", "shipped_at")
+class DeliveryDistanceForm(forms.Form):
+    delivery_distance = forms.IntegerField(
+        min_value=0,
+        label="Delivery distance (miles)",
+        help_text="Enter the number of miles from our showroom to your address",
+    )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        # Crispy form helper for consistent styling
         self.helper = FormHelper()
         self.helper.form_method = "post"
-        self.helper.add_input(Submit("update", "Update Delivery"))
+        self.helper.add_input(Submit("save", "Save Distance"))
