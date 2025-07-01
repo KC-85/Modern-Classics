@@ -9,11 +9,22 @@ from .views import (
 app_name = "orders"
 
 urlpatterns = [
-    path("create/",                  CreateOrderView.as_view(), name="create_order"),
-    path("",                         OrderListView.as_view(),   name="list"),
-    path("<int:pk>/",                OrderDetailView.as_view(), name="detail"),
-    path("checkout/<int:order_id>/", CheckoutView.as_view(),     name="checkout"),
-    path("success/<int:pk>/",        SuccessView.as_view(),      name="success"),
-    path("cancel/<int:pk>/",         CancelView.as_view(),       name="cancel"),
-    path("stripe/webhook/",          stripe_webhook,            name="stripe-webhook"),
+    # Create a new order from the cart
+    path("create/", CreateOrderView.as_view(), name="create_order"),
+
+    # Launch Stripe Checkout for a given order
+    path("checkout/<int:order_id>/", CheckoutView.as_view(), name="checkout"),
+
+    # Success redirect (marks order paid)
+    path("success/<int:order_id>/", SuccessView.as_view(), name="success"),
+
+    # Cancel redirect
+    path("cancel/", CancelView.as_view(), name="cancel"),
+
+    # Stripe webhook endpoint
+    path("stripe/webhook/", stripe_webhook, name="stripe-webhook"),
+
+    # List & detail views for the user’s orders
+    path("", OrderListView.as_view(), name="list"),
+    path("<int:pk>/", OrderDetailView.as_view(), name="detail"),
 ]
