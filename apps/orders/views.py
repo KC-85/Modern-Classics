@@ -72,6 +72,15 @@ class CheckoutView(View):
     """
     def get(self, request, order_id, *args, **kwargs):
         order = get_object_or_404(Order, pk=order_id, user=request.user)
+
+        # Build URLs that include the order’s ID
+        success_url = request.build_absolute_uri(
+            reverse("orders:success", args=[order.pk])
+        )
+        cancel_url = request.build_absolute_uri(
+            reverse("orders:cancel", args=[order.pk])
+        )
+
         session = stripe.checkout.Session.create(
             payment_method_types=["card"],
             line_items=[{
@@ -83,17 +92,13 @@ class CheckoutView(View):
                 "quantity": 1,
             }],
             mode="payment",
-            # This bit will attach your order.pk to the PaymentIntent
             payment_intent_data={
-                "metadata": {
-                    "order_id": order.pk,
-                }
+                "metadata": {"order_id": order.pk},
             },
-            success_url=request.build_absolute_uri(reverse("orders:success", args=[order.pk])),
-            cancel_url= request.build_absolute_uri(reverse("orders:cancel", args=[order.pk])),
+            success_url=success_url,
+            cancel_url=cancel_url,
         )
 
-        # Save the Stripe PaymentIntent ID so the webhook can find this order
         order.stripe_intent_id = session.payment_intent
         order.save(update_fields=["stripe_intent_id"])
 
@@ -104,30 +109,39 @@ class CheckoutView(View):
 class SuccessView(TemplateView):
     template_name = "orders/success.html"
 
-    def get(self, request, *args, **kwargs):
-        # 1) load the order (URL is success/<int:pk>/)
-        order = get_object_or_404(
-            Order, pk=kwargs["pk"], user=request.user
-        )
+    def get(self, request, order_id, *args, **kwargs):
+        # 1) Fetch & mark paid
+        order = get_object_or_404(Order, pk=order_id, user=request.user)
+        if order.status == Order.Status.PENDING:
+            order.status      = Order.Status.PAID
+            order.paid_amount = order.total_amount
+            order.currency    = "GBP"
+            order.save(update_fields=["status", "paid_amount", "currency"])
 
-        # 2) send confirmation email
-        send_mail(
-            subject=f"[Modern Classics] Order #{order.id} Confirmed",
-            message=(
-                f"Hi {request.user.username},\n\n"
-                f"Thank you for your purchase! "
-                f"Your order #{order.id} for £{order.total_amount:.2f} "
-                "has been received and is now being processed.\n\n"
-                "We’ll let you know as soon as it ships.\n\n"
-                "— Modern Classics"
-            ),
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=[request.user.email],
-            fail_silently=False,
-        )
+            # 2) Send confirmation email
+            subject = f"Your Order #{order.pk} Confirmation"
+            message = (
+                f"Hi {order.user.username},\n\n"
+                f"Thank you for your purchase! Your order #{order.pk} has been received and marked as paid.\n\n"
+                f"Order total: £{order.total_amount:.2f}\n"
+                f"You can view your order here: {request.build_absolute_uri(reverse('orders:detail', args=[order.pk]))}\n\n"
+                "We’ll be in touch with delivery details shortly.\n\n"
+                "Best,\n"
+                "The Classics Team"
+            )
+            from_email = settings.DEFAULT_FROM_EMAIL
+            recipient_list = [order.user.email]
 
-        # 3) render the page passing 'order' into context
-        return self.render_to_response({"order": order})
+            send_mail(
+                subject,
+                message,
+                from_email,
+                recipient_list,
+                fail_silently=False,
+            )
+
+        # 3) Render the success page
+        return render(request, self.template_name, {"order": order})
 
 
 @login_req
