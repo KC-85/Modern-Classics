@@ -8,6 +8,12 @@ class Newsletter(models.Model):
 
     class Meta:
         ordering = ("-subscribed_at",)
+        constraints = [
+            models.UniqueConstraint(
+                fields=["email"],
+                name="unique_newsletter_email"
+            )
+        ]
 
     def __str__(self):
         return self.email

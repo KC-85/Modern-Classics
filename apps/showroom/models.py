@@ -63,6 +63,10 @@ class Car(models.Model):
                         decimal_places=2,
                         help_text="Sale price in GBP"
                     )
+    is_sold        = models.BooleanField(
+                        default=False,
+                        help_text="Mark True once this car has been sold"
+                    )
     slug           = models.SlugField(max_length=150, unique=True, blank=True)
     created_at     = models.DateTimeField(auto_now_add=True)
     updated_at     = models.DateTimeField(auto_now=True)
