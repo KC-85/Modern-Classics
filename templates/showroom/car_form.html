@@ -9,6 +9,6 @@
   <button type="submit" class="btn btn-primary">
     {% if form.instance.pk %}Save Changes{% else %}Add Car{% endif %}
   </button>
-  <a href="{% url 'showroom:list' %}">Cancel</a>
+  <a href="{% url 'showroom:car_list' %}">Cancel</a>
 </form>
 {% endblock %}
