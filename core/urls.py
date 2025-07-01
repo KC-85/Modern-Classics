@@ -40,9 +40,11 @@ urlpatterns = [
 
     # Delivery / shipping
     path(
-    "delivery/",
-    include(("apps.delivery.urls", "delivery")),
-    namespace="delivery"
+        "delivery/",
+        include(
+            ("apps.delivery.urls", "delivery"),
+            namespace="delivery"
+        ),
     ),
 ]
 
