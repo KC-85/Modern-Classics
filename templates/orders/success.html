@@ -1,11 +1,15 @@
 {% extends "base.html" %}
-{% block title %}Order Placed Successfully{% endblock %}
-
+{% block title %}Order #{{ order.id }} Confirmed{% endblock %}
 {% block content %}
-<div class="alert alert-success" role="alert">
+<div class="alert alert-success">
   <h1>Thank You!</h1>
-  <p>Your order <strong>#{{ order.id }}</strong> has been placed successfully.</p>
-  <p>We’ve sent a confirmation email to <strong>{{ order.user.email }}</strong>.</p>
+  <p>Your payment was successful.</p>
+  <p>Your order <strong>#{{ order.id }}</strong> for
+     £{{ order.total_amount|floatformat:2 }} has been placed.</p>
+  <p>A confirmation email has been sent to
+     <strong>{{ order.user.email }}</strong>.</p>
 </div>
-<a href="{% url 'showroom:list' %}" class="btn btn-primary">Continue Shopping</a>
+<a href="{% url 'showroom:car_list' %}" class="btn btn-primary">
+  Continue Shopping
+</a>
 {% endblock %}
