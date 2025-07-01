@@ -5,6 +5,6 @@
 <form method="post">
   {% csrf_token %}
   <button type="submit" class="btn btn-danger">Yes, delete</button>
-  <a href="{% url 'showroom:detail' object.slug %}">Cancel</a>
+  <a href="{% url 'showroom:car_detail' object.slug %}">Cancel</a>
 </form>
 {% endblock %}
