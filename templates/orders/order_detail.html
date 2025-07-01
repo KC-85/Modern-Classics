@@ -1,41 +1,64 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
 {% block title %}Order #{{ order.id }}{% endblock %}
 
 {% block content %}
-<h1>Order #{{ order.id }}</h1>
-<p><strong>Date:</strong> {{ order.created_at }}</p>
-<p><strong>Status:</strong> {{ order.get_status_display }}</p>
+<div class="container my-5">
+  <h1>Order #{{ order.id }}</h1>
+  <p><strong>Date:</strong> {{ order.created_at|date:"SHORT_DATETIME_FORMAT" }}</p>
+  <p><strong>Status:</strong> {{ order.get_status_display }}</p>
 
-<h2>Items</h2>
-<table class="table">
-  <thead>
-    <tr><th>Car</th><th>Qty</th><th>Unit Price</th><th>Line Total</th></tr>
-  </thead>
-  <tbody>
-    {% for item in order.items.all %}
-    <tr>
-      <td>{{ item.car }}</td>
-      <td>{{ item.quantity }}</td>
-      <td>${{ item.price }}</td>
-      <td>${{ item.quantity|mul:item.price }}</td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+  <h2>Items</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Car</th>
+        <th>Qty</th>
+        <th>Unit Price</th>
+        <th>Line Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in order.items.all %}
+      <tr>
+        <td>{{ item.car }}</td>
+        <td>{{ item.quantity }}</td>
+        <td>£{{ item.unit_price|floatformat:2 }}</td>
+        <td>£{{ item.line_total|floatformat:2 }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 
-<h3>Summary</h3>
-<ul class="list-unstyled">
-  <li>Subtotal: ${{ order.subtotal }}</li>
-  <li>Delivery: ${{ order.delivery_fee }}</li>
-  <li><strong>Total: ${{ order.total_amount }}</strong></li>
-</ul>
+  <h3 class="mt-4">Summary</h3>
+  <ul class="list-unstyled">
+    <li>Subtotal: £{{ order.total_amount|floatformat:2 }}</li>
+    <li>
+      <strong>Delivery:</strong>
+      {% if order.delivery_distance is not None %}
+        £{{ order.delivery_fee|floatformat:2 }}
+      {% else %}
+        £0.00
+      {% endif %}
+    </li>
+    <li><strong>Total:</strong> £{{ order.total_with_delivery|floatformat:2 }}</li>
+  </ul>
 
-{% if order.can_cancel %}
-  <form method="post" action="{% url 'orders:cancel' order.id %}">
-    {% csrf_token %}
-    <button type="submit" class="btn btn-danger">Cancel Order</button>
-  </form>
-{% endif %}
+  {% if order.status == 'paid' and order.delivery_distance is None %}
+    <div class="my-3">
+      <a href="{% url 'delivery:order_delivery' order.id %}" class="btn btn-primary">
+        Enter Delivery Distance
+      </a>
+    </div>
+  {% endif %}
 
-<a href="{% url 'orders:list' %}" class="btn btn-link mt-3">← Back to all orders</a>
+  {% if order.can_cancel %}
+    <form method="post" action="{% url 'orders:cancel' order.id %}" class="mb-3">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger">Cancel Order</button>
+    </form>
+  {% endif %}
+
+  <a href="{% url 'orders:list' %}" class="btn btn-link">← Back to all orders</a>
+</div>
 {% endblock %}
