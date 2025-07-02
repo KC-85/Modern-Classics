@@ -22,6 +22,12 @@ class NewsletterForm(forms.Form):
         self.helper.form_method = "post"
         self.helper.add_input(Submit("subscribe", "Subscribe"))
 
+    def clean_email(self):
+        email = self.cleaned_data["email"].strip().lower()
+        if Newsletter.objects.filter(email__iexact=email).exists():
+            raise ValidationError("This email is already subscribed.")
+        return email
+
 class FAQSearchForm(forms.Form):
     query = forms.CharField(
         required=False,
