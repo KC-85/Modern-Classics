@@ -186,8 +186,6 @@ LOGOUT_REDIRECT_URL = "/accounts/login/"
 
 # === django-allauth Settings ===
 ACCOUNT_LOGIN_METHOD            = "username_email_password"
-ACCOUNT_USERNAME_REQUIRED       = True
-ACCOUNT_EMAIL_REQUIRED          = True
 ACCOUNT_SIGNUP_FIELDS           = ["username*", "email*", "password1*", "password2*"]
 ACCOUNT_EMAIL_VERIFICATION      = "mandatory"
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
@@ -196,7 +194,6 @@ ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
 AXES_ENABLED                    = True
 AXES_FAILURE_LIMIT              = config("AXES_FAILURE_LIMIT", default=3, cast=int)
 AXES_COOLOFF_TIME               = timedelta(hours=config("AXES_COOLOFF_HOURS", default=1, cast=int))
-AXES_LOCK_OUT_BY_COMBINATION_USER_AND_IP = True
 AXES_RESET_ON_SUCCESS           = True
 
 # === Stripe Configuration ===
