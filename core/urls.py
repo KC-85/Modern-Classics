@@ -30,7 +30,10 @@ urlpatterns = [
     path("users/", include("apps.users.urls")),
 
     # Orders & checkout
-    path("orders/", include("apps.orders.urls")),
+    path(
+      "orders/",
+      include(("apps.orders.urls", "orders"), namespace="orders"),
+    ),
 
     # Common utilities (FAQs, contacts…)
     path("common/", include("apps.common.urls")),
