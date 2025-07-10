@@ -67,42 +67,50 @@ class OrderDetailView(DetailView):
 @login_req
 class CheckoutView(View):
     """
-    GET → create a Stripe Checkout Session for the Order
-    and redirect the user into Stripe’s hosted payment page.
+    GET → render checkout page with Stripe Elements
+    POST → confirm the payment intent & then redirect to success
     """
+    template_name = "orders/checkout/checkout.html"
+
     def get(self, request, order_id, *args, **kwargs):
+        # 1) load the order
         order = get_object_or_404(Order, pk=order_id, user=request.user)
 
-        # Build URLs that include the order’s ID
-        success_url = request.build_absolute_uri(
-            reverse("orders:success", args=[order.pk])
-        )
-        cancel_url = request.build_absolute_uri(
-            reverse("orders:cancel", args=[order.pk])
-        )
-
-        session = stripe.checkout.Session.create(
-            payment_method_types=["card"],
-            line_items=[{
-                "price_data": {
-                    "currency": "gbp",
-                    "unit_amount": int(order.total_amount * 100),
-                    "product_data": {"name": f"Order #{order.pk}"},
-                },
-                "quantity": 1,
-            }],
-            mode="payment",
-            payment_intent_data={
-                "metadata": {"order_id": order.pk},
-            },
-            success_url=success_url,
-            cancel_url=cancel_url,
+        # 2) create a PaymentIntent
+        intent = stripe.PaymentIntent.create(
+            amount=int(order.total_amount * 100),
+            currency="gbp",
+            metadata={"order_id": order.pk},
         )
 
-        order.stripe_intent_id = session.payment_intent
-        order.save(update_fields=["stripe_intent_id"])
+        # 3) render the template with client_secret + public key
+        return render(request, self.template_name, {
+            "order": order,
+            "stripe_public_key": settings.STRIPE_PUBLIC_KEY,
+            "client_secret": intent.client_secret,
+        })
 
-        return redirect(session.url, code=303)
+    def post(self, request, order_id, *args, **kwargs):
+        # after stripe confirms card payment via JS, the form does a POST here
+        order = get_object_or_404(Order, pk=order_id, user=request.user)
+
+        # mark paid, send email, etc. (you can refactor this into SuccessView)
+        order.status      = Order.Status.PAID
+        order.paid_amount = order.total_amount
+        order.currency    = "GBP"
+        order.save(update_fields=["status","paid_amount","currency"])
+
+        # now email user
+        subject = f"Your Order #{order.pk} Confirmation"
+        message = (
+            f"Hi {order.user.username},\n\n"
+            f"Thanks for your purchase! Order #{order.pk} is now paid.\n"
+            f"Total paid: £{order.total_amount:.2f}\n\n"
+            f"View details: {request.build_absolute_uri(reverse('orders:detail', args=[order.pk]))}\n"
+        )
+        send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [order.user.email])
+
+        return redirect("orders:success", order_id=order.pk)
 
 
 @login_req
