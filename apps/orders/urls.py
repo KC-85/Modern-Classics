@@ -19,7 +19,7 @@ urlpatterns = [
     path("success/<int:order_id>/", SuccessView.as_view(), name="success"),
 
     # Cancel redirect
-    path("cancel/", CancelView.as_view(), name="cancel"),
+    path("cancel/<int:order_id>/", CancelView.as_view(), name="cancel"),
 
     # Stripe webhook endpoint
     path("stripe/webhook/", stripe_webhook, name="stripe-webhook"),
