@@ -2,7 +2,7 @@ import stripe
 from django.conf import settings
 from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.views import View
@@ -78,7 +78,7 @@ class CheckoutView(View):
             reverse("orders:success", args=[order.pk])
         )
         cancel_url = request.build_absolute_uri(
-            reverse("orders:cancel", [order.pk])
+            reverse("orders:cancel", args=[order.pk])
         )
 
         session = stripe.checkout.Session.create(
