@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/pages/checkout.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+
+  <h2 class="mb-4">Checkout</h2>
+
+  {# --- ORDER SUMMARY --- #}
+  <div class="card mb-5">
+    <div class="card-header">
+      Order Summary ({{ line_items|length }} items)
+    </div>
+    <div class="card-body p-0">
+      <table class="table mb-0">
+        <thead>
+          <tr>
+            <th>Car</th>
+            <th>Qty</th>
+            <th>Unit</th>
+            <th class="text-right">Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in line_items %}
+          <tr>
+            <td>{{ item.name }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>£{{ item.unit|floatformat:2 }}</td>
+            <td class="text-right">£{{ item.subtotal|floatformat:2 }}</td>
+          </tr>
+          {% endfor %}
+          <tr>
+            <td colspan="3"><strong>Subtotal</strong></td>
+            <td class="text-right">£{{ total|floatformat:2 }}</td>
+          </tr>
+          <tr>
+            <td colspan="3"><strong>Delivery</strong></td>
+            <td class="text-right">£{{ delivery|floatformat:2 }}</td>
+          </tr>
+          <tr>
+            <td colspan="3"><strong>Total</strong></td>
+            <td class="text-right"><strong>£{{ grand_total|floatformat:2 }}</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  {# --- CHECKOUT FORM --- #}
+  <form id="payment-form" method="post">
+    {% csrf_token %}
+
+    <fieldset class="border p-4 mb-4">
+      <legend class="w-auto px-2">Contact Details</legend>
+      <div class="mb-3">
+        {{ order_form.full_name.label_tag }}
+        {{ order_form.full_name }}
+        {{ order_form.full_name.errors }}
+      </div>
+      <div class="mb-3">
+        {{ order_form.email.label_tag }}
+        {{ order_form.email }}
+        {{ order_form.email.errors }}
+      </div>
+    </fieldset>
+
+    <fieldset class="border p-4 mb-4">
+      <legend class="w-auto px-2">Delivery Address</legend>
+      <div class="mb-3">
+        {{ order_form.street_address1.label_tag }}
+        {{ order_form.street_address1 }}
+        {{ order_form.street_address1.errors }}
+      </div>
+      <div class="mb-3">
+        {{ order_form.street_address2.label_tag }}
+        {{ order_form.street_address2 }}
+        {{ order_form.street_address2.errors }}
+      </div>
+      <div class="mb-3">
+        {{ order_form.town_or_city.label_tag }}
+        {{ order_form.town_or_city }}
+        {{ order_form.town_or_city.errors }}
+      </div>
+      <div class="mb-3">
+        {{ order_form.county.label_tag }}
+        {{ order_form.county }}
+        {{ order_form.county.errors }}
+      </div>
+      <div class="mb-3">
+        {{ order_form.postcode.label_tag }}
+        {{ order_form.postcode }}
+        {{ order_form.postcode.errors }}
+      </div>
+      <div class="mb-3">
+        {{ order_form.country.label_tag }}
+        {{ order_form.country }}
+        {{ order_form.country.errors }}
+      </div>
+    </fieldset>
+
+    <fieldset class="border p-4 mb-4">
+      <legend class="w-auto px-2">Payment</legend>
+      <div id="card-element" class="mb-3"></div>
+      <div id="card-errors" class="text-danger mb-3" role="alert"></div>
+      <input type="hidden" name="client_secret" value="{{ client_secret }}">
+    </fieldset>
+
+    <div class="text-right">
+      <button id="submit-button" class="btn btn-primary">
+        Pay £{{ grand_total|floatformat:2 }}
+      </button>
+    </div>
+  </form>
+</div>
+{% endblock %}
+
+{% block postloadjs %}
+  {{ block.super }}
+  <script src="https://js.stripe.com/v3/"></script>
+  <script>
+    const stripe       = Stripe("{{ stripe_pk }}");
+    const elements     = stripe.elements();
+    const card         = elements.create("card", { hidePostalCode: true });
+    card.mount("#card-element");
+
+    card.on("change", ({error}) => {
+      document.getElementById("card-errors").textContent =
+        error ? error.message : "";
+    });
+
+    const form = document.getElementById("payment-form");
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      document.getElementById("submit-button").disabled = true;
+
+      const {error, paymentIntent} = await stripe.confirmCardPayment(
+        "{{ client_secret }}",
+        {
+          payment_method: {
+            card,
+            billing_details: {
+              name: form.full_name.value,
+              email: form.email.value,
+            }
+          },
+          shipping: {
+            name: form.full_name.value,
+            address: {
+              line1:      form.street_address1.value,
+              line2:      form.street_address2.value,
+              city:       form.town_or_city.value,
+              state:      form.county.value,
+              postal_code:form.postcode.value,
+              country:    form.country.value,
+            }
+          }
+        }
+      );
+
+      if (error) {
+        document.getElementById("card-errors").textContent = error.message;
+        document.getElementById("submit-button").disabled = false;
+      } else if (paymentIntent.status === "succeeded") {
+        form.submit();
+      }
+    });
+  </script>
+{% endblock %}
