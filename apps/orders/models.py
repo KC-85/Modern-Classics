@@ -5,6 +5,7 @@ from django.db import models
 from django.conf import settings
 from apps.showroom.models import Car
 
+
 class Order(models.Model):
     class Status(models.TextChoices):
         PENDING   = 'pending',   'Pending'
@@ -24,7 +25,8 @@ class Order(models.Model):
                             default=Status.PENDING
                         )
     total_amount      = models.DecimalField(
-                            max_digits=10, decimal_places=2
+                            max_digits=10,
+                            decimal_places=2
                         )
 
     # delivery distance in miles
@@ -59,13 +61,11 @@ class Order(models.Model):
 
     # Stripe references
     stripe_session_id = models.CharField(
-                            max_length=255,
-                            blank=True, null=True,
+                            max_length=255, blank=True, null=True,
                             help_text="Stripe Checkout Session ID"
                         )
     stripe_intent_id  = models.CharField(
-                            max_length=255,
-                            blank=True, null=True,
+                            max_length=255, blank=True, null=True,
                             help_text="Stripe PaymentIntent ID"
                         )
 
