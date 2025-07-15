@@ -7,6 +7,7 @@ from decimal import Decimal
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import (
     HttpResponse, HttpResponseBadRequest, JsonResponse
 )
@@ -16,7 +17,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.views import View
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView
 
 from ..trailer.models import Cart
 from .models import Order, OrderLineItem
@@ -125,6 +126,29 @@ class CheckoutSuccessView(TemplateView):
     def get(self, request, order_id, *args, **kwargs):
         order = get_object_or_404(Order, pk=order_id, user=request.user)
         return render(request, self.template_name, {"order": order})
+
+
+@login_required
+def order_history(request):
+    """
+    Show a paginated list of past orders for the logged‑in user.
+    """
+    order_list = Order.objects.filter(user=request.user).order_by('-date')
+    paginator = Paginator(order_list, 10)  # 10 orders per page
+
+    page_number = request.GET.get('page')
+    try:
+        orders = paginator.page(page_number)
+    except PageNotAnInteger:
+        # If page isn't an integer, show first page.
+        orders = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range, show last page.
+        orders = paginator.page(paginator.num_pages)
+
+    return render(request, 'checkout/order_list.html', {
+        'orders': orders,
+    })
 
 
 # re-export your webhook here so you can point core/urls.py at it
