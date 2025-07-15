@@ -11,7 +11,7 @@ from django.utils.decorators     import method_decorator
 
 from .models   import DeliveryOption
 from .forms    import DeliveryDistanceForm
-from apps.orders.models import Order
+from apps.checkout.models import Order
 
 # Decorator shortcut for function-based mixins
 login_dispatch = method_decorator(login_required, name='dispatch')
