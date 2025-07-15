@@ -10,7 +10,7 @@ from django.http import HttpResponse
 from django.template.loader import render_to_string
 from django.contrib.auth import get_user_model
 
-from .models import Order, OrderItem
+from .models import Order, OrderLineItem
 from apps.showroom.models import Car
 
 logger = logging.getLogger(__name__)
