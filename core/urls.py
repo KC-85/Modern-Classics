@@ -29,8 +29,8 @@ urlpatterns = [
     # User profiles, etc.
     path("users/", include("apps.users.urls")),
 
-    # Orders & checkout
-    path("orders/", include("apps.orders.urls")),
+    # Checkout
+    path("checkout/", include("apps.checkout.urls")),
 
     # Common utilities (FAQs, contacts…)
     path("common/", include("apps.common.urls")),
