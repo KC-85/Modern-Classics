@@ -1,13 +1,16 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/pages/checkout.css' %}">
+{# 1) Inject your CSS into <head> #}
+{% block head_extra %}
+<link
+  rel="stylesheet"
+  href="{% static 'css/pages/checkout.css' %}"
+>
 {% endblock %}
 
 {% block content %}
 <div class="container my-5">
-
   <h2 class="mb-4">Checkout</h2>
 
   {# --- ORDER SUMMARY --- #}
@@ -51,7 +54,7 @@
     </div>
   </div>
 
-  {# --- CHECKOUT FORM --- #}
+  {# --- PAYMENT FORM --- #}
   <form id="payment-form" method="post">
     {% csrf_token %}
 
@@ -107,11 +110,19 @@
       <legend class="w-auto px-2">Payment</legend>
       <div id="card-element" class="mb-3"></div>
       <div id="card-errors" class="text-danger mb-3" role="alert"></div>
-      <input type="hidden" name="client_secret" value="{{ client_secret }}">
+      {# pass through the client secret #}
+      <input
+        type="hidden"
+        name="client_secret"
+        value="{{ client_secret }}"
+      >
     </fieldset>
 
     <div class="text-right">
-      <button id="submit-button" class="btn btn-primary">
+      <button
+        id="submit-button"
+        class="btn btn-primary"
+      >
         Pay £{{ grand_total|floatformat:2 }}
       </button>
     </div>
@@ -119,13 +130,13 @@
 </div>
 {% endblock %}
 
-{% block postloadjs %}
-  {{ block.super }}
+{# 2) Pull in Stripe.js and your payment logic after main.js #}
+{% block scripts %}
   <script src="https://js.stripe.com/v3/"></script>
   <script>
-    const stripe       = Stripe("{{ stripe_pk }}");
-    const elements     = stripe.elements();
-    const card         = elements.create("card", { hidePostalCode: true });
+    const stripe   = Stripe("{{ stripe_public }}");
+    const elements = stripe.elements();
+    const card     = elements.create("card", { hidePostalCode: true });
     card.mount("#card-element");
 
     card.on("change", ({error}) => {
@@ -144,21 +155,21 @@
           payment_method: {
             card,
             billing_details: {
-              name: form.full_name.value,
+              name:  form.full_name.value,
               email: form.email.value,
-            }
+            },
           },
           shipping: {
             name: form.full_name.value,
             address: {
-              line1:      form.street_address1.value,
-              line2:      form.street_address2.value,
-              city:       form.town_or_city.value,
-              state:      form.county.value,
-              postal_code:form.postcode.value,
-              country:    form.country.value,
-            }
-          }
+              line1:       form.street_address1.value,
+              line2:       form.street_address2.value,
+              city:        form.town_or_city.value,
+              state:       form.county.value,
+              postal_code: form.postcode.value,
+              country:     form.country.value,
+            },
+          },
         }
       );
 
