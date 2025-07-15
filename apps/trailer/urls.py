@@ -2,9 +2,8 @@
 from django.urls import path
 from .views import (
     CartDetailView, AddToCartView,
-    UpdateCartItemView, ClearCartView
+    UpdateCartItemView, ClearCartView,
 )
-
 app_name = "trailer"
 
 urlpatterns = [
