@@ -3,9 +3,9 @@ from .models import DeliveryOption, OrderDelivery
 
 @admin.register(DeliveryOption)
 class DeliveryOptionAdmin(admin.ModelAdmin):
-    list_display   = ("name", "fee")
+    list_display   = ("name", "price")
     search_fields  = ("name",)
-    list_editable  = ("fee",)
+    list_editable  = ("price",)
 
 @admin.register(OrderDelivery)
 class OrderDeliveryAdmin(admin.ModelAdmin):
