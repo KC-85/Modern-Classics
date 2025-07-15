@@ -72,9 +72,9 @@ INSTALLED_APPS = [
     "apps.common.apps.CommonConfig",
     "apps.users.apps.UsersConfig",
     "apps.showroom.apps.ShowroomConfig",
-    "apps.orders.apps.OrdersConfig",
     "apps.trailer.apps.TrailerConfig",
     "apps.delivery.apps.DeliveryConfig",
+    "apps.checkout.apps.CheckoutConfig",
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = ["bootstrap5"]
@@ -197,9 +197,9 @@ AXES_COOLOFF_TIME               = timedelta(hours=config("AXES_COOLOFF_HOURS", d
 AXES_RESET_ON_SUCCESS           = True
 
 # === Stripe Configuration ===
-STRIPE_PUBLISHABLE_KEY = config("STRIPE_PUBLISHABLE_KEY", default="")
-STRIPE_SECRET_KEY      = config("STRIPE_SECRET_KEY", default="")
-STRIPE_WEBHOOK_SECRET = config("STRIPE_WEBHOOK_SECRET")
+STRIPE_SECRET_KEY      = os.environ.get("STRIPE_SECRET_KEY", "sk_test_…")
+STRIPE_PUBLISHABLE_KEY      = os.environ.get("STRIPE_PUBLISHABLE_KEY", "pk_test_…")
+STRIPE_WEBHOOK_SECRET  = os.environ.get("STRIPE_WEBHOOK_SECRET", "whsec_…")
 
 # === E-mail (Gmail) Configuration ===
 EMAIL_BACKEND        = "django.core.mail.backends.smtp.EmailBackend"
