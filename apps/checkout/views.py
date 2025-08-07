@@ -30,6 +30,41 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 # decorator helper
 login_req = method_decorator(login_required, name="dispatch")
 
+@login_required
+@require_POST
+def create_order(request):
+    """
+    Turn the current user’s Cart into an Order + line items,
+    then send them on to the Stripe checkout step.
+    """
+    cart = get_object_or_404(Cart, user=request.user)
+
+    if not cart.items.exists():
+        messages.error(request, "Your cart is empty.")
+        return redirect("trailer:cart_detail")
+
+    # Create the Order
+    order = Order.objects.create(
+        user=request.user,
+        original_trailer=cart,
+        # you can prefill other Order fields (like full_name/email) here if you want
+    )
+
+    # Convert each Cart item into an OrderLineItem
+    for cart_item in cart.items.select_related("car"):
+        OrderLineItem.objects.create(
+            order=order,
+            car=cart_item.car,
+            quantity=cart_item.quantity,
+            unit_price=cart_item.unit_price,
+        )
+
+    # (Optional) Clear the cart now that it’s in the order:
+    cart.items.all().delete()
+
+    # Redirect into your existing CheckoutView,
+    #    which expects an order_id URL kwarg:
+    return redirect("checkout:checkout", order_id=order.pk)
 
 @require_POST
 @csrf_exempt
