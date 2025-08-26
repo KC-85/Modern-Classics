@@ -1,0 +1,83 @@
+{# templates/checkout/order_list.html #}
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Order History{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+  <h1 class="mb-4">Your Orders</h1>
+
+  {% if orders %}
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Order #</th>
+          <th>Date</th>
+          <th>Total</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for order in orders %}
+          <tr>
+            <td>{{ order.order_number }}</td>
+            <td>{{ order.date|date:"SHORT_DATE_FORMAT" }}</td>
+            <td>£{{ order.grand_total|floatformat:2 }}</td>
+            <td>
+              <a href="{% url 'checkout:order_detail' order.order_number %}" class="btn btn-sm btn-outline-primary">
+                View
+              </a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    {# pagination controls #}
+    {% if is_paginated %}
+      <nav aria-label="Order navigation">
+        <ul class="pagination justify-content-center">
+          {# Previous page #}
+          {% if page_obj.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.previous_page_number }}">&laquo; Prev</a>
+            </li>
+          {% else %}
+            <li class="page-item disabled">
+              <span class="page-link">&laquo; Prev</span>
+            </li>
+          {% endif %}
+
+          {# page numbers #}
+          {% for num in paginator.page_range %}
+            {% if num == page_obj.number %}
+              <li class="page-item active">
+                <span class="page-link">{{ num }}</span>
+              </li>
+            {% else %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+              </li>
+            {% endif %}
+          {% endfor %}
+
+          {# Next page #}
+          {% if page_obj.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next &raquo;</a>
+            </li>
+          {% else %}
+            <li class="page-item disabled">
+              <span class="page-link">Next &raquo;</span>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
+    {% endif %}
+
+  {% else %}
+    <p>You have no past orders.</p>
+  {% endif %}
+</div>
+{% endblock %}

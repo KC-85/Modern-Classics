@@ -4,11 +4,21 @@ from django.contrib import admin
 from .models import Order, OrderLineItem
 
 class OrderLineItemInline(admin.TabularInline):
+    """_summary_
+
+    Args:
+        admin (_type_): _description_
+    """
     model = OrderLineItem
     readonly_fields = ("lineitem_total",)
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
+    """_summary_
+
+    Args:
+        admin (_type_): _description_
+    """
     inlines = (OrderLineItemInline,)
 
     readonly_fields = (
