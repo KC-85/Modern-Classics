@@ -5,6 +5,10 @@ import os
 from decouple import AutoConfig, Csv
 import dj_database_url
 from datetime import timedelta
+from decimal import Decimal
+
+FREE_DELIVERY_THRESHOLD   = Decimal("50.00")
+STANDARD_DELIVERY_PERCENT = Decimal("10.0")
 
 # === Project Paths & Config ===
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -200,6 +204,7 @@ AXES_RESET_ON_SUCCESS           = True
 STRIPE_SECRET_KEY      = os.environ.get("STRIPE_SECRET_KEY", "sk_test_…")
 STRIPE_PUBLISHABLE_KEY      = os.environ.get("STRIPE_PUBLISHABLE_KEY", "pk_test_…")
 STRIPE_WEBHOOK_SECRET  = os.environ.get("STRIPE_WEBHOOK_SECRET", "whsec_…")
+STRIPE_CURRENCY        = os.getenv("STRIPE_CURRENCY", "gbp")
 
 # === E-mail (Gmail) Configuration ===
 EMAIL_BACKEND        = "django.core.mail.backends.smtp.EmailBackend"
