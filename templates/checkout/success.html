@@ -1,0 +1,76 @@
+{# templates/checkout/success.html #}
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container my-5">
+  <div class="alert alert-success">
+    Thanks{% if order.full_name %}, {{ order.full_name }}{% endif %}! Your order has been received.
+  </div>
+
+  <div class="card mb-4">
+    <div class="card-header">
+      Order <strong>{{ order.order_number }}</strong>
+      <span class="text-muted"> · placed {{ order.date|date:"j M Y, H:i" }}</span>
+    </div>
+    <div class="card-body p-0">
+      <table class="table mb-0">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Qty</th>
+            <th>Unit</th>
+            <th class="text-right">Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for li in order.lineitems.all %}
+          <tr>
+            <td>{{ li.car }}</td>
+            <td>{{ li.quantity }}</td>
+            <td>£{{ li.unit_price|floatformat:2 }}</td>
+            <td class="text-right">£{{ li.lineitem_total|floatformat:2 }}</td>
+          </tr>
+          {% endfor %}
+          <tr>
+            <td colspan="3"><strong>Subtotal</strong></td>
+            <td class="text-right">£{{ order.order_total|floatformat:2 }}</td>
+          </tr>
+          <tr>
+            <td colspan="3"><strong>Delivery</strong></td>
+            <td class="text-right">£{{ order.delivery_cost|floatformat:2 }}</td>
+          </tr>
+          <tr>
+            <td colspan="3"><strong>Grand Total</strong></td>
+            <td class="text-right"><strong>£{{ order.grand_total|floatformat:2 }}</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <h5>Contact</h5>
+      <p class="mb-0">
+        {% if order.full_name %}{{ order.full_name }}<br>{% endif %}
+        {% if order.email %}{{ order.email }}<br>{% endif %}
+        {% if order.phone_number %}{{ order.phone_number }}{% endif %}
+      </p>
+    </div>
+    <div class="col-md-6 mb-3">
+      <h5>Delivery address</h5>
+      <p class="mb-0">
+        {{ order.street_address1 }}{% if order.street_address2 %}<br>{{ order.street_address2 }}{% endif %}<br>
+        {{ order.town_or_city }}{% if order.county %}, {{ order.county }}{% endif %}<br>
+        {{ order.postcode }}<br>
+        {{ order.country }}
+      </p>
+    </div>
+  </div>
+
+  <div class="mt-4">
+    <a class="btn btn-outline-primary" href="/showroom/">Continue shopping</a>
+    <a class="btn btn-primary" href="/checkout/list/">View my orders</a>
+  </div>
+</div>
+{% endblock %}
