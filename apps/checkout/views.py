@@ -23,6 +23,21 @@ from .webhooks import stripe_webhook     # your webhook entry‐point
 from ..trailer.models import Cart
 from apps.showroom.models import Car     # so you can look up cars
 
+from .utils import compute_delivery
+from decimal import Decimal
+
+"""
+    Here, in this file are the Checkout Views:
+
+    Create Order: Creating an order which is a POST request,
+    which will turn the current user's cart into an order & line items.
+
+    Cache Checkout Data: This is an AJAX endpoint, from which we
+    attach order_id & save_info to the PaymentIntent
+    before stripe.confirmCardPayment(...) in your JS,
+    this is also a POST request.
+"""
+
 # initialize Stripe
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -139,22 +154,27 @@ class CheckoutView(View):
     template_name = "checkout/checkout.html"
 
     def get(self, request, order_id, *args, **kwargs):
+        """Render checkout page with a PaymentIntent for the grand total."""
         order = get_object_or_404(Order, pk=order_id, user=request.user)
 
-        # Recalc totals from lineitems (your Order.save() does this)
+        # 1) Recompute subtotal from line items (your model's save() sets order_total)
         order.save()
 
-        # Create PaymentIntent for the grand total (pennies)
-        amount_pennies = int(order.grand_total * Decimal("100"))
+        # 2) Apply delivery and recalc grand_total
+        order.delivery_cost = compute_delivery(order.order_total)
+        order.save(update_fields=["delivery_cost"])
+        order.save()  # recalculates grand_total
+
+        # 3) Create a PaymentIntent for the GRAND TOTAL (in pennies)
         intent = stripe.PaymentIntent.create(
-            amount=amount_pennies,
+            amount=int(order.grand_total * Decimal("100")),
             currency="gbp",
             metadata={"order_id": order.pk},
         )
         order.stripe_pid = intent.id
         order.save(update_fields=["stripe_pid"])
 
-        # Build rows for the template from OrderLineItem
+        # 4) Build the summary rows your template expects (from OrderLineItem)
         line_items = [
             {
                 "name":     str(li.car),
@@ -165,48 +185,59 @@ class CheckoutView(View):
             for li in order.lineitems.select_related("car")
         ]
 
-        context = {
+        ctx = {
             "order":         order,
             "order_form":    OrderForm(instance=order),
             "line_items":    line_items,
-            "total":         order.order_total,     # ← not total_amount
+            "total":         order.order_total,
             "delivery":      order.delivery_cost,
             "grand_total":   order.grand_total,
             "client_secret": intent.client_secret,
             "stripe_public": settings.STRIPE_PUBLISHABLE_KEY,
         }
-        return render(request, self.template_name, context)
+        return render(request, self.template_name, ctx)
 
     def post(self, request, order_id, *args, **kwargs):
         """Save shipping/contact after Stripe confirms in the browser."""
         order = get_object_or_404(Order, pk=order_id, user=request.user)
-
         form = OrderForm(request.POST, instance=order)
+
         if not form.is_valid():
+            print("ORDER FORM ERRORS:", form.errors.as_json())
+
+            line_items = [
+                {
+                    "name":     str(li.car),
+                    "quantity": li.quantity,
+                    "unit":     li.unit_price,
+                    "subtotal": li.lineitem_total,
+                }
+                for li in order.lineitems.select_related("car")
+            ]
+
+            ctx = {
+                "order":         order,
+                "order_form":    form,  # keep input & show errors
+                "line_items":    line_items,
+                "total":         order.order_total,
+                "delivery":      order.delivery_cost,
+                "grand_total":   order.grand_total,
+                "client_secret": request.POST.get("client_secret", ""),
+                "stripe_public": settings.STRIPE_PUBLISHABLE_KEY,
+            }
             messages.error(request, "Please fix the errors in the form.")
-            return redirect("checkout:checkout", order_id=order.pk)
+            return render(request, self.template_name, ctx)
 
+        # ✅ Only save the form; webhook will finalize/clear cart
         form.save()
-
-        # (Optional) quick server-side sanity check of the PI
-        cs = request.POST.get("client_secret", "")
-        if "_secret" in cs:
-            pid = cs.split("_secret")[0]
-            try:
-                pi = stripe.PaymentIntent.retrieve(pid)
-                if pi.status != "succeeded":
-                    messages.error(request, "Payment not confirmed yet.")
-                    return redirect("checkout:checkout", order_id=order.pk)
-            except Exception:
-                # If you rely on the webhook as the source of truth, you can ignore errors here.
-                pass
-
-        # Clear the cart now that payment + details are good
-        cart = Cart.objects.filter(user=request.user).first()
-        if cart:
-            cart.items.all().delete()
-
         return redirect("checkout:success", order_id=order.pk)
+
+@login_req
+class OrderDetailView(View):
+    template_name = "checkout/order_detail.html"
+    def get(self, request, order_number, *args, **kwargs):
+        order = get_object_or_404(Order, order_number=order_number, user=request.user)
+        return render(request, self.template_name, {"order": order})
 
 
 @login_req
