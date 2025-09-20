@@ -12,15 +12,15 @@ except ImportError:
 from apps.showroom.models import Car
 
 class Order(models.Model):
-    order_number    = models.UUIDField(default=uuid.uuid4,
-                                       editable=False,
-                                       unique=True)
-    user            = models.ForeignKey(
-                        settings.AUTH_USER_MODEL,
-                        on_delete=models.SET_NULL,
-                        null=True, blank=True
-                      )
+    class PaymentStatus(models.TextChoices):
+        PENDING = "pending", "Pending"
+        PAID    = "paid",    "Paid"
+        FAILED  = "failed",  "Failed"
+
+    order_number    = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    user            = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
     date            = models.DateTimeField(default=timezone.now)
+
     full_name       = models.CharField(max_length=254)
     email           = models.EmailField()
     phone_number    = models.CharField(max_length=20)
@@ -31,15 +31,9 @@ class Order(models.Model):
     street_address2 = models.CharField(max_length=80, blank=True)
     county          = models.CharField(max_length=80, blank=True)
 
-    delivery_cost   = models.DecimalField(max_digits=6,
-                                          decimal_places=2,
-                                          default=Decimal("0.00"))
-    order_total     = models.DecimalField(max_digits=10,
-                                          decimal_places=2,
-                                          default=Decimal("0.00"))
-    grand_total     = models.DecimalField(max_digits=10,
-                                          decimal_places=2,
-                                          default=Decimal("0.00"))
+    delivery_cost   = models.DecimalField(max_digits=6, decimal_places=2, default=Decimal("0.00"))
+    order_total     = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal("0.00"))
+    grand_total     = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal("0.00"))
 
     # snapshot of the cart at time of purchase
     original_trailer = JSONField()
@@ -47,26 +41,31 @@ class Order(models.Model):
     # Stripe
     stripe_pid      = models.CharField(max_length=254, blank=True)
 
+    # NEW: payment status & metadata
+    status          = models.CharField(max_length=10, choices=PaymentStatus.choices, default=PaymentStatus.PENDING)
+    paid_amount     = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    currency        = models.CharField(max_length=10, blank=True)
+    paid_at         = models.DateTimeField(null=True, blank=True)
+
     class Meta:
         ordering = ["-date"]
 
     def _calculate_totals(self):
-        self.order_total = sum(
-            item.lineitem_total for item in self.lineitems.all()
-        )
-        # you can adjust delivery logic here, or inject from orders.Order
+        self.order_total = sum(item.lineitem_total for item in self.lineitems.all())
         self.grand_total = self.order_total + self.delivery_cost
 
     def save(self, *args, **kwargs):
-        # first save to get a PK (and allow inlines to attach)
         new = self.pk is None
         super().save(*args, **kwargs)
-        # then recalc totals if not brand-new
         self._calculate_totals()
         super().save(update_fields=["order_total", "grand_total"])
 
     def __str__(self):
         return str(self.order_number)
+
+    @property
+    def is_paid(self) -> bool:
+        return self.status == self.PaymentStatus.PAID
 
 class OrderLineItem(models.Model):
     order          = models.ForeignKey(
