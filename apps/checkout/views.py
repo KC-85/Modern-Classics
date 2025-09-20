@@ -234,9 +234,13 @@ class CheckoutView(View):
 
 @login_req
 class OrderDetailView(View):
-    template_name = "checkout/order_detail.html"
+    template_name = "orders/order_detail.html"
+
     def get(self, request, order_number, *args, **kwargs):
-        order = get_object_or_404(Order, order_number=order_number, user=request.user)
+        qs = (Order.objects
+                    .filter(user=request.user)
+                    .prefetch_related("lineitems", "lineitems__car"))
+        order = get_object_or_404(qs, order_number=order_number)
         return render(request, self.template_name, {"order": order})
 
 
