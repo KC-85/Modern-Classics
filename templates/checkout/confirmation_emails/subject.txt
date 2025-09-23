@@ -1,0 +1,1 @@
+Your Modern Classics order {{ order.order_number }} — confirmation
