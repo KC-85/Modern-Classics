@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Modern Classics{% endblock %}
+
+{% block head_extra %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@glidejs/glide/dist/css/glide.core.min.css">
+<link rel="stylesheet" href="{% static 'css/pages/hero.css' %}">
+<link rel="stylesheet" href="{% static 'css/components/carousel.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div class="hero__bg" aria-hidden="true"></div>
+
+  <div class="container text-center hero__content">
+    <h1 class="display-4 fw-bold mb-2">Modern Classics</h1>
+    <p class="lead mb-4">Timeless cars. For enthusiasts who know what thet want. <br/>
+    Simple, secure checkout.</p>
+
+    <div class="d-flex gap-2 justify-content-center flex-wrap">
+        <a href="{% url 'showroom:car_list' %}" class="btn btn-primary btn-lg">Browse Showroom</a>
+        <a href="{% url 'account_login' %}" class="btn btn-outline-light btn-lg">Sign In</a>
+        <p>
+            Or if you don't have an account, then
+        </p>
+        <a href="{% url 'account_register' %}" class="btn btn-outline-light btn-lg">Register</a>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/@glidejs/glide"></script>
+<script src="{% static 'js/components/carousel.js' %}"></script>
+<script src="{% static 'js/pages/home.js' %}"></script>
+{% endblock %}
