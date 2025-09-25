@@ -6,12 +6,17 @@ from django.views.generic import RedirectView
 from django.conf import settings
 from django.conf.urls.static import static
 
+from core.views import HomeView
+
 urlpatterns = [
     # Admin
     path("admin/", admin.site.urls),
 
     # Allauth (accounts)
     path("accounts/", include("allauth.urls")),
+
+    # Hero page
+    path("", HomeView.as_view(), name="home"),
 
     # Home → redirect to showroom list
     path(
