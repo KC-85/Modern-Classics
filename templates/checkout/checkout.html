@@ -55,7 +55,7 @@
   </div>
 
   {# --- PAYMENT FORM --- #}
-  <form id="payment-form" method="post">
+  <form id="payment-form" method="post" action="{% url 'checkout:checkout' order.id %}">
     {% csrf_token %}
 
     <fieldset class="border p-4 mb-4">
@@ -69,6 +69,11 @@
         {{ order_form.email.label_tag }}
         {{ order_form.email }}
         {{ order_form.email.errors }}
+      </div>
+      <div class="mb-3">
+        {{ order_form.phone_number.label_tag }}
+        {{ order_form.phone_number }}
+        {{ order_form.phone_number.errors }}
       </div>
     </fieldset>
 
@@ -144,7 +149,7 @@
         error ? error.message : "";
     });
 
-    const form = document.getElementById("payment-form");
+    const get  = (n) => form.elements[n]; // robust lookup by name;
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       document.getElementById("submit-button").disabled = true;
@@ -155,19 +160,19 @@
           payment_method: {
             card,
             billing_details: {
-              name:  form.full_name.value,
-              email: form.email.value,
+              name:  get("full_name")?.value || "",
+              email: get("email")?.value || "",
             },
           },
           shipping: {
-            name: form.full_name.value,
+            name: get("full_name")?.value || "",
             address: {
-              line1:       form.street_address1.value,
-              line2:       form.street_address2.value,
-              city:        form.town_or_city.value,
-              state:       form.county.value,
-              postal_code: form.postcode.value,
-              country:     form.country.value,
+              line1:       get("street_address1")?.value || "",
+              line2:       get("street_address2")?.value || "",
+              city:        get("town_or_city")?.value || "",
+              state:       get("county")?.value || "",
+              postal_code: get("postcode")?.value || "",
+              country:     get("country")?.value || "",
             },
           },
         }
@@ -178,6 +183,9 @@
         document.getElementById("submit-button").disabled = false;
       } else if (paymentIntent.status === "succeeded") {
         form.submit();
+      } else {
+        document.getElementById("card-errors").textContent = "Payment not completed.";
+        document.getElementById("submit-button").disabled = false;
       }
     });
   </script>
