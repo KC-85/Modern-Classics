@@ -1,8 +1,14 @@
+/* --- Sticky footer shell --- */
+html, body { height: 100%; }
+
 /* 2a. Apply Ubuntu site-wide */
 body {
   font-family: 'Ubuntu', sans-serif;
   margin: 0;
   padding: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 /* 2b. Simple navbar reset/override */
@@ -36,6 +42,7 @@ body {
 /* 2c. Main content styling */
 main {
   padding: 2rem 1rem;
+  flex: 1 0 auto;
 }
 
 /* 2d. Footer styling */
@@ -45,4 +52,5 @@ footer {
   background: #222;
   font-size: .9rem;
   color: #555;
+  margin-top: auto;
 }
