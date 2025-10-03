@@ -1,11 +1,16 @@
 {% extends "base.html" %}
 {% load static %}
+{% load cloudinary %}
 {% block title %}Modern Classics{% endblock %}
 
 {% block head_extra %}
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@glidejs/glide/dist/css/glide.core.min.css">
-<link rel="stylesheet" href="{% static 'css/pages/hero.css' %}">
-<link rel="stylesheet" href="{% static 'css/components/carousel.css' %}">
+  {# Glide CSS (version pinned) #}
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@glidejs/glide@3.6.0/dist/css/glide.core.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@glidejs/glide@3.6.0/dist/css/glide.theme.min.css">
+
+  {# Your page & component styles #}
+  <link rel="stylesheet" href="{% static 'css/pages/hero.css' %}">
+  <link rel="stylesheet" href="{% static 'css/components/carousel.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -14,23 +19,90 @@
 
   <div class="container text-center hero__content">
     <h1 class="display-4 fw-bold mb-2">Modern Classics</h1>
-    <p class="lead mb-4">Timeless cars. For enthusiasts who know what thet want. <br/>
-    Simple, secure checkout.</p>
+    <p class="lead mb-4">
+      Timeless cars. For enthusiasts who know what they want.<br/>
+      Simple, secure checkout.
+    </p>
 
-    <div class="d-flex gap-2 justify-content-center flex-wrap">
-        <a href="{% url 'showroom:car_list' %}" class="btn btn-primary btn-lg">Browse Showroom</a>
+    <div class="d-flex gap-2 justify-content-center flex-wrap hero__ctas">
+      <a href="{% url 'showroom:car_list' %}" class="btn btn-primary btn-lg">Browse Showroom</a>
+      {% if request.user.is_authenticated %}
+        <a href="{% url 'trailer:cart_detail' %}" class="btn btn-outline-light btn-lg">View Cart</a>
+      {% else %}
         <a href="{% url 'account_login' %}" class="btn btn-outline-light btn-lg">Sign In</a>
-        <p>
-            Or if you don't have an account, then
-        </p>
-        <a href="{% url 'account_register' %}" class="btn btn-outline-light btn-lg">Register</a>
+        <a href="{% url 'account_signup' %}" class="btn btn-outline-light btn-lg">Sign Up</a>
+      {% endif %}
     </div>
   </div>
+
+  {% if car.image %}
+  {% cloudinary_url car.image
+     width=1600 height=600 crop="fill" gravity="auto"
+     fetch_format="auto" quality="auto" dpr="auto" as img_url %}
+  {% else %}
+    {% static 'images/placeholder-hero.jpg' as img_url %}
+  {% endif %}
+
+<img class="hero__slide-img" src="{{ img_url }}" alt="{{ car }}">
+
+          <li class="glide__slide">
+            <img
+              class="hero__slide-img"
+              src="{{ img_url }}"
+              alt="{{ car.make.name }} {{ car.model.name }} ({{ car.year }})"
+              loading="lazy"
+              decoding="async"
+              sizes="(max-width: 768px) 100vw, 1600px">
+            <div class="hero__caption">
+              <h2 class="h5 mb-1">{{ car.make.name }} {{ car.model.name }} ({{ car.year }})</h2>
+              <a class="btn btn-light btn-sm" href="{{ car.get_absolute_url }}">View</a>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    {# Accessible arrow controls #}
+    <div class="glide__arrows" data-glide-el="controls" aria-label="Slide controls">
+      <button
+        class="glide__arrow glide__arrow--left"
+        data-glide-dir="<"
+        type="button"
+        aria-label="Previous slide"
+        title="Previous slide">
+        ‹
+      </button>
+      <button
+        class="glide__arrow glide__arrow--right"
+        data-glide-dir=">"
+        type="button"
+        aria-label="Next slide"
+        title="Next slide">
+        ›
+      </button>
+    </div>
+
+    {# Keyboardable bullets (buttons) #}
+    <div class="glide__bullets" data-glide-el="controls[nav]" role="tablist" aria-label="Choose slide">
+      {% for car in featured_cars %}
+        <button
+          class="glide__bullet"
+          data-glide-dir="={{ forloop.counter0 }}"
+          type="button"
+          role="tab"
+          aria-label="Go to slide {{ forloop.counter }}">
+        </button>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
 </section>
 {% endblock %}
 
 {% block scripts %}
-<script src="https://cdn.jsdelivr.net/npm/@glidejs/glide"></script>
-<script src="{% static 'js/components/carousel.js' %}"></script>
-<script src="{% static 'js/pages/home.js' %}"></script>
+  {# Glide JS (version pinned) #}
+  <script src="https://cdn.jsdelivr.net/npm/@glidejs/glide@3.6.0/dist/glide.min.js"></script>
+
+  {# Your page script (initializes the carousel) #}
+  <script src="{% static 'js/pages/hero.js' %}"></script>
 {% endblock %}
