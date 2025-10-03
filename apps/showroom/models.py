@@ -42,7 +42,7 @@ class Car(models.Model):
                         help_text="E.g. 0–60 in 5.2s; 155 mph top speed"
                      )
     condition      = models.CharField(max_length=10, choices=CONDITION_CHOICES)
-    image          = CloudinaryField("image", default="placeholder")
+    image          = CloudinaryField("image", blank=True, null=True)
     price          = models.DecimalField(max_digits=10, decimal_places=2)
     slug           = models.SlugField(max_length=150, unique=True, blank=True)
     is_sold        = models.BooleanField(default=False)
