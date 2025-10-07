@@ -1,16 +1,11 @@
 {% extends "base.html" %}
 {% load static %}
 {% load cloudinary %}
+
 {% block title %}Modern Classics{% endblock %}
 
 {% block head_extra %}
-  {# Glide CSS (version pinned) #}
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@glidejs/glide@3.6.0/dist/css/glide.core.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@glidejs/glide@3.6.0/dist/css/glide.theme.min.css">
-
-  {# Your page & component styles #}
-  <link rel="stylesheet" href="{% static 'css/pages/hero.css' %}">
-  <link rel="stylesheet" href="{% static 'css/components/carousel.css' %}">
+<link rel="stylesheet" href="{% static 'css/pages/hero.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -24,85 +19,78 @@
       Simple, secure checkout.
     </p>
 
-    <div class="d-flex gap-2 justify-content-center flex-wrap hero__ctas">
+    <div class="d-flex gap-2 justify-content-center flex-wrap">
       <a href="{% url 'showroom:car_list' %}" class="btn btn-primary btn-lg">Browse Showroom</a>
-      {% if request.user.is_authenticated %}
-        <a href="{% url 'trailer:cart_detail' %}" class="btn btn-outline-light btn-lg">View Cart</a>
-      {% else %}
-        <a href="{% url 'account_login' %}" class="btn btn-outline-light btn-lg">Sign In</a>
-        <a href="{% url 'account_signup' %}" class="btn btn-outline-light btn-lg">Sign Up</a>
-      {% endif %}
+      <a href="{% url 'account_login' %}" class="btn btn-outline-dark btn-lg">Sign In</a>
+      <a href="{% url 'account_signup' %}" class="btn btn-outline-dark btn-lg">Sign Up</a>
     </div>
   </div>
 
-  {% if car.image %}
-  {% cloudinary_url car.image
-     width=1600 height=600 crop="fill" gravity="auto"
-     fetch_format="auto" quality="auto" dpr="auto" as img_url %}
-  {% else %}
-    {% static 'images/placeholder-hero.jpg' as img_url %}
-  {% endif %}
+  {% if featured_cars %}
+  <div id="heroCarousel"
+       class="carousel slide carousel-fade hero__carousel"
+       data-bs-ride="carousel"
+       data-bs-interval="5000"
+       data-bs-pause="hover"
+       data-bs-keyboard="true"
+       data-bs-touch="true"
+       aria-roledescription="carousel"
+       aria-label="Featured cars">
 
-<img class="hero__slide-img" src="{{ img_url }}" alt="{{ car }}">
-
-          <li class="glide__slide">
-            <img
-              class="hero__slide-img"
-              src="{{ img_url }}"
-              alt="{{ car.make.name }} {{ car.model.name }} ({{ car.year }})"
-              loading="lazy"
-              decoding="async"
-              sizes="(max-width: 768px) 100vw, 1600px">
-            <div class="hero__caption">
-              <h2 class="h5 mb-1">{{ car.make.name }} {{ car.model.name }} ({{ car.year }})</h2>
-              <a class="btn btn-light btn-sm" href="{{ car.get_absolute_url }}">View</a>
-            </div>
-          </li>
-        {% endfor %}
-      </ul>
-    </div>
-
-    {# Accessible arrow controls #}
-    <div class="glide__arrows" data-glide-el="controls" aria-label="Slide controls">
-      <button
-        class="glide__arrow glide__arrow--left"
-        data-glide-dir="<"
-        type="button"
-        aria-label="Previous slide"
-        title="Previous slide">
-        ‹
-      </button>
-      <button
-        class="glide__arrow glide__arrow--right"
-        data-glide-dir=">"
-        type="button"
-        aria-label="Next slide"
-        title="Next slide">
-        ›
-      </button>
-    </div>
-
-    {# Keyboardable bullets (buttons) #}
-    <div class="glide__bullets" data-glide-el="controls[nav]" role="tablist" aria-label="Choose slide">
+    <!-- Indicators -->
+    <div class="carousel-indicators">
       {% for car in featured_cars %}
-        <button
-          class="glide__bullet"
-          data-glide-dir="={{ forloop.counter0 }}"
-          type="button"
-          role="tab"
-          aria-label="Go to slide {{ forloop.counter }}">
-        </button>
+        <button type="button"
+                data-bs-target="#heroCarousel"
+                data-bs-slide-to="{{ forloop.counter0 }}"
+                {% if forloop.first %}class="active" aria-current="true"{% endif %}
+                aria-label="Go to slide {{ forloop.counter }}"></button>
       {% endfor %}
     </div>
+
+    <!-- Slides -->
+    <div class="carousel-inner">
+      {% for car in featured_cars %}
+        {% if car.image %}
+          {% cloudinary_url car.image width=1600 height=540 crop="fill" gravity="auto" q="auto" fetch_format="auto" dpr="auto" as img_url %}
+        {% else %}
+          {% static 'images/placeholder-hero.jpg' as img_url %}
+        {% endif %}
+        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+          <img
+            class="d-block w-100 hero__img"
+            src="{{ img_url }}"
+            alt="{{ car.make.name }} {{ car.model.name }} ({{ car.year }})"
+            loading="lazy">
+          <div class="carousel-caption d-none d-md-block">
+            <h2 class="h5 mb-2">{{ car.make.name }} {{ car.model.name }} ({{ car.year }})</h2>
+            <a class="btn btn-light btn-sm" href="{{ car.get_absolute_url }}">View</a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Controls -->
+    <button class="carousel-control-prev"
+            type="button"
+            data-bs-target="#heroCarousel"
+            data-bs-slide="prev"
+            aria-label="Previous slide">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    </button>
+
+    <button class="carousel-control-next"
+            type="button"
+            data-bs-target="#heroCarousel"
+            data-bs-slide="next"
+            aria-label="Next slide">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    </button>
   </div>
   {% endif %}
 </section>
 {% endblock %}
 
 {% block scripts %}
-  {# Glide JS (version pinned) #}
-  <script src="https://cdn.jsdelivr.net/npm/@glidejs/glide@3.6.0/dist/glide.min.js"></script>
-
-  {# Your page script (initializes the carousel) #}
-  <script src="{% static 'js/pages/hero.js' %}"></script>
+<script src="{% static 'js/pages/hero.js' %}"></script>
 {% endblock %}
