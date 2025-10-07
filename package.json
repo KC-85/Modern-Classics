@@ -22,9 +22,6 @@
     "url": "https://github.com/KC-85/Modern-Classics/issues"
   },
   "homepage": "https://github.com/KC-85/Modern-Classics#readme",
-  "dependencies": {
-    "@glidejs/glide": "^3.7.1"
-  },
   "devDependencies": {
     "sass": "^1.93.2"
   }
