@@ -1,0 +1,21 @@
+{# Do NOT extend base here; this is a partial #}
+{% if request.user.is_authenticated %}
+  {# Actual Add-to-Cart form #}
+  <form method="post" action="{% url 'trailer:add_to_cart' object.pk %}" class="d-inline">
+    {% csrf_token %}
+    <input type="hidden" name="quantity" value="1">
+    <button type="submit" class="btn btn-primary">Add to Cart</button>
+  </form>
+{% else %}
+  <div class="alert alert-info d-flex align-items-center gap-2" role="alert">
+    Please sign in or sign up to continue.
+    <a class="btn btn-sm btn-outline-primary ms-2"
+       href="{% url 'account_login' %}?next={{ request.get_full_path|urlencode }}">
+       Sign in
+    </a>
+    <a class="btn btn-sm btn-outline-secondary"
+       href="{% url 'account_signup' %}?next={{ request.get_full_path|urlencode }}">
+       Sign up
+    </a>
+  </div>
+{% endif %}
