@@ -7,89 +7,35 @@ from decimal import Decimal
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
-from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_POST
 from django.views import View
 from django.views.generic import TemplateView, ListView
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+
+from apps.common.auth_mixins import LoginRequiredMessageMixin
+from apps.common.auth_mixins import login_required_with_message  # helper for FBVs
 
 from .models import Order, OrderLineItem
 from .forms  import OrderForm
-from .webhooks import stripe_webhook     # your webhook entry‐point
+from .webhooks import stripe_webhook
 from ..trailer.models import Cart
-from apps.showroom.models import Car     # so you can look up cars
-
+from apps.showroom.models import Car
 from .utils import compute_delivery
-from decimal import Decimal
 
-"""
-    Here, in this file are the Checkout Views:
-
-    Create Order: Creating an order which is a POST request,
-    which will turn the current user's cart into an order & line items.
-
-    Cache Checkout Data: This is an AJAX endpoint, from which we
-    attach order_id & save_info to the PaymentIntent
-    before stripe.confirmCardPayment(...) in your JS,
-    this is also a POST request.
-"""
-
-# initialize Stripe
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
-# helper to decorate CBVs
-login_req = method_decorator(login_required, name="dispatch")
 
-@login_required
-@require_POST
-def create_order(request):
-    """
-    Turn the current user’s Cart into an Order + line items,
-    then send them on to the Stripe checkout step.
-    """
-    cart = get_object_or_404(Cart, user=request.user)
-
-    if not cart.items.exists():
-        messages.error(request, "Your cart is empty.")
-        return redirect("trailer:cart_detail")
-
-    # Create the Order
-    order = Order.objects.create(
-        user=request.user,
-        original_trailer=cart,
-        # you can prefill other Order fields (like full_name/email) here if you want
-    )
-
-    # Convert each Cart item into an OrderLineItem
-    for cart_item in cart.items.select_related("car"):
-        OrderLineItem.objects.create(
-            order=order,
-            car=cart_item.car,
-            quantity=cart_item.quantity,
-            unit_price=cart_item.unit_price,
-        )
-
-    # (Optional) Clear the cart now that it’s in the order:
-    cart.items.all().delete()
-
-    # Redirect into your existing CheckoutView,
-    #    which expects an order_id URL kwarg:
-    return redirect("checkout:checkout", order_id=order.pk)
+# ---------- FBVs ----------
 
 @require_POST
 @csrf_exempt
-@login_required
+@login_required_with_message          # << show banner + redirect to login for guests
 def cache_checkout_data(request):
-    """
-    AJAX endpoint: attach order_id + save_info to the PaymentIntent
-    before stripe.confirmCardPayment(...) in your JS.
-    """
     try:
-        data = json.loads(request.body)
+        data = json.loads(request.body or "{}")
         pid  = data["client_secret"].split("_secret")[0]
         stripe.PaymentIntent.modify(
             pid,
@@ -103,37 +49,71 @@ def cache_checkout_data(request):
         return HttpResponseBadRequest(str(e))
 
 
-@login_req
-class CreateOrderView(View):
+@require_POST
+@login_required_with_message          # << and here too
+def create_order(request):
+    """
+    Turn the current user’s Cart into an Order + line items,
+    then send them on to the Stripe checkout step.
+    """
+    cart = get_object_or_404(Cart, user=request.user)
+
+    if not cart.items.exists():
+        messages.error(request, "Your cart is empty.")
+        return redirect("trailer:cart_detail")
+
+    order = Order.objects.create(
+        user=request.user,
+        original_trailer={"items": [
+            {
+                "car_id": ci.car_id,
+                "name":   str(ci.car),
+                "qty":    ci.quantity,
+                "unit":   float(ci.car.price),
+                "total":  float(ci.car.price * ci.quantity),
+            } for ci in cart.items.select_related("car")
+        ]},
+    )
+
+    for ci in cart.items.select_related("car"):
+        OrderLineItem.objects.create(
+            order=order,
+            car=ci.car,
+            quantity=ci.quantity,
+            unit_price=ci.car.price,
+        )
+
+    # Optionally keep cart until payment succeeds via webhook; or clear now:
+    # cart.items.all().delete()
+
+    return redirect("checkout:checkout", order_id=order.pk)
+
+
+# ---------- CBVs ----------
+
+class CreateOrderView(LoginRequiredMessageMixin, View):
     def post(self, request, *args, **kwargs):
         cart = get_object_or_404(Cart, user=request.user)
         if not cart.items.exists():
             messages.error(request, "Your cart is empty.")
             return redirect("trailer:cart_detail")
 
-        # 1) Snapshot from Car.price (never CartItem.unit_price)
-        cart_snapshot = []
-        for ci in cart.items.select_related("car"):
-            price = ci.car.price
-            qty   = ci.quantity
-            cart_snapshot.append({
-                "car_id":     ci.car.id,
-                "car_name":   str(ci.car),
-                "quantity":   qty,
-                "unit_price": float(price),
-                "line_total": float(price * qty),
-            })
-
-        # 2) Draft order (shipping saved on checkout page)
         order = Order.objects.create(
             user=request.user,
-            original_trailer=cart_snapshot,
+            original_trailer={"items": [
+                {
+                    "car_id": ci.car_id,
+                    "name":   str(ci.car),
+                    "qty":    ci.quantity,
+                    "unit":   float(ci.car.price),
+                    "total":  float(ci.car.price * ci.quantity),
+                } for ci in cart.items.select_related("car")
+            ]},
             full_name="", email=request.user.email or "",
             phone_number="", country="", postcode="",
             town_or_city="", street_address1="", street_address2="", county="",
         )
 
-        # 3) Line items (again, price from Car.price)
         for ci in cart.items.select_related("car"):
             OrderLineItem.objects.create(
                 order=order,
@@ -142,30 +122,21 @@ class CreateOrderView(View):
                 unit_price=ci.car.price,
             )
 
-        # 4) Recalc totals (your Order.save() computes from lineitems)
         order.save()
-
-        # 5) Don’t clear cart here; do it after payment succeeds
         return redirect("checkout:checkout", order_id=order.pk)
 
 
-@login_req
-class CheckoutView(View):
+class CheckoutView(LoginRequiredMessageMixin, View):
     template_name = "checkout/checkout.html"
 
     def get(self, request, order_id, *args, **kwargs):
-        """Render checkout page with a PaymentIntent for the grand total."""
         order = get_object_or_404(Order, pk=order_id, user=request.user)
 
-        # 1) Recompute subtotal from line items (your model's save() sets order_total)
-        order.save()
-
-        # 2) Apply delivery and recalc grand_total
+        order.save()  # recompute order_total from lineitems
         order.delivery_cost = compute_delivery(order.order_total)
         order.save(update_fields=["delivery_cost"])
         order.save()  # recalculates grand_total
 
-        # 3) Create a PaymentIntent for the GRAND TOTAL (in pennies)
         intent = stripe.PaymentIntent.create(
             amount=int(order.grand_total * Decimal("100")),
             currency="gbp",
@@ -174,7 +145,6 @@ class CheckoutView(View):
         order.stripe_pid = intent.id
         order.save(update_fields=["stripe_pid"])
 
-        # 4) Build the summary rows your template expects (from OrderLineItem)
         line_items = [
             {
                 "name":     str(li.car),
@@ -198,13 +168,10 @@ class CheckoutView(View):
         return render(request, self.template_name, ctx)
 
     def post(self, request, order_id, *args, **kwargs):
-        """Save shipping/contact after Stripe confirms in the browser."""
         order = get_object_or_404(Order, pk=order_id, user=request.user)
         form = OrderForm(request.POST, instance=order)
 
         if not form.is_valid():
-            print("ORDER FORM ERRORS:", form.errors.as_json())
-
             line_items = [
                 {
                     "name":     str(li.car),
@@ -214,10 +181,9 @@ class CheckoutView(View):
                 }
                 for li in order.lineitems.select_related("car")
             ]
-
             ctx = {
                 "order":         order,
-                "order_form":    form,  # keep input & show errors
+                "order_form":    form,
                 "line_items":    line_items,
                 "total":         order.order_total,
                 "delivery":      order.delivery_cost,
@@ -228,12 +194,11 @@ class CheckoutView(View):
             messages.error(request, "Please fix the errors in the form.")
             return render(request, self.template_name, ctx)
 
-        # ✅ Only save the form; webhook will finalize/clear cart
         form.save()
         return redirect("checkout:success", order_id=order.pk)
 
-@login_req
-class OrderDetailView(View):
+
+class OrderDetailView(LoginRequiredMessageMixin, View):
     template_name = "orders/order_detail.html"
 
     def get(self, request, order_number, *args, **kwargs):
@@ -244,11 +209,7 @@ class OrderDetailView(View):
         return render(request, self.template_name, {"order": order})
 
 
-@login_req
-class CheckoutSuccessView(TemplateView):
-    """
-    GET → after a successful payment, show a Thank‑You page.
-    """
+class CheckoutSuccessView(LoginRequiredMessageMixin, TemplateView):
     template_name = "checkout/success.html"
 
     def get(self, request, order_id, *args, **kwargs):
@@ -256,11 +217,7 @@ class CheckoutSuccessView(TemplateView):
         return render(request, self.template_name, {"order": order})
 
 
-@login_req
-class OrderHistoryView(ListView):
-    """
-    GET → paginated list of a user’s past orders.
-    """
+class OrderHistoryView(LoginRequiredMessageMixin, ListView):
     model               = Order
     template_name       = "checkout/order_list.html"
     context_object_name = "orders"
@@ -269,6 +226,3 @@ class OrderHistoryView(ListView):
     def get_queryset(self):
         return Order.objects.filter(user=self.request.user).order_by("-date")
 
-
-# re‐export your webhook handler so core/urls.py can point at it
-stripe_webhook = stripe_webhook
