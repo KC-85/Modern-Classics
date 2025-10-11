@@ -1,12 +1,13 @@
+{# templates/orders/order_detail.html #}
 {% extends "base.html" %}
-{% load crispy_forms_tags %}
 {% block title %}Order #{{ order.id }}{% endblock %}
 
 {% block content %}
 <div class="container my-5">
   <h1>Order #{{ order.id }}</h1>
-  <p><strong>Date:</strong> {{ order.created_at|date:"SHORT_DATETIME_FORMAT" }}</p>
-  <p><strong>Status:</strong> {{ order.get_status_display }}</p>
+
+  <p><strong>Date:</strong> {{ order.date|date:"SHORT_DATETIME_FORMAT" }}</p>
+  {# If you later add a status field, show it here #}
 
   <h2>Items</h2>
   <table class="table">
@@ -19,12 +20,16 @@
       </tr>
     </thead>
     <tbody>
-      {% for item in order.items.all %}
+      {% for li in order.lineitems.all %}
       <tr>
-        <td>{{ item.car }}</td>
-        <td>{{ item.quantity }}</td>
-        <td>£{{ item.unit_price|floatformat:2 }}</td>
-        <td>£{{ item.line_total|floatformat:2 }}</td>
+        <td>{{ li.car }}</td>
+        <td>{{ li.quantity }}</td>
+        <td>£{{ li.unit_price|floatformat:2 }}</td>
+        <td>£{{ li.lineitem_total|floatformat:2 }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="4" class="text-muted">No items on this order.</td>
       </tr>
       {% endfor %}
     </tbody>
@@ -32,33 +37,12 @@
 
   <h3 class="mt-4">Summary</h3>
   <ul class="list-unstyled">
-    <li>Subtotal: £{{ order.total_amount|floatformat:2 }}</li>
-    <li>
-      <strong>Delivery:</strong>
-      {% if order.delivery_distance is not None %}
-        £{{ order.delivery_fee|floatformat:2 }}
-      {% else %}
-        £0.00
-      {% endif %}
-    </li>
-    <li><strong>Total:</strong> £{{ order.total_with_delivery|floatformat:2 }}</li>
+    <li>Subtotal: £{{ order.order_total|floatformat:2 }}</li>
+    <li>Delivery: £{{ order.delivery_cost|floatformat:2 }}</li>
+    <li><strong>Total: £{{ order.grand_total|floatformat:2 }}</strong></li>
   </ul>
 
-  {% if order.status == 'paid' and order.delivery_distance is None %}
-    <div class="my-3">
-      <a href="{% url 'delivery:order_delivery' order.id %}" class="btn btn-primary">
-        Enter Delivery Distance
-      </a>
-    </div>
-  {% endif %}
-
-  {% if order.can_cancel %}
-    <form method="post" action="{% url 'orders:cancel' order.id %}" class="mb-3">
-      {% csrf_token %}
-      <button type="submit" class="btn btn-danger">Cancel Order</button>
-    </form>
-  {% endif %}
-
-  <a href="{% url 'orders:list' %}" class="btn btn-link">← Back to all orders</a>
+  <a href="{% url 'checkout:list' %}" class="btn btn-link">← Back to all orders</a>
 </div>
 {% endblock %}
+
