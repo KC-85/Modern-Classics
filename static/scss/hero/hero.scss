@@ -1,70 +1,199 @@
-/* Load Bootstrap’s Sass layers in the right order */
-@use "bootstrap/scss/functions";
-@use "bootstrap/scss/variables" with (
-  // ---- your overrides (from your snippet) ----
-  $carousel-control-color:             #fff,
-  $carousel-control-width:             15%,
-  $carousel-control-opacity:           .5,
-  $carousel-control-hover-opacity:     .9,
-  $carousel-control-transition:        opacity .15s ease,
+/* ============================
+   Hero page + carousel styles
+   ============================ */
 
-  $carousel-indicator-width:           30px,
-  $carousel-indicator-height:          3px,
-  $carousel-indicator-hit-area-height: 10px,
-  $carousel-indicator-spacer:          3px,
-  $carousel-indicator-opacity:         .5,
-  $carousel-indicator-active-bg:       #fff,
-  $carousel-indicator-active-opacity:  1,
-  $carousel-indicator-transition:      opacity .6s ease,
-
-  $carousel-caption-width:             70%,
-  $carousel-caption-color:             #fff,
-  $carousel-caption-padding-y:         1.25rem,
-  $carousel-caption-spacer:            1.25rem,
-
-  $carousel-control-icon-width:        2rem,
-
-  $carousel-control-prev-icon-bg:      url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'><path d='M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z'/></svg>"),
-  $carousel-control-next-icon-bg:      url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'><path d='M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z'/></svg>"),
-
-  $carousel-transition-duration:       .6s,
-  $carousel-transition:                transform .6s ease-in-out,
-
-  $carousel-dark-indicator-active-bg:  #000,
-  $carousel-dark-caption-color:        #000,
-  $carousel-dark-control-icon-filter:  invert(1) grayscale(100)
-);
-
-@use "bootstrap/scss/maps";
-@use "bootstrap/scss/mixins";
-
-/* Compile ONLY the carousel component (keeps CSS small) */
-@use "bootstrap/scss/carousel";
-
-/* Your tiny extras for hero sizing */
-.hero .carousel,
-.hero .carousel-inner,
-.hero .carousel-item {
-  max-height: 560px;
+/* ---- Layout shell ---- */
+.hero {
+  position: relative;
+  padding: 0.5rem 0 0;
+  background:
+    radial-gradient(1200px 600px at 50% -200px, rgba(255, 255, 255, 0.06), transparent 60%),
+    linear-gradient(180deg, #fafafa, #ffffff 35%);
 }
 
-.hero .carousel-item img {
-  height: 52vh;
-  min-height: 320px;
-  max-height: 560px;
+.hero__bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Heading & intro block (the text area above/beside the carousel) */
+.hero__content {
+  position: relative;
+  max-width: 960px;
+  margin: 0 auto 0.5rem;
+  text-align: center;
+
+  h1 { letter-spacing: .2px; }
+  p.lead { color: #ffffff; }
+}
+
+.hero__title {
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: .01em;
+}
+
+.hero__tagline { /* the two-line strapline */
+  color: #eef1f3;
+  font-weight: 500;
+}
+
+/* If you decide to move the CTA buttons below the carousel,
+wrap them in .hero__cta and these styles will kick in. */
+.hero__cta {
+  display: flex;
+  justify-content: center;
+  gap: .75rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+/* ---- Carousel container ---- */
+.hero .carousel {
+  position: relative;
+  max-width: 750px;
+  margin: 1rem auto 0;
+  border-radius: .75rem;
+  overflow: hidden; /* keep rounded corners on slides/captions */
+  box-shadow: 0 12px 30px rgba(0,0,0,.08);
+}
+
+/* Keep a predictable, elegant height across screens */
+.hero .carousel-inner {
+  /* clamp(min, preferred, max) — tweak to taste */
+  height: clamp(320px, 50vh, 520px);
+}
+
+/* Make images fill & crop nicely */
+.hero .carousel-item > img {
   width: 100%;
-  object-fit: cover;
+  height: 100%;
+  object-fit: cover;     /* crop rather than stretch */
+  object-position: center;
+  display: block;
 }
 
-/* Keep controls/bullets visible over images */
-.hero .carousel-caption { z-index: 2; }
-.hero .carousel-control-prev,
-.hero .carousel-control-next { z-index: 2; }
-.hero .carousel-indicators { z-index: 2; }
+/* ---- Caption (if you add one later) ---- */
+.hero .carousel-caption {
+  background: rgba(255, 255, 255, 0.45);
+  padding: .75rem 1rem;
+  border-radius: .5rem;
+  left: 1rem;
+  right: auto;
+  bottom: 1rem;
+  text-align: left;
+  width: fit-content;
+}
 
-/* Optional: slightly larger control icons */
+/* ---- Controls (arrows) ---- */
+.hero .carousel-control-prev,
+.hero .carousel-control-next {
+  width: 9%;                /* slightly slimmer than default */
+  opacity: .9;               /* more visible on bright images */
+  transition: opacity .2s ease;
+}
+
+.hero .carousel-control-prev:hover,
+.hero .carousel-control-next:hover,
+.hero .carousel-control-prev:focus-visible,
+.hero .carousel-control-next:focus-visible {
+  opacity: 1;
+}
+
 .hero .carousel-control-prev-icon,
 .hero .carousel-control-next-icon {
-  width: 2rem;
-  height: 2rem;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,.45));
+}
+
+/* Keyboard focus ring (accessibility) */
+.hero .carousel-control-prev:focus-visible,
+.hero .carousel-control-next:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255,255,255,.7), 0 0 0 6px rgba(0,0,0,.35);
+  border-radius: .5rem;
+}
+
+/* ---- Indicators (bullets) ---- */
+.hero .carousel-indicators [data-bs-target] {
+  width: 28px;
+  height: 4px;
+  border-radius: 999px;
+  background-color: rgba(255,255,255,.55);
+  border: 0;
+  transition: opacity .25s ease, background-color .25s ease;
+}
+
+.hero .carousel-indicators .active {
+  background-color: #fff;
+}
+
+/* Better hit area on small screens */
+@media (max-width: 576px) {
+  .hero .carousel-indicators {
+    margin-bottom: .35rem;
+  }
+  .hero .carousel-indicators [data-bs-target] {
+    width: 22px;
+    height: 4px;
+  }
+}
+
+/* ---- Reduce motion preference ---- */
+@media (prefers-reduced-motion: reduce) {
+  .hero .carousel,
+  .hero .carousel-item,
+  .hero .carousel-item.active {
+    transition: none !important;
+  }
+}
+
+/* Hide arrows + dots when there isn't a second item */
+.hero .carousel:not(:has(.carousel-item + .carousel-item)) .carousel-control-prev,
+.hero .carousel:not(:has(.carousel-item + .carousel-item)) .carousel-control-next,
+.hero .carousel:not(:has(.carousel-item + .carousel-item)) .carousel-indicators {
+  display: none !important;
+}
+
+/* ---- Optional: dark mode tweaks (if you add a dark theme later) ---- */
+@media (prefers-color-scheme: dark) {
+  .hero {
+    background:
+      radial-gradient(1200px 600px at 50% -200px, rgba(255,255,255,.03), transparent 60%),
+      linear-gradient(180deg, #121212, #0d0d0d 35%);
+  }
+  .hero__content p.lead { color: #ddd; }
+  .hero .carousel {
+    box-shadow: 0 8px 24px rgba(0,0,0,.45);
+  }
+  .hero .carousel-caption { background: rgba(0,0,0,.55); }
+  .hero .carousel-indicators [data-bs-target] {
+    background-color: rgba(255,255,255,.65);
+  }
+  .hero .carousel-indicators .active {
+    background-color: #fff;
+  }
+}
+
+/* ---- Tiny helper for button contrast on light hero ---- */
+.btn-outline-dark.btn-lg {
+  border-width: 2px;
+}
+
+/* Remove the black/gradient background and spacer slab */
+.page-hero .hero {
+  background: transparent !important;
+  padding: 0 0 1rem;    /* slimmer spacing below the carousel */
+}
+
+.page-hero .hero__bg { display: none !important; }
+
+/* Make heading & copy use normal dark text on the default page bg */
+.page-hero .hero__content .hero_title { color: #111 !important; }
+.page-hero .hero__content .lead { color: #444 !important; }
+
+/* Optional: slightly softer carousel chrome now that bg is white */
+.page-hero .hero .carousel {
+  box-shadow: 0 8px 22px rgba(0,0,0,.06);
+  border-radius: .75rem;
 }
