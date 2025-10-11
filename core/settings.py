@@ -6,6 +6,7 @@ from decouple import AutoConfig, Csv
 import dj_database_url
 from datetime import timedelta
 from decimal import Decimal
+from django.urls import reverse_lazy
 
 FREE_DELIVERY_THRESHOLD   = Decimal("50000.00")
 STANDARD_DELIVERY_PERCENT = Decimal("1.5")
@@ -184,9 +185,9 @@ AUTHENTICATION_BACKENDS = [
     "allauth.account.auth_backends.AuthenticationBackend",
 ]
 
-LOGIN_URL          = "/accounts/login/"
-LOGIN_REDIRECT_URL = "/showroom/"
-LOGOUT_REDIRECT_URL = "/accounts/login/"
+LOGIN_URL = reverse_lazy("account_login")        # or "login" if using django.contrib.auth
+LOGIN_REDIRECT_URL = reverse_lazy("showroom:car_list")    # where to land after login
+LOGOUT_REDIRECT_URL = reverse_lazy("home") 
 
 # === django-allauth Settings ===
 ACCOUNT_LOGIN_METHOD            = "username_email_password"
@@ -206,9 +207,9 @@ STRIPE_PUBLISHABLE_KEY      = os.environ.get("STRIPE_PUBLISHABLE_KEY", "pk_test_
 STRIPE_WEBHOOK_SECRET  = os.environ.get("STRIPE_WEBHOOK_SECRET", "whsec_…")
 STRIPE_CURRENCY        = os.getenv("STRIPE_CURRENCY", "gbp")
 
-# === E-mail (GMX) Configuration ===
+# === E-mail (Yahoo) Configuration ===
 EMAIL_BACKEND        = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST           = "mail.gmx.com"
+EMAIL_HOST           = "smtp.mail.yahoo.com"
 EMAIL_PORT           = 587
 EMAIL_USE_TLS        = True
 EMAIL_TIMEOUT        = 20
