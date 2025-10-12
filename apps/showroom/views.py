@@ -12,7 +12,6 @@ from .forms import CarForm, CarFilterForm
 # Only superusers can do create/update/delete
 superuser_required = user_passes_test(lambda u: u.is_superuser)
 
-@method_decorator(login_required, name="dispatch")
 class CarListView(ListView):
     model               = Car
     template_name       = "showroom/list.html"
@@ -41,7 +40,6 @@ class CarListView(ListView):
         ctx["filter_form"] = CarFilterForm(self.request.GET)
         return ctx
 
-@method_decorator(login_required, name="dispatch")
 class CarDetailView(DetailView):
     model         = Car
     template_name = "showroom/detail.html"
