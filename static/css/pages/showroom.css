@@ -1,8 +1,109 @@
-.car-card { opacity: 0; transform: translateY(10px); transition: transform .25s ease, opacity .25s ease; }
-.car-card.is-visible { opacity: 1; transform: translateY(0); }
-.car-card.is-interactive { will-change: transform; transition: box-shadow .18s ease, transform .18s ease; }
-.car-card.is-interactive:hover { box-shadow: 0 14px 30px rgba(0,0,0,.10); }
-.car-card__img { width: 100%; height: 100%; object-fit: cover; }
-.car-card__wish { line-height: 1; border-radius: 999px; background: rgba(255,255,255,.9); }
-.car-card__wish.is-active { background: #ffeaea; }
-.car-card__wish:focus-visible { outline: 2px solid #000; }
+/* ============================
+   Showroom page styles
+   ============================ */
+
+/* Card polish */
+.row.g-3 .card {
+  transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease;
+  will-change: transform;
+  border: 1px solid rgba(0,0,0,.06);
+  border-radius: .75rem;
+  overflow: hidden; /* keep rounded corners on image */
+  background: #fff;
+}
+
+.row.g-3 .card:hover,
+.row.g-3 .card:focus-within {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(0,0,0,.08);
+  border-color: rgba(0,0,0,.12);
+}
+
+/* Predictable image height with clean crop */
+.card-img-top {
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  display: block;
+}
+
+/* Sold badge */
+.badge.position-absolute {
+  backdrop-filter: saturate(120%);
+  background: rgba(0,0,0,.75);
+}
+
+/* Card content */
+.card-body .card-title a {
+  color: inherit;
+}
+.card-body .card-title a:hover {
+  text-decoration: underline;
+}
+
+/* Price style */
+.card-body .text-muted {
+  font-weight: 600;
+  color: #343a40 !important;
+}
+
+/* Reveal-on-scroll animation */
+.card[data-reveal] {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 280ms ease, transform 280ms ease;
+}
+.card[data-reveal].in-view {
+  opacity: 1;
+  transform: none;
+}
+
+/* Focus ring for a11y */
+a.stretched-link:focus-visible,
+.btn:focus-visible,
+.form-select:focus-visible,
+.form-control:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(13,110,253,.35);
+  border-radius: .4rem;
+}
+
+/* Compact page header spacing */
+.container > .h3.fw-bold {
+  margin-top: .25rem;
+}
+
+/* Filters row spacing on small screens */
+@media (max-width: 576px) {
+  .row.g-2 { --bs-gutter-y: .5rem; }
+  .row.g-3 { --bs-gutter-y: 1rem; }
+}
+
+/* Reduce motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .row.g-3 .card,
+  .card[data-reveal] {
+    transition: none !important;
+  }
+}
+
+/* Light dark-mode tweaks (auto) */
+@media (prefers-color-scheme: dark) {
+  .row.g-3 .card {
+    background: #16181b;
+    border-color: rgba(255,255,255,.08);
+  }
+  .row.g-3 .card:hover,
+  .row.g-3 .card:focus-within {
+    border-color: rgba(255,255,255,.18);
+    box-shadow: 0 10px 24px rgba(0,0,0,.6);
+  }
+  .card-body .text-muted { color: #e9ecef !important; }
+  .badge.position-absolute { background: rgba(255,255,255,.2); }
+}
+
+/* Title + body text color on dark cards */
+@media (prefers-color-scheme: dark) {
+  .row.g-3 .card .card-body { color: #fff; }
+  .row.g-3 .card .card-title a { color: #fff; }
+  .row.g-3 .card .card-title a:hover { color: #fff; text-decoration: underline; }
+}
