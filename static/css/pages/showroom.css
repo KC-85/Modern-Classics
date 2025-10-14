@@ -1,0 +1,8 @@
+.car-card { opacity: 0; transform: translateY(10px); transition: transform .25s ease, opacity .25s ease; }
+.car-card.is-visible { opacity: 1; transform: translateY(0); }
+.car-card.is-interactive { will-change: transform; transition: box-shadow .18s ease, transform .18s ease; }
+.car-card.is-interactive:hover { box-shadow: 0 14px 30px rgba(0,0,0,.10); }
+.car-card__img { width: 100%; height: 100%; object-fit: cover; }
+.car-card__wish { line-height: 1; border-radius: 999px; background: rgba(255,255,255,.9); }
+.car-card__wish.is-active { background: #ffeaea; }
+.car-card__wish:focus-visible { outline: 2px solid #000; }
