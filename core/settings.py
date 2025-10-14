@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     "django.contrib.sites",       # required by allauth
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.humanize",
 
     # Brute Force Protection
     "axes",
