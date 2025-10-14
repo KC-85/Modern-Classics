@@ -10,10 +10,10 @@
 
 {% block content %}
 <section class="hero">
-  <div class="hero__bg" aria-hidden="true"></div>
+  <div class="hero_sm" aria-hidden="true"></div>
 
   <div class="container text-center hero__content">
-    <h1 class="display-4 fw-bold mb-2 hero_title text-white">Modern Classics</h1>
+    <h1 class="display-4 fw-bold mb-2 hero__title text-white">Modern Classics</h1>
     <p class="lead mb-4">
       Timeless cars. For enthusiasts who know what they want.<br/>
       Simple, secure checkout.
@@ -41,10 +41,11 @@
     <div class="carousel-indicators">
       {% for car in featured_cars %}
         <button type="button"
-                data-bs-target="#heroCarousel"
-                data-bs-slide-to="{{ forloop.counter0 }}"
-                {% if forloop.first %}class="active" aria-current="true"{% endif %}
-                aria-label="Go to slide {{ forloop.counter }}"></button>
+          data-bs-target="#heroCarousel"
+          data-bs-slide-to="{{ forloop.counter0 }}"
+          {% if forloop.first %}class="active" aria-current="true"{% endif %}
+          aria-label="Go to slide {{ forloop.counter }}">
+        </button>
       {% endfor %}
     </div>
 
