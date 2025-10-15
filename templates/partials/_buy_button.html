@@ -1,9 +1,13 @@
 {% if request.user.is_authenticated %}
+  {% if car.is_sold %}
+    <button class="btn btn-danger btn-sm" disabled>SOLD OUT</button>
+  {% else %}
   <form method="post" action="{% url 'trailer:add_to_cart' car.pk %}" class="d-inline">
     {% csrf_token %}
     <input type="hidden" name="quantity" value="1">
     <button type="submit" class="btn btn-primary btn-sm">Add to cart</button>
   </form>
+  {% endif %}
 {% else %}
   <a class="btn btn-outline-secondary btn-sm"
      href="{% url 'account_login' %}?next={{ request.path }}">
