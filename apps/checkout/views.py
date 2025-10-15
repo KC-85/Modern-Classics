@@ -240,6 +240,14 @@ class CheckoutSuccessView(LoginRequiredMessageMixin, TemplateView):
             recipient_list=[to_email],
             fail_silently=False,
         )
+
+        # Mark all cars in this order as is_sold=True
+        for line_item in order.lineitems.select_related("car"):
+            car = line_item.car
+            car.is_sold = True
+            car.save(update_fields=["is_sold"])
+
+        # Delete the user's cart upon successful purchase
         cart = Cart.objects.filter(user=self.request.user).first()
         if not cart:
             return False
