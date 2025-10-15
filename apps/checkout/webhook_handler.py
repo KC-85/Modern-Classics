@@ -65,8 +65,8 @@ class StripeWH_Handler:
     # ---------------------------- key events ---------------------------
 
     def handle_payment_intent_succeeded(self, event):
-        intent   = event["data"]["object"]
-        pid      = intent.get("id")
+        intent = event["data"]["object"]
+        pid = intent.get("id")
         metadata = intent.get("metadata") or {}
         order_id = metadata.get("order_id")
 
@@ -108,7 +108,7 @@ class StripeWH_Handler:
         return HttpResponse(status=200)
 
     def handle_payment_intent_payment_failed(self, event):
-        intent   = event["data"]["object"]
+        intent = event["data"]["object"]
         metadata = intent.get("metadata") or {}
         order_id = metadata.get("order_id")
 
@@ -129,7 +129,7 @@ class StripeWH_Handler:
         """
         Only used if you switch to Stripe Checkout Sessions (hosted page).
         """
-        session  = event["data"]["object"]
+        session = event["data"]["object"]
         metadata = session.get("metadata") or {}
         order_id = metadata.get("order_id")
 
@@ -142,5 +142,6 @@ class StripeWH_Handler:
             return HttpResponse(status=200)
 
         self._send_confirmation_email(order)
-        logger.info("Receipt sent for order %s (checkout.session.completed)", order.pk)
+        logger.info(
+            "Receipt sent for order %s (checkout.session.completed)", order.pk)
         return HttpResponse(status=200)
