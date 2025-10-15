@@ -150,6 +150,7 @@
     });
 
     const get  = (n) => form.elements[n]; // robust lookup by name;
+    let form = document.getElementById("payment-form");
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       document.getElementById("submit-button").disabled = true;
