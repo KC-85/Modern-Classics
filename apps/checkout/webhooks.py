@@ -13,6 +13,7 @@ logger = logging.getLogger(__name__)
 stripe.api_key = settings.STRIPE_SECRET_KEY
 WH_SECRET = settings.STRIPE_WEBHOOK_SECRET
 
+
 @csrf_exempt
 def stripe_webhook(request):
     # 1) Verify signature & construct event from the *raw* body
@@ -31,7 +32,8 @@ def stripe_webhook(request):
         logger.exception("Stripe webhook: unexpected error")
         return HttpResponse(status=400)
 
-    logger.info("Stripe webhook received: id=%s type=%s", event.get("id"), event.get("type"))
+    logger.info("Stripe webhook received: id=%s type=%s",
+                event.get("id"), event.get("type"))
 
     # 2) Dispatch
     handler = StripeWH_Handler(request)
