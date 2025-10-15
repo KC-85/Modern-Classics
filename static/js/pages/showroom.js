@@ -37,19 +37,21 @@
     img.style.transform = "";
   };
 
-  document.addEventListener("pointerenter", (e) => {
-    const card = e.target.closest(".card");
-    if (!card) return;
-    const img = card.querySelector(".card-img-top");
-    if (img) scaleUp(img);
-  }, true);
+  cards.forEach(card => {
+    card.addEventListener("pointerenter", function(e) {
+      if (!card) return;
+      const img = card.querySelector(".card-img-top");
+      if (img) scaleUp(img);
+    });
+  });
 
-  document.addEventListener("pointerleave", (e) => {
-    const card = e.target.closest(".card");
-    if (!card) return;
-    const img = card.querySelector(".card-img-top");
-    if (img) scaleDown(img);
-  }, true);
+  cards.forEach(card => {
+    card.addEventListener("pointerleave", function(e) {
+      if (!card) return;
+      const img = card.querySelector(".card-img-top");
+      if (img) scaleDown(img);
+    });
+  });
 
   // 4) Submit filters on Enter inside the search field (no extra clicks)
   const searchInput = document.getElementById("q");
