@@ -1,29 +1,35 @@
 # apps/checkout/views.py
 
+# Python first
 import json
 import stripe
 from decimal import Decimal
 
+# Django second
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.mail import send_mail
+from django.db import transaction
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render, redirect, get_object_or_404
+from django.template.loader import render_to_string
 from django.urls import reverse
+from django.utils import timezone
 from django.views import View
 from django.views.generic import TemplateView, ListView
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
-from apps.common.auth_mixins import LoginRequiredMessageMixin
-from apps.common.auth_mixins import login_required_with_message  # helper for FBVs
-
-from .models import Order, OrderLineItem
-from .forms  import OrderForm
-from .webhooks import stripe_webhook
-from ..trailer.models import Cart
-from apps.showroom.models import Car
+# Own files last
 from .utils import compute_delivery
+from apps.showroom.models import Car
+from ..trailer.models import Cart
+from .webhooks import stripe_webhook
+from .forms import OrderForm
+from .models import Order, OrderLineItem
+from apps.common.auth_mixins import login_required_with_message  # helper for FBVs
+from apps.common.auth_mixins import LoginRequiredMessageMixin
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -32,11 +38,12 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 
 @require_POST
 @csrf_exempt
-@login_required_with_message          # << show banner + redirect to login for guests
+# << show banner + redirect to login for guests
+@login_required_with_message
 def cache_checkout_data(request):
     try:
         data = json.loads(request.body or "{}")
-        pid  = data["client_secret"].split("_secret")[0]
+        pid = data["client_secret"].split("_secret")[0]
         stripe.PaymentIntent.modify(
             pid,
             metadata={
@@ -203,8 +210,8 @@ class OrderDetailView(LoginRequiredMessageMixin, View):
 
     def get(self, request, order_number, *args, **kwargs):
         qs = (Order.objects
-                    .filter(user=request.user)
-                    .prefetch_related("lineitems", "lineitems__car"))
+              .filter(user=request.user)
+              .prefetch_related("lineitems", "lineitems__car"))
         order = get_object_or_404(qs, order_number=order_number)
         return render(request, self.template_name, {"order": order})
 
@@ -212,17 +219,44 @@ class OrderDetailView(LoginRequiredMessageMixin, View):
 class CheckoutSuccessView(LoginRequiredMessageMixin, TemplateView):
     template_name = "checkout/success.html"
 
+    def send_receipt(self, order):
+        """Send the same receipt the webhook used to send."""
+        to_email = order.email or (order.user.email if order.user else "")
+
+        subject = render_to_string(
+            "checkout/confirmation_emails/subject.txt",
+            {"order": order},
+        ).strip()
+
+        body = render_to_string(
+            "checkout/confirmation_emails/body.txt",
+            {"order": order, "contact_email": settings.DEFAULT_FROM_EMAIL},
+        )
+
+        send_mail(
+            subject=subject,
+            message=body,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[to_email],
+            fail_silently=False,
+        )
+        cart = Cart.objects.filter(user=self.request.user).first()
+        if not cart:
+            return False
+        cart.delete()
+        return True
+
     def get(self, request, order_id, *args, **kwargs):
         order = get_object_or_404(Order, pk=order_id, user=request.user)
+        self.send_receipt(order)
         return render(request, self.template_name, {"order": order})
 
 
 class OrderHistoryView(LoginRequiredMessageMixin, ListView):
-    model               = Order
-    template_name       = "checkout/order_list.html"
+    model = Order
+    template_name = "checkout/order_list.html"
     context_object_name = "orders"
-    paginate_by         = 10
+    paginate_by = 10
 
     def get_queryset(self):
         return Order.objects.filter(user=self.request.user).order_by("-date")
-
