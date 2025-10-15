@@ -3,6 +3,7 @@
 from django import forms
 from .models import Order
 
+
 class OrderForm(forms.ModelForm):
     class Meta:
         model = Order
@@ -34,13 +35,9 @@ class OrderForm(forms.ModelForm):
         self.fields['full_name'].widget.attrs['autofocus'] = True
 
         for name, field in self.fields.items():
-            # Skip placeholder logic for country (select widget)
+            # Skip placeholder logic (select widget)
             if name != 'country':
-                label = placeholders.get(name, '')
                 if field.required:
-                    label += ' *'
-                field.widget.attrs['placeholder'] = label
+                    field.label = f'* {field.label}'
             # Apply a common CSS class for Stripe styling
             field.widget.attrs['class'] = 'stripe-style-input'
-            # Hide the generated label
-            field.label = False
