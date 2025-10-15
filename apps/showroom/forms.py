@@ -3,11 +3,14 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from .models import CarMake, CarModel, Car
 
+
 class CarFilterForm(forms.Form):
-    make      = forms.ModelChoiceField(queryset=CarMake.objects.all(), required=False)
-    model     = forms.ModelChoiceField(queryset=CarModel.objects.none(), required=False)
+    make = forms.ModelChoiceField(
+        queryset=CarMake.objects.all(), required=False)
+    model = forms.ModelChoiceField(
+        queryset=CarModel.objects.none(), required=False)
     year_from = forms.IntegerField(required=False, label="Year from")
-    year_to   = forms.IntegerField(required=False, label="Year to")
+    year_to = forms.IntegerField(required=False, label="Year to")
     condition = forms.ChoiceField(
         choices=[("", "Any")] + Car.CONDITION_CHOICES,
         required=False
@@ -21,7 +24,9 @@ class CarFilterForm(forms.Form):
         # if a make is selected, limit the models field
         make_id = self.data.get("make")
         if make_id:
-            self.fields["model"].queryset = CarModel.objects.filter(make_id=make_id)
+            self.fields["model"].queryset = CarModel.objects.filter(
+                make_id=make_id)
+
 
 class CarForm(forms.ModelForm):
     class Meta:
@@ -29,7 +34,7 @@ class CarForm(forms.ModelForm):
         fields = (
             "make", "model", "year",
             "specifications", "performance",
-            "condition", "image", "price",
+            "condition", "image", "price", "is_sold"
         )
 
     def __init__(self, *args, **kwargs):
