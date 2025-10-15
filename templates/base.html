@@ -59,6 +59,21 @@
     </nav>
   </header>
 
+  {% if messages %}
+  <div class="container mt-3">
+    {% for message in messages %}
+      <div class="alert
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %} alert-danger
+        {% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %} alert-warning
+        {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %} alert-success
+        {% else %} alert-info
+        {% endif %} mb-2" role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
   <main>
     {% block content %}{% endblock %}
   </main>
