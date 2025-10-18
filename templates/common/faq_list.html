@@ -1,15 +1,202 @@
+{# templates/common/faq_list.html #}
 {% extends "base.html" %}
-{% block title %}FAQs{% endblock %}
+{% load static %}
+
+{% block title %}FAQ · Modern Classics{% endblock %}
+
 {% block content %}
-<h1>Frequently Asked Questions</h1>
-<ul>
-  {% for faq in object_list %}
-    <li>
-      <strong>{{ faq.question }}</strong><br>
-      {{ faq.answer }}
-    </li>
-  {% empty %}
-    <li>No FAQs yet.</li>
-  {% endfor %}
-</ul>
+<div class="container my-5">
+  <header class="mb-4">
+    <h1 class="h2 fw-bold mb-2">Frequently Asked Questions</h1>
+    <p class="text-muted mb-0">Quick answers about browsing, buying, payments, orders, and support.</p>
+  </header>
+
+  <!-- Anchor nav -->
+  <nav aria-label="FAQ sections" class="mb-4">
+    <ul class="nav nav-pills flex-wrap gap-2">
+      <li class="nav-item"><a class="nav-link" href="#buying-accounts">Buying & Accounts</a></li>
+      <li class="nav-item"><a class="nav-link" href="#showroom">Showroom & Listings</a></li>
+      <li class="nav-item"><a class="nav-link" href="#pricing">Pricing & Fees</a></li>
+      <li class="nav-item"><a class="nav-link" href="#payments">Payment & Security</a></li>
+      <li class="nav-item"><a class="nav-link" href="#orders">Orders & Delivery</a></li>
+      <li class="nav-item"><a class="nav-link" href="#docs">Documentation & Condition</a></li>
+      <li class="nav-item"><a class="nav-link" href="#troubleshooting">Troubleshooting</a></li>
+      <li class="nav-item"><a class="nav-link" href="#contact">Contact & Support</a></li>
+      {% if request.user.is_superuser %}
+      <li class="nav-item"><a class="nav-link text-bg-warning" href="#admin">Admin</a></li>
+      {% endif %}
+    </ul>
+  </nav>
+
+  <!-- Buying & Accounts -->
+  <section id="buying-accounts" class="mb-5">
+    <h2 class="h4 fw-semibold mb-3">Buying & Accounts</h2>
+
+    <details class="border rounded p-3 mb-2">
+      <summary class="fw-semibold">Do I need an account to buy a car?</summary>
+      <p class="mb-0 mt-2">Yes. Anyone can browse, but you must <strong>sign in or sign up</strong> to add to cart and checkout. If you try to purchase while logged out, we’ll prompt you to sign in.</p>
+    </details>
+
+    <details class="border rounded p-3 mb-2">
+      <summary class="fw-semibold">How do I create an account?</summary>
+      <p class="mb-0 mt-2">Click <em>Sign Up</em> in the header, enter your details, and confirm via the email we send (check your spam folder if needed).</p>
+    </details>
+
+    <details class="border rounded p-3 mb-2">
+      <summary class="fw-semibold">I forgot my password—what now?</summary>
+      <p class="mb-0 mt-2">Use <em>Login → Forgot Password</em> to reset securely via email.</p>
+    </details>
+  </section>
+
+  <!-- Showroom & Listings -->
+  <section id="showroom" class="mb-5">
+    <h2 class="h4 fw-semibold mb-3">Showroom & Listings</h2>
+
+    <details class="border rounded p-3 mb-2">
+      <summary class="fw-semibold">How do I filter or sort cars?</summary>
+      <p class="mb-0 mt-2">Use the search box and the <em>Sort</em> dropdown on the Showroom page. Sort by <strong>Newest</strong>, <strong>Price Low → High</strong>, or <strong>Price High → Low</strong>.</p>
+    </details>
+
+    <details class="border rounded p-3 mb-2">
+      <summary class="fw-semibold">Are the photos accurate?</summary>
+      <p class="mb-0 mt-2">Photos are optimized for fast loading and represent the actual vehicle. Contact us for full-resolution images or a walkaround video.</p>
+    </details>
+
+    <details class="border rounded p-3 mb-2">
+      <summary class="fw-semibold">A car I saw now says SOLD—what happened?</summary>
+      <p class="mb-0 mt-2">Vehicles can sell quickly. If the badge shows <strong>SOLD</strong>, it’s no longer available. Check back for new arrivals.</p>
+    </details>
+  </section>
+
+  <!-- Pricing & Fees -->
+  <section id="pricing" class="mb-5">
+    <h2 class="h4 fw-semibold mb-3">Pricing & Fees</h2>
+
+    <details class="border rounded p-3 mb-2">
+      <summary class="fw-semibold">Are prices final?</summary>
+      <p class="mb-0 mt-2">Prices shown are the asking price for the vehicle. Delivery fees (if applicable) appear at checkout.</p>
+    </details>
+
+    <details class="border rounded p-3 mb-2">
+      <summary class="fw-semibold">Do prices include tax/VAT?</summary>
+      <p class="mb-0 mt-2">If applicable, tax information appears in the checkout summary. Need a business invoice? Contact us.</p>
+    </details>
+  </section>
+
+  <!-- Payment & Security -->
+  <section id="payments" class="mb-5">
+    <h2 class="h4 fw-semibold mb-3">Payment & Security</h2>
+
+    <details class="border rounded p-3 mb-2">
+      <summary class="fw-semibold">What payment methods are accepted?</summary>
+      <p class="mb-0 mt-2">Major cards via <strong>Stripe</strong>. Your card details never touch our servers.</p>
+    </details>
+
+    <details class="border rounded p-3 mb-2">
+      <summary class="fw-semibold">Is payment secure?</summary>
+      <p class="mb-0 mt-2">Yes—Stripe uses TLS encryption and PCI-compliant infrastructure.</p>
+    </details>
+
+    <details class="border rounded p-3 mb-2">
+      <summary class="fw-semibold">I didn’t receive a payment confirmation—did it go through?</summary>
+      <p class="mb-0 mt-2">You’ll see an on-site success page and receive an email receipt after a successful charge. If neither arrives, check your bank/app and contact support.</p>
+    </details>
+  </section>
+
+  <!-- Orders & Delivery -->
+  <section id="orders" class="mb-5">
+    <h2 class="h4 fw-semibold mb-3">Orders & Delivery</h2>
+
+    <details class="border rounded p-3 mb-2">
+      <summary class="fw-semibold">Where can I view my orders?</summary>
+      <p class="mb-0 mt-2">Go to <em>My Orders</em> in the header (must be signed in).</p>
+    </details>
+
+    <details class="border rounded p-3 mb-2">
+      <summary class="fw-semibold">Do you offer delivery?</summary>
+      <p class="mb-0 mt-2">Yes—options and costs appear at checkout when available for your location. Delivery for items over £50,000 is free.</p>
+    </details>
+
+    <details class="border rounded p-3 mb-2">
+      <summary class="fw-semibold">Can I cancel or edit an order?</summary>
+      <p class="mb-0 mt-2">Contact us <strong>as soon as possible</strong>. Once transport or paperwork starts, cancellation may not be possible.</p>
+    </details>
+
+    <details class="border rounded p-3 mb-2">
+      <summary class="fw-semibold">What’s your return policy?</summary>
+      <p class="mb-0 mt-2">Returns for vehicles are uncommon and only possible under specific conditions. Please review our Returns Policy before purchasing.</p>
+    </details>
+  </section>
+
+  <!-- Documentation & Condition -->
+  <section id="docs" class="mb-5">
+    <h2 class="h4 fw-semibold mb-3">Documentation & Condition</h2>
+
+    <details class="border rounded p-3 mb-2">
+      <summary class="fw-semibold">Do cars come with service history and documents?</summary>
+      <p class="mb-0 mt-2">Each listing notes included items (service records, MOT, manuals, etc.). Ask us if you need anything clarified.</p>
+    </details>
+
+    <details class="border rounded p-3 mb-2">
+      <summary class="fw-semibold">How is condition graded?</summary>
+      <p class="mb-0 mt-2">We use standardized categories (e.g., <em>Excellent / Good / Fair</em>). See each listing for specifics and recent maintenance.</p>
+    </details>
+  </section>
+
+  <!-- Troubleshooting -->
+  <section id="troubleshooting" class="mb-5">
+    <h2 class="h4 fw-semibold mb-3">Troubleshooting</h2>
+
+    <details class="border rounded p-3 mb-2">
+      <summary class="fw-semibold">“Please sign in or sign up to continue” appears.</summary>
+      <p class="mb-0 mt-2">You’re trying to access a purchase-only action. Log in and try again.</p>
+    </details>
+
+    <details class="border rounded p-3 mb-2">
+      <summary class="fw-semibold">I’m not receiving emails (signup/reset/receipt).</summary>
+      <p class="mb-0 mt-2">Check spam/junk and add our address to safe senders. If you still don’t see it, contact support with your registered email.</p>
+    </details>
+
+    <details class="border rounded p-3 mb-2">
+      <summary class="fw-semibold">The checkout button is disabled.</summary>
+      <p class="mb-0 mt-2">Ensure all required contact and address fields are filled and your card details are valid.</p>
+    </details>
+  </section>
+
+  <!-- Contact & Support -->
+  <section id="contact" class="mb-5">
+    <h2 class="h4 fw-semibold mb-3">Contact & Support</h2>
+
+    <details class="border rounded p-3 mb-2">
+      <summary class="fw-semibold">How do I contact you?</summary>
+      <p class="mb-0 mt-2">Use the <a href="{% url 'common:contact' %}">Contact</a> page, or email <a href="mailto:support@your-domain">support@your-domain</a>. For urgent issues, include your <strong>order number</strong>.</p>
+    </details>
+
+    <details class="border rounded p-3 mb-2">
+      <summary class="fw-semibold">Do you have a newsletter?</summary>
+      <p class="mb-0 mt-2">Yes—subscribe on the <a href="{% url 'common:newsletter' %}">Newsletter</a> page for new arrivals and features.</p>
+    </details>
+  </section>
+
+  {% if request.user.is_superuser %}
+  <!-- Admin (only visible to superusers) -->
+  <section id="admin" class="mb-5">
+    <h2 class="h4 fw-semibold mb-3 text-warning">Admin</h2>
+
+    <details class="border rounded p-3 mb-2">
+      <summary class="fw-semibold">How do I add a new car?</summary>
+      <p class="mb-0 mt-2">While logged in as a superuser, go to <a href="{% url 'showroom:car_create' %}">Showroom → Add Car</a>. To edit or delete, use the admin toolbar on the Showroom list or open a car’s detail page.</p>
+    </details>
+
+    <details class="border rounded p-3 mb-2">
+      <summary class="fw-semibold">Why can’t I see the admin toolbar?</summary>
+      <p class="mb-0 mt-2">You must be a superuser and signed in. Regular users cannot see management controls.</p>
+    </details>
+  </section>
+  {% endif %}
+
+  <p class="mt-4">
+    <a href="{% url 'showroom:car_list' %}" class="btn btn-outline-secondary">← Back to Showroom</a>
+  </p>
+</div>
 {% endblock %}
