@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.views.generic import FormView, TemplateView, ListView
 from .forms import ContactForm, NewsletterForm, FAQSearchForm
@@ -69,3 +70,17 @@ class FAQListView(ListView):
         ctx = super().get_context_data(**kwargs)
         ctx["search_form"] = FAQSearchForm(self.request.GET)
         return ctx
+
+
+def robots_txt(request):
+    sitemap_url = request.build_absolute_uri(reverse_lazy("sitemap"))
+    lines = [
+        "User-agent: *",
+        "Disallow: /admin/",
+        "Disallow: /accounts/",
+        "Disallow: /checkout/",
+        "Disallow: /trailer/",
+        f"Sitemap: {sitemap_url}",
+        "",
+    ]
+    return HttpResponse("\n".join(lines), content_type="text/plain")
