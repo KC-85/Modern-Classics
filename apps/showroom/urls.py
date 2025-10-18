@@ -9,8 +9,8 @@ app_name = "showroom"
 
 urlpatterns = [
     path("",                    CarListView.as_view(),   name="car_list"),
-    path("<slug:slug>/",        CarDetailView.as_view(), name="car_detail"),
-    path("add/",                CarCreateView.as_view(), name="car_add"),
+    path("add/",                CarCreateView.as_view(), name="car_create"),
     path("<slug:slug>/edit/",   CarUpdateView.as_view(), name="car_edit"),
     path("<slug:slug>/delete/", CarDeleteView.as_view(), name="car_delete"),
+    path("<slug:slug>/",        CarDetailView.as_view(), name="car_detail"),
 ]
