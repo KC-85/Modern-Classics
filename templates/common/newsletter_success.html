@@ -1,10 +1,13 @@
 {% extends "base.html" %}
-{% block title %}Subscription Confirmed{% endblock %}
+{% block title %}Subscribed · Modern Classics{% endblock %}
 
 {% block content %}
-<div class="alert alert-success" role="alert">
-  <h1>Subscribed!</h1>
-  <p>You’ve been added to our newsletter. Keep an eye on your inbox for updates.</p>
+<div class="container my-5" style="max-width: 560px;">
+  <div class="card p-4 shadow-sm">
+    <h1 class="h4 fw-bold mb-2">You're subscribed!</h1>
+    <p class="mb-3">We’ll email you when new cars land or prices change.</p>
+    <a href="{% url 'showroom:car_list' %}" class="btn btn-outline-primary">Browse the showroom</a>
+  </div>
 </div>
-<a href="{% url 'common:newsletter' %}" class="btn btn-link">Subscribe another email</a>
 {% endblock %}
+
