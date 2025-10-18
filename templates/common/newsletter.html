@@ -1,11 +1,33 @@
 {% extends "base.html" %}
-{% load crispy_forms_tags %}
-{% block title %}Subscribe to Newsletter{% endblock %}
+{% block title %}Newsletter · Modern Classics{% endblock %}
+
 {% block content %}
-<h1>Newsletter Signup</h1>
-<form method="post">
-  {% csrf_token %}
-  {{ form|crispy }}
-  <button type="submit" class="btn btn-primary">Subscribe</button>
-</form>
+<div class="container my-5" style="max-width: 560px;">
+  <h1 class="h3 fw-bold mb-2">Newsletter</h1>
+  <p class="text-muted mb-4">Get new car arrivals and updates. Unsubscribe anytime.</p>
+
+  <form method="post" novalidate class="card p-3 p-md-4 shadow-sm">
+    {% csrf_token %}
+
+    <div class="mb-3">
+      <label for="id_email" class="form-label">Email address</label>
+      {{ form.email }}
+      {% if form.email.errors %}
+        <div class="text-danger small mt-1">{{ form.email.errors.0 }}</div>
+      {% endif %}
+    </div>
+
+    <div class="form-check mb-3">
+      {{ form.consent }}
+      <label for="id_consent" class="form-check-label">
+        I agree to receive Modern Classics emails.
+      </label>
+      {% if form.consent.errors %}
+        <div class="text-danger small mt-1">{{ form.consent.errors.0 }}</div>
+      {% endif %}
+    </div>
+
+    <button class="btn btn-primary" type="submit">Subscribe</button>
+  </form>
+</div>
 {% endblock %}
