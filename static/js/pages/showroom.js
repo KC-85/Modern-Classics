@@ -38,16 +38,11 @@
   };
 
   cards.forEach(card => {
-    card.addEventListener("pointerenter", function(e) {
-      if (!card) return;
+    card.addEventListener("pointerenter", () => {
       const img = card.querySelector(".card-img-top");
       if (img) scaleUp(img);
     });
-  });
-
-  cards.forEach(card => {
-    card.addEventListener("pointerleave", function(e) {
-      if (!card) return;
+    card.addEventListener("pointerleave", () => {
       const img = card.querySelector(".card-img-top");
       if (img) scaleDown(img);
     });
@@ -68,7 +63,7 @@
     const card = e.target.closest(".card");
     if (!card) return;
     const link = card.querySelector(".stretched-link");
-    // Ignore clicks on buttons/links already
+    // Ignore clicks on buttons/links/inputs already
     if (e.target.closest("a,button,.btn,.form-control,.form-select")) return;
     if (link) {
       e.preventDefault();
@@ -76,4 +71,50 @@
     }
   });
 
+  // 6) Superuser toolbar: enable Edit/Delete for selected car
+  const adminForm   = document.getElementById("car-admin-form");
+  const adminSelect = document.getElementById("adminCar");
+  const editBtn     = document.getElementById("adminEdit");
+  const deleteBtn   = document.getElementById("adminDelete");
+  const editTplEl   = document.getElementById("editTpl");
+  const delTplEl    = document.getElementById("delTpl");
+
+  if (adminForm && adminSelect && editBtn && deleteBtn && editTplEl && delTplEl) {
+    const updateButtons = () => {
+      const slug = adminSelect.value || "";
+      const ready = slug.length > 0;
+      editBtn.disabled   = !ready;
+      deleteBtn.disabled = !ready;
+
+      if (ready) {
+        editBtn.dataset.href      = editTplEl.value.replace("__SLUG__", slug);
+        adminForm.dataset.delHref =  delTplEl.value.replace("__SLUG__", slug);
+      } else {
+        delete editBtn.dataset.href;
+        delete adminForm.dataset.delHref;
+      }
+    };
+
+    adminSelect.addEventListener("change", updateButtons);
+
+    // Edit navigates
+    editBtn.addEventListener("click", () => {
+      const href = editBtn.dataset.href;
+      if (href) window.location.assign(href);
+    });
+
+    // Delete posts to delete URL; CSRF already in the form
+    adminForm.addEventListener("submit", (e) => {
+      const action = adminForm.dataset.delHref;
+      if (!action) { e.preventDefault(); return; }
+      if (!confirm("Delete this car? This cannot be undone.")) {
+        e.preventDefault();
+        return;
+      }
+      adminForm.action = action;
+      // method="post" is set in the template
+    });
+
+    updateButtons();
+  }
 })();
