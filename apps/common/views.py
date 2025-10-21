@@ -1,4 +1,5 @@
 from django.http import HttpResponse
+from django.db import transaction, IntegrityError
 from django.urls import reverse_lazy
 from django.views.generic import FormView, TemplateView, ListView
 from .forms import ContactForm, NewsletterForm, FAQSearchForm
@@ -34,16 +35,12 @@ class NewsletterSignupView(FormView):
     success_url = reverse_lazy("common:newsletter_success")
 
     def form_valid(self, form):
-        email = form.cleaned_data["email"].lower().strip()
-        # idempotent-ish create
         try:
             with transaction.atomic():
-                Newsletter.objects.get_or_create(email=email)
+                form.save()
         except IntegrityError:
-            pass  # unique constraint already ensured
-
-        messages.success(
-            self.request, "You're subscribed! Thanks for joining.")
+            form.add_error("email", "This email is already subscribed.")
+            return self.form_invalid(form)
         return super().form_valid(form)
 
 

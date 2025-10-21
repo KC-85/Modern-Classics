@@ -1,4 +1,6 @@
 from django import forms
+from django.core.exceptions import ValidationError
+from .models import Newsletter
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 
@@ -15,17 +17,29 @@ class ContactForm(forms.Form):
         self.helper.add_input(Submit("send", "Send Message"))
 
 
-class NewsletterForm(forms.Form):
-    email = forms.EmailField(
-        label="Email address",
-        widget=forms.EmailInput(
-            attrs={"placeholder": "you@example.com", "class": "form-control"})
-    )
+class NewsletterForm(forms.ModelForm):
     consent = forms.BooleanField(
-        label="I agree to receive Modern Classics emails.",
         required=True,
-        widget=forms.CheckboxInput(attrs={"class": "form-check-input"})
+        label="I agree to receive Modern Classics emails."
     )
+
+    class Meta:
+        model = Newsletter
+        fields = ["email", "consent"]
+
+    def clean_email(self):
+        email = self.cleaned_data.get("email", "").strip()
+        # case-insensitive check to avoid duplicates with different casing
+        if Newsletter.objects.filter(email__iexact=email).exists():
+            raise ValidationError("This email is already subscribed.")
+        return email
+
+    def save(self, commit=True):
+        # Only store the email in the model
+        instance = Newsletter(email=self.cleaned_data["email"])
+        if commit:
+            instance.save()
+        return instance
 
 
 class FAQSearchForm(forms.Form):
