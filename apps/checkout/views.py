@@ -28,7 +28,7 @@ from ..trailer.models import Cart
 from .webhooks import stripe_webhook
 from .forms import OrderForm
 from .models import Order, OrderLineItem
-from apps.common.auth_mixins import login_required_with_message  # helper for FBVs
+from apps.common.auth_mixins import login_required_with_message
 from apps.common.auth_mixins import LoginRequiredMessageMixin
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
