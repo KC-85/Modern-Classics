@@ -89,8 +89,12 @@ class CheckoutViewsTests(TestCase):
     @patch("apps.checkout.views.send_mail")
     @patch("apps.checkout.views.Cart")
     def test_success_view_sends_receipt_and_marks_cars_sold_and_deletes_cart(self, mock_cart, mock_send):
-        order = Order.objects.create(user=self.user, original_trailer={
-                                     "items": []}, email="u@example.com")
+        order = Order.objects.create(
+            user=self.user,
+            original_trailer={"items": []},
+            email="u@example.com",
+            status=Order.PaymentStatus.PAID,
+        )
         OrderLineItem.objects.create(
             order=order, car=self.car, quantity=1, unit_price=self.car.price)
 
