@@ -254,6 +254,9 @@ class CheckoutSuccessView(LoginRequiredMessageMixin, TemplateView):
 
     def send_receipt(self, order):
         """Send the same receipt the webhook used to send."""
+        if getattr(order, "status", None) != Order.PaymentStatus.PAID:
+            return False
+
         to_email = order.email or (order.user.email if order.user else "")
 
         subject = render_to_string(
@@ -289,6 +292,10 @@ class CheckoutSuccessView(LoginRequiredMessageMixin, TemplateView):
 
     def get(self, request, order_id, *args, **kwargs):
         order = get_object_or_404(Order, pk=order_id, user=request.user)
+        if getattr(order, "status", None) != Order.PaymentStatus.PAID:
+            messages.error(request, "Payment is not complete yet. Please try checkout again.")
+            return redirect("checkout:checkout", order_id=order.pk)
+
         self.send_receipt(order)
         return render(request, self.template_name, {"order": order})
 
