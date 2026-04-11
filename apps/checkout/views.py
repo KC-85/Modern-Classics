@@ -202,6 +202,28 @@ class CheckoutView(LoginRequiredMessageMixin, View):
             return render(request, self.template_name, ctx)
 
         form.save()
+
+        # Server-side confirmation of payment keeps status accurate even
+        # when webhook delivery is delayed or misconfigured.
+        client_secret = request.POST.get("client_secret", "")
+        pid = client_secret.split("_secret")[0] if "_secret" in client_secret else ""
+        if pid:
+            try:
+                intent = stripe.PaymentIntent.retrieve(pid)
+            except Exception:
+                intent = None
+
+            if intent and intent.get("status") == "succeeded":
+                order.status = Order.PaymentStatus.PAID
+                amount = intent.get("amount_received") or intent.get("amount")
+                if amount is not None:
+                    order.paid_amount = Decimal(amount) / Decimal("100")
+                currency = intent.get("currency")
+                if currency:
+                    order.currency = currency.upper()
+                order.paid_at = timezone.now()
+                order.save(update_fields=["status", "paid_amount", "currency", "paid_at"])
+
         return redirect("checkout:success", order_id=order.pk)
 
 
