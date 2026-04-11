@@ -78,6 +78,15 @@ class StripeWH_Handler:
         except Order.DoesNotExist:
             return HttpResponse(status=200)
 
+        # Stripe may retry the same event; avoid duplicate side effects.
+        if (
+            hasattr(order, "status")
+            and order.status == Order.PaymentStatus.PAID
+            and getattr(order, "paid_at", None)
+        ):
+            logger.info("Order %s already marked paid; skipping duplicate webhook", order.pk)
+            return HttpResponse(status=200)
+
         # Persist PI id if not recorded yet
         if pid and not order.stripe_pid:
             order.stripe_pid = pid
