@@ -178,7 +178,7 @@ class CheckoutView(LoginRequiredMessageMixin, View):
         order = get_object_or_404(Order, pk=order_id, user=request.user)
         form = OrderForm(request.POST, instance=order)
 
-        if not form.is_valid():
+        def _checkout_context(order_obj, order_form, client_secret_value):
             line_items = [
                 {
                     "name":     str(li.car),
@@ -186,18 +186,21 @@ class CheckoutView(LoginRequiredMessageMixin, View):
                     "unit":     li.unit_price,
                     "subtotal": li.lineitem_total,
                 }
-                for li in order.lineitems.select_related("car")
+                for li in order_obj.lineitems.select_related("car")
             ]
-            ctx = {
-                "order":         order,
-                "order_form":    form,
+            return {
+                "order":         order_obj,
+                "order_form":    order_form,
                 "line_items":    line_items,
-                "total":         order.order_total,
-                "delivery":      order.delivery_cost,
-                "grand_total":   order.grand_total,
-                "client_secret": request.POST.get("client_secret", ""),
+                "total":         order_obj.order_total,
+                "delivery":      order_obj.delivery_cost,
+                "grand_total":   order_obj.grand_total,
+                "client_secret": client_secret_value,
                 "stripe_public": settings.STRIPE_PUBLISHABLE_KEY,
             }
+
+        if not form.is_valid():
+            ctx = _checkout_context(order, form, request.POST.get("client_secret", ""))
             messages.error(request, "Please fix the errors in the form.")
             return render(request, self.template_name, ctx)
 
@@ -207,22 +210,30 @@ class CheckoutView(LoginRequiredMessageMixin, View):
         # when webhook delivery is delayed or misconfigured.
         client_secret = request.POST.get("client_secret", "")
         pid = client_secret.split("_secret")[0] if "_secret" in client_secret else ""
-        if pid:
-            try:
-                intent = stripe.PaymentIntent.retrieve(pid)
-            except Exception:
-                intent = None
+        if not pid:
+            messages.error(request, "Payment could not be verified. Please try again.")
+            ctx = _checkout_context(order, form, client_secret)
+            return render(request, self.template_name, ctx)
 
-            if intent and intent.get("status") == "succeeded":
-                order.status = Order.PaymentStatus.PAID
-                amount = intent.get("amount_received") or intent.get("amount")
-                if amount is not None:
-                    order.paid_amount = Decimal(amount) / Decimal("100")
-                currency = intent.get("currency")
-                if currency:
-                    order.currency = currency.upper()
-                order.paid_at = timezone.now()
-                order.save(update_fields=["status", "paid_amount", "currency", "paid_at"])
+        try:
+            intent = stripe.PaymentIntent.retrieve(pid)
+        except Exception:
+            intent = None
+
+        if not intent or intent.get("status") != "succeeded":
+            messages.error(request, "Payment was not completed. Your order remains pending.")
+            ctx = _checkout_context(order, form, client_secret)
+            return render(request, self.template_name, ctx)
+
+        order.status = Order.PaymentStatus.PAID
+        amount = intent.get("amount_received") or intent.get("amount")
+        if amount is not None:
+            order.paid_amount = Decimal(amount) / Decimal("100")
+        currency = intent.get("currency")
+        if currency:
+            order.currency = currency.upper()
+        order.paid_at = timezone.now()
+        order.save(update_fields=["status", "paid_amount", "currency", "paid_at"])
 
         return redirect("checkout:success", order_id=order.pk)
 
