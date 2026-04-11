@@ -109,6 +109,96 @@ class CheckoutViewsTests(TestCase):
         self.assertTrue(
             mock_cart.objects.filter.return_value.first.return_value.delete.called)
 
+    @patch("apps.checkout.views.stripe.PaymentIntent.retrieve")
+    def test_checkout_post_marks_order_paid_when_intent_succeeds(self, mock_pi_retrieve):
+        order = Order.objects.create(
+            user=self.user,
+            original_trailer={"items": []},
+            email="u@example.com",
+        )
+        OrderLineItem.objects.create(
+            order=order,
+            car=self.car,
+            quantity=1,
+            unit_price=self.car.price,
+        )
+
+        mock_pi_retrieve.return_value = {
+            "status": "succeeded",
+            "amount_received": 1000000,
+            "currency": "gbp",
+        }
+
+        url = reverse("checkout:checkout", kwargs={"order_id": order.pk})
+        resp = self.client.post(
+            url,
+            data={
+                "full_name": "Test Buyer",
+                "email": "u@example.com",
+                "phone_number": "01234567890",
+                "country": "GB",
+                "postcode": "SW1A 1AA",
+                "town_or_city": "London",
+                "street_address1": "10 Downing Street",
+                "street_address2": "",
+                "county": "Greater London",
+                "client_secret": "pi_123_secret_abc",
+            },
+        )
+
+        self.assertEqual(resp.status_code, 302)
+        self.assertRedirects(
+            resp, reverse("checkout:success", kwargs={"order_id": order.pk})
+        )
+        order.refresh_from_db()
+        self.assertEqual(order.status, Order.PaymentStatus.PAID)
+        self.assertEqual(order.paid_amount, Decimal("10000.00"))
+        self.assertEqual(order.currency, "GBP")
+        self.assertIsNotNone(order.paid_at)
+
+    @patch("apps.checkout.views.stripe.PaymentIntent.retrieve")
+    def test_checkout_post_keeps_order_pending_when_intent_not_succeeded(self, mock_pi_retrieve):
+        order = Order.objects.create(
+            user=self.user,
+            original_trailer={"items": []},
+            email="u@example.com",
+        )
+        OrderLineItem.objects.create(
+            order=order,
+            car=self.car,
+            quantity=1,
+            unit_price=self.car.price,
+        )
+
+        mock_pi_retrieve.return_value = {
+            "status": "requires_payment_method",
+            "amount": 1000000,
+            "currency": "gbp",
+        }
+
+        url = reverse("checkout:checkout", kwargs={"order_id": order.pk})
+        resp = self.client.post(
+            url,
+            data={
+                "full_name": "Test Buyer",
+                "email": "u@example.com",
+                "phone_number": "01234567890",
+                "country": "GB",
+                "postcode": "SW1A 1AA",
+                "town_or_city": "London",
+                "street_address1": "10 Downing Street",
+                "street_address2": "",
+                "county": "Greater London",
+                "client_secret": "pi_123_secret_abc",
+            },
+        )
+
+        self.assertEqual(resp.status_code, 200)
+        order.refresh_from_db()
+        self.assertEqual(order.status, Order.PaymentStatus.PENDING)
+        self.assertIsNone(order.paid_amount)
+        self.assertContains(resp, "Payment was not completed")
+
     def test_order_detail_and_history_require_login_and_scope_to_user(self):
         # two users, two orders
         other = User.objects.create_user(
