@@ -259,6 +259,15 @@ class CheckoutSuccessView(LoginRequiredMessageMixin, TemplateView):
         if getattr(order, "status", None) != Order.PaymentStatus.PAID:
             return False
 
+        # Treat already-fulfilled orders as no-op so refreshing success page
+        # does not resend emails or re-run fulfillment logic.
+        existing_cart = Cart.objects.filter(user=self.request.user).first()
+        all_items_already_sold = all(
+            line_item.car.is_sold for line_item in order.lineitems.select_related("car")
+        )
+        if not existing_cart and all_items_already_sold:
+            return False
+
         to_email = order.email or (order.user.email if order.user else "")
 
         subject = render_to_string(
@@ -286,7 +295,7 @@ class CheckoutSuccessView(LoginRequiredMessageMixin, TemplateView):
             car.save(update_fields=["is_sold"])
 
         # Delete the user's cart upon successful purchase
-        cart = Cart.objects.filter(user=self.request.user).first()
+        cart = existing_cart
         if not cart:
             return False
         cart.delete()
