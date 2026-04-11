@@ -94,3 +94,23 @@ class StripeWebhookHandlerTests(TestCase):
 		self.assertEqual(order.currency, "GBP")
 		self.assertEqual(order.stripe_pid, "pi_existing")
 		self.assertEqual(order.paid_at, original_paid_at)
+
+	def test_payment_intent_failed_marks_order_failed(self):
+		order = self._create_order()
+		request = self.factory.post("/checkout/webhook/", data=b"{}", content_type="application/json")
+		handler = StripeWH_Handler(request)
+
+		event = {
+			"type": "payment_intent.payment_failed",
+			"data": {
+				"object": {
+					"metadata": {"order_id": str(order.pk)},
+				}
+			},
+		}
+
+		response = handler.handle_payment_intent_payment_failed(event)
+
+		self.assertEqual(response.status_code, 200)
+		order.refresh_from_db()
+		self.assertEqual(order.status, Order.PaymentStatus.FAILED)
