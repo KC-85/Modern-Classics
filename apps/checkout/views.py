@@ -58,6 +58,7 @@ def cache_checkout_data(request):
 
 @require_POST
 @login_required_with_message          # << and here too
+@transaction.atomic
 def create_order(request):
     """
     Turn the current user’s Cart into an Order + line items,
@@ -99,6 +100,7 @@ def create_order(request):
 # ---------- CBVs ----------
 
 class CreateOrderView(LoginRequiredMessageMixin, View):
+    @transaction.atomic
     def post(self, request, *args, **kwargs):
         cart = get_object_or_404(Cart, user=request.user)
         if not cart.items.exists():
