@@ -146,13 +146,34 @@ class CheckoutView(LoginRequiredMessageMixin, View):
         order.save(update_fields=["delivery_cost"])
         order.save()  # recalculates grand_total
 
-        intent = stripe.PaymentIntent.create(
-            amount=int(order.grand_total * Decimal("100")),
-            currency="gbp",
-            metadata={"order_id": order.pk},
-        )
-        order.stripe_pid = intent.id
-        order.save(update_fields=["stripe_pid"])
+        intent = None
+        if order.stripe_pid:
+            try:
+                intent = stripe.PaymentIntent.retrieve(order.stripe_pid)
+            except Exception:
+                intent = None
+
+        if intent and intent.get("status") == "succeeded":
+            order.status = Order.PaymentStatus.PAID
+            amount = intent.get("amount_received") or intent.get("amount")
+            if amount is not None:
+                order.paid_amount = Decimal(amount) / Decimal("100")
+            currency = intent.get("currency")
+            if currency:
+                order.currency = currency.upper()
+            if not order.paid_at:
+                order.paid_at = timezone.now()
+            order.save(update_fields=["status", "paid_amount", "currency", "paid_at"])
+            return redirect("checkout:success", order_id=order.pk)
+
+        if not intent:
+            intent = stripe.PaymentIntent.create(
+                amount=int(order.grand_total * Decimal("100")),
+                currency="gbp",
+                metadata={"order_id": order.pk},
+            )
+            order.stripe_pid = intent.id
+            order.save(update_fields=["stripe_pid"])
 
         line_items = [
             {
@@ -164,6 +185,10 @@ class CheckoutView(LoginRequiredMessageMixin, View):
             for li in order.lineitems.select_related("car")
         ]
 
+        client_secret = getattr(intent, "client_secret", None)
+        if client_secret is None and hasattr(intent, "get"):
+            client_secret = intent.get("client_secret", "")
+
         ctx = {
             "order":         order,
             "order_form":    OrderForm(instance=order),
@@ -171,7 +196,7 @@ class CheckoutView(LoginRequiredMessageMixin, View):
             "total":         order.order_total,
             "delivery":      order.delivery_cost,
             "grand_total":   order.grand_total,
-            "client_secret": intent.client_secret,
+            "client_secret": client_secret,
             "stripe_public": settings.STRIPE_PUBLISHABLE_KEY,
         }
         return render(request, self.template_name, ctx)
