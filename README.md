@@ -593,69 +593,54 @@ The live deployed application can be found deployed on [Heroku](https://modern-c
 
 ### Heroku Deployment
 
-This project uses [Heroku](https://www.heroku.com), a platform as a service (PaaS) that enables developers to build, run, and operate applications entirely in the cloud.
+This project is deployed to Heroku using Gunicorn and PostgreSQL.
 
-Deployment steps are as follows, after account setup:
+Deployment summary:
 
-- Select **New** in the top-right corner of your Heroku Dashboard, and select **Create new app** from the dropdown menu.
-- Your app name must be unique, and then choose a region closest to you (EU or USA), then finally, click **Create App**.
-- From the new app **Settings**, click **Reveal Config Vars**, and set your environment variables to match your private `env.py` file.
+1. Create a new Heroku app.
+2. Connect the GitHub repository to the app (or deploy via Heroku CLI).
+3. Set required config vars (see below).
+4. Deploy `main`.
+5. Run migrations on the deployed app.
 
-> [!IMPORTANT]
-> This is a sample only; you would replace the values with your own if cloning/forking my repository.
-
-🛑 !!! ATTENTION KC-85 !!! 🛑
-
-⚠️ DO NOT update the environment variables to your own! These should never be public; only use the demo values below! ⚠️
-
-🛑 --- END --- 🛑
-
-| Key | Value |
-| --- | --- |
-| `AWS_ACCESS_KEY_ID` | user-inserts-own-aws-access-key-id |
-| `AWS_SECRET_ACCESS_KEY` | user-inserts-own-aws-secret-access-key |
-| `DATABASE_URL` | user-inserts-own-postgres-database-url |
-| `DISABLE_COLLECTSTATIC` | 1 (*this is temporary, and can be removed for the final deployment*) |
-| `EMAIL_HOST_PASS` | user-inserts-own-gmail-api-key |
-| `EMAIL_HOST_USER` | user-inserts-own-gmail-email-address |
-| `SECRET_KEY` | any-random-secret-key |
-| `STRIPE_PUBLIC_KEY` | user-inserts-own-stripe-public-key |
-| `STRIPE_SECRET_KEY` | user-inserts-own-stripe-secret-key |
-| `STRIPE_WH_SECRET` | user-inserts-own-stripe-webhook-secret |
-| `USE_AWS` | True |
-
-Heroku needs some additional files in order to deploy properly.
+Required deployment files:
 
 - [requirements.txt](requirements.txt)
 - [Procfile](Procfile)
 
-You can install this project's **[requirements.txt](requirements.txt)** (*where applicable*) using:
+Current Procfile process:
 
-- `pip3 install -r requirements.txt`
+- `web: gunicorn core.wsgi --log-file -`
 
-If you have your own packages that have been installed, then the requirements file needs updated using:
+### Required Heroku Config Vars
 
-- `pip3 freeze --local > requirements.txt`
+Set the following values in Heroku app settings:
 
-The **[Procfile](Procfile)** can be created with the following command:
+- `SECRET_KEY`
+- `DATABASE_URL`
+- `ALLOWED_HOSTS`
+- `CSRF_TRUSTED_ORIGINS`
+- `CLOUDINARY_CLOUD_NAME`
+- `CLOUDINARY_API_KEY`
+- `CLOUDINARY_API_SECRET`
+- `STRIPE_SECRET_KEY`
+- `STRIPE_PUBLISHABLE_KEY`
+- `STRIPE_WEBHOOK_SECRET`
+- `ENVIRONMENT` (`production` on Heroku)
 
-- `echo web: gunicorn app_name.wsgi > Procfile`
-- *replace `app_name` with the name of your primary Django app name; the folder where `settings.py` is located*
+If email sending is enabled in production, also set:
 
-For Heroku deployment, follow these steps to connect your own GitHub repository to the newly created app:
+- `EMAIL_HOST_USER`
+- `EMAIL_HOST_PASSWORD`
 
-Either (*recommended*):
+### Post-Deployment Checks
 
-- Select **Automatic Deployment** from the Heroku app.
+After deployment, verify:
 
-Or:
-
-- In the Terminal/CLI, connect to Heroku using this command: `heroku login -i`
-- Set the remote for Heroku: `heroku git:remote -a app_name` (*replace `app_name` with your app name*)
-- After performing the standard Git `add`, `commit`, and `push` to GitHub, you can now type:
-	- `git push heroku main`
-
-The project should now be connected and deployed to Heroku!
+- Home, showroom, and auth routes load correctly.
+- Stripe checkout flow completes and updates order status.
+- `robots.txt` and `sitemap.xml` are reachable.
+- Static assets load without 404s.
 
 ### Cloudinary API
 
@@ -686,7 +671,7 @@ To obtain my own Postgres Database from Code Institute, I followed these steps:
 - An email was sent to me with my new Postgres Database.
 - The Database connection string will resemble something like this:
     - `postgres://<db_username>:<db_password>@<db_host_url>/<db_name>`
-- You can use the above URL with Django; simply paste it into your `env.py` file and Heroku Config Vars as `DATABASE_URL`.
+- You can use the above URL with Django by setting `DATABASE_URL` locally and in Heroku config vars.
 
 ### Stripe API
 
@@ -696,8 +681,8 @@ Once you've created a Stripe account and logged-in, follow these series of steps
 
 - From your Stripe dashboard, click to expand the "Get your test API keys".
 - You'll have two keys here:
-	- `STRIPE_PUBLIC_KEY` = Publishable Key (starts with **pk**)
-	- `STRIPE_SECRET_KEY` = Secret Key (starts with **sk**)
+    - `STRIPE_PUBLISHABLE_KEY` = Publishable Key (starts with **pk**)
+    - `STRIPE_SECRET_KEY` = Secret Key (starts with **sk**)
 
 As a backup, in case users prematurely close the purchase-order page during payment, we can include Stripe Webhooks.
 
@@ -707,7 +692,7 @@ As a backup, in case users prematurely close the purchase-order page during paym
 - Click **receive all events**.
 - Click **Add Endpoint** to complete the process.
 - You'll have a new key here:
-	- `STRIPE_WH_SECRET` = Signing Secret (Wehbook) Key (starts with **wh**)
+    - `STRIPE_WEBHOOK_SECRET` = Signing secret (starts with **wh**)
 
 ### Gmail API
 
@@ -759,50 +744,18 @@ MIDDLEWARE = [
 
 This project can be cloned or forked in order to make a local copy on your own system.
 
-For either method, you will need to install any applicable packages found within the [requirements.txt](requirements.txt) file.
+Recommended local setup:
 
-- `pip3 install -r requirements.txt`.
-
-You will need to create a new file called `env.py` at the root-level, and include the same environment variables listed above from the Heroku deployment steps.
-
-> [!IMPORTANT]
-> This is a sample only; you would replace the values with your own if cloning/forking my repository.
-
-🛑 !!! ATTENTION KC-85 !!! 🛑
-
-⚠️ DO NOT update the environment variables to your own! These should never be public; only use the demo values below! ⚠️
-
-🛑 --- END --- 🛑
-
-Sample `env.py` file:
-
-```python
-import os
-
-os.environ.setdefault("AWS_ACCESS_KEY_ID", "user-inserts-own-aws-access-key-id")
-os.environ.setdefault("AWS_SECRET_ACCESS_KEY", "user-inserts-own-aws-secret-access-key")
-os.environ.setdefault("DATABASE_URL", "user-inserts-own-postgres-database-url")
-os.environ.setdefault("EMAIL_HOST_PASS", "user-inserts-own-gmail-host-api-key")
-os.environ.setdefault("EMAIL_HOST_USER", "user-inserts-own-gmail-email-address")
-os.environ.setdefault("SECRET_KEY", "any-random-secret-key")
-os.environ.setdefault("STRIPE_PUBLIC_KEY", "user-inserts-own-stripe-public-key")
-os.environ.setdefault("STRIPE_SECRET_KEY", "user-inserts-own-stripe-secret-key")
-os.environ.setdefault("STRIPE_WH_SECRET", "user-inserts-own-stripe-webhook-secret")  # only if using Stripe Webhooks
-
-# local environment only (do not include these in production/deployment!)
-os.environ.setdefault("DEBUG", "True")
-os.environ.setdefault("DEVELOPMENT", "True")
+```bash
+python3.12 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+python3 manage.py migrate
+python3 manage.py createsuperuser
+python3 manage.py runserver
 ```
 
-Once the project is cloned or forked, in order to run it locally, you'll need to follow these steps:
-
-- Start the Django app: `python3 manage.py runserver`
-- Stop the app once it's loaded: `CTRL+C` (*Windows/Linux*) or `⌘+C` (*Mac*)
-- Make any necessary migrations: `python3 manage.py makemigrations --dry-run` then `python3 manage.py makemigrations`
-- Migrate the data to the database: `python3 manage.py migrate --plan` then `python3 manage.py migrate`
-- Create a superuser: `python3 manage.py createsuperuser`
-- Load fixtures (*if applicable*): `python3 manage.py loaddata file-name.json` (*repeat for each file*)
-- Everything should be ready now, so run the Django app again: `python3 manage.py runserver`
+Local environment variables should be provided via `.env` (loaded by `python-dotenv`) and should mirror required config vars used in deployment.
 
 If you'd like to backup your database models, use the following command for each model you'd like to create a fixture for:
 
@@ -838,12 +791,6 @@ By forking the GitHub Repository, you make a copy of the original repository on 
 3. Once clicked, you should now have a copy of the original repository in your own GitHub account!
 
 ### Local VS Deployment
-
-⚠️ INSTRUCTIONS ⚠️
-
-Use this space to discuss any differences between the local version you've developed, and the live deployment site. Generally, there shouldn't be [m]any major differences, so if you honestly cannot find any differences, feel free to use the following example:
-
-⚠️ --- END --- ⚠️
 
 There are no remaining major differences between the local version when compared to the deployed version online.
 
