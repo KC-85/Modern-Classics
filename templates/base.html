@@ -33,13 +33,12 @@
     <nav class="navbar">
       <ul class="nav-left">
         <li><a href="{% url 'showroom:car_list' %}">Showroom</a></li>
-        {% if request.user.is_authenticated %}
-        <li><a href="{% url 'trailer:cart_detail' %}">Cart</a></li>
-        <li><a href="{% url 'checkout:list' %}">My Orders</a></li>
-        {% else %}
         <li><a href="{% url 'common:faq_list' %}">FAQ</a></li>
         <li><a href="{% url 'common:contact' %}">Contact</a></li>
         <li><a href="{% url 'common:newsletter' %}">Newsletter</a></li>
+        {% if request.user.is_authenticated %}
+        <li><a href="{% url 'trailer:cart_detail' %}">Cart</a></li>
+        <li><a href="{% url 'checkout:list' %}">My Orders</a></li>
         {% endif %}
       </ul>
       <ul class="nav-right">
