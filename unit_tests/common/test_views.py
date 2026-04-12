@@ -1,6 +1,34 @@
 from django.test import TestCase
+from django.contrib.auth import get_user_model
 from django.urls import reverse
 from apps.common.models import Newsletter
+
+User = get_user_model()
+
+
+class NavigationDiscoverabilityTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = User.objects.create_user(
+            username="nav-user",
+            email="nav@example.com",
+            password="pass12345",
+        )
+
+    def test_guest_navigation_shows_common_resource_links(self):
+        resp = self.client.get(reverse("showroom:car_list"))
+        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, reverse("common:faq_list"))
+        self.assertContains(resp, reverse("common:contact"))
+        self.assertContains(resp, reverse("common:newsletter"))
+
+    def test_authenticated_navigation_still_shows_common_resource_links(self):
+        self.client.force_login(self.user)
+        resp = self.client.get(reverse("showroom:car_list"))
+        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, reverse("common:faq_list"))
+        self.assertContains(resp, reverse("common:contact"))
+        self.assertContains(resp, reverse("common:newsletter"))
 
 
 class NewsletterSignupViewTests(TestCase):
