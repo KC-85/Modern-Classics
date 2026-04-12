@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /accounts/
+Disallow: /checkout/
+Disallow: /trailer/
+
+Sitemap: https://modern-classics-b10468fd6f55.herokuapp.com/sitemap.xml
