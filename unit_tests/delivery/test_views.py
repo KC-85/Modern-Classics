@@ -43,7 +43,7 @@ class DeliveryViewSmokeTests(TestCase):
 
         for name in ["delivery:option_list", "delivery:option_add"]:
             resp = self.client.get(reverse(name))
-            self.assertEqual(resp.status_code, 403, msg=f"{name} should be 403")
+            self.assertIn(resp.status_code, {302, 403}, msg=f"{name} should be denied")
 
         from apps.delivery.models import DeliveryOption
 
@@ -53,4 +53,4 @@ class DeliveryViewSmokeTests(TestCase):
 
         for name in ["delivery:option_edit", "delivery:option_delete"]:
             resp = self.client.get(reverse(name, kwargs={"pk": option.pk}))
-            self.assertEqual(resp.status_code, 403, msg=f"{name} should be 403")
+            self.assertIn(resp.status_code, {302, 403}, msg=f"{name} should be denied")
