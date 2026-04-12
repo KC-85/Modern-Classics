@@ -3,23 +3,18 @@
 > [!NOTE]
 > Return back to the [README.md](README.md) file.
 
-⚠️ INSTRUCTIONS ⚠️
+This document records manual and automated validation carried out on the deployed application and the local test environment.
 
-In the following sections, you need to convince the assessors that you have conducted enough manual testing to legitimately believe that the site works well. Essentially, in this part, you should go over all of your project's features, and ensure that they all work as intended, with the project providing an easy and straightforward way for the users to achieve their goals.
+Testing focus areas:
 
-⚠️ --- END --- ⚠️
+- Core e-commerce flow (cart, checkout, payment state updates, order history)
+- Access control (guest vs authenticated vs superuser behavior)
+- SEO endpoints (robots and sitemap)
+- Form validation and defensive behavior
 
 ## Code Validation
 
-⚠️ INSTRUCTIONS ⚠️
-
-Use the space below to discuss code validation for all of your own code files (*where applicable*). You are not required to validate external libraries/frameworks.
-
-**MANDATORY**: You must provide a screenshot for each file you validate.
-
-**PRO TIP**: Where possible, always validate the live URL pages/files, not your local code using copy/paste. There could be subtle/hidden differences.
-
-⚠️ --- END --- ⚠️
+Validation was completed for project-owned code only (not third-party/vendor assets). Screenshots are referenced in the tables below.
 
 ### HTML
 
@@ -443,55 +438,36 @@ I have conducted a series of automated tests on my application.
 
 ### Python (Unit Testing)
 
-⚠️ INSTRUCTIONS ⚠️
+I used Django's built-in test runner and the app-level unit test suites in [unit_tests](unit_tests/).
 
-Adjust the code below (file names, function names, etc.) to match your own project files/folders. Use these notes loosely when documenting your own Python Unit tests, and remove/adjust where applicable.
+Primary command used during this assessment phase:
 
-⚠️ SAMPLE ⚠️
+- `python3 manage.py test`
 
-I have used Django's built-in unit testing framework to test the application functionality. In order to run the tests, I ran the following command in the terminal each time:
+Current result:
 
-- `python3 manage.py test name-of-app`
+- Full suite passes locally (`Exit Code: 0`) after Tier 1 to Tier 4 fixes.
+- Key regressions were added around checkout payment status transitions, webhook idempotency, delivery-option access control, and navigation discoverability.
 
-To create the coverage report, I would then run the following commands:
+Coverage reporting commands used:
 
-- `pip3 install coverage`
-- `pip3 freeze --local > requirements.txt`
-- `coverage run --omit=*/site-packages/*,*/migrations/*,*/__init__.py,env.py,manage.py test`
+- `coverage run --omit=*/site-packages/*,*/migrations/*,*/__init__.py,manage.py -m django test`
 - `coverage report`
-
-To see the HTML version of the reports, and find out whether some pieces of code were missing, I ran the following commands:
-
 - `coverage html`
-- `python3 -m http.server`
 
-Below are the results from the full coverage report on my application that I've tested:
+Below are the latest coverage artifacts:
 
 ![screenshot](documentation/automation/html-coverage.png)
 
 #### Unit Test Issues
 
-⚠️ INSTRUCTIONS ⚠️
-
-Use this section to list any known issues you ran into while writing your Python unit tests. Remember to include screenshots (where possible), and a solution to the issue (if known). This can be used for both "fixed" and "unresolved" issues. Remove this sub-section entirely if you somehow didn't run into any issues while working with your tests.
-
-⚠️ --- END --- ⚠️
+- Initial environment issue: virtual environment created with Python 3.14 caused dependency install failures (notably psycopg2 wheel/build path).
+- Resolution: recreated virtual environment with Python 3.12 (matching [.python-version](.python-version)), reinstalled requirements, reran suite successfully.
+- One test expectation update was required after payment and access-control hardening: denial responses can be `302` or `403` depending on decorator/redirect behavior.
 
 ## Bugs
 
-⚠️ INSTRUCTIONS ⚠️
-
-Nobody likes bugs,... except the assessors! Projects seem more suspicious if a student doesn't properly track their bugs. If you're about to submit your project without any bugs listed below, you should ask yourself why you're doing this course in the first place, if you're able to build this entire application without running into any bugs. The best thing you can do for any project is to document your bugs! Not only does it show the true stages of development, but think of it as breadcrumbs for yourself in the future, should you encounter the same/similar bug again, it acts as a gentle reminder on what you did to fix the bug.
-
-If/when you encounter bugs during the development stages of your project, you should document them here, ideally with a screenshot explaining what the issue was, and what you did to fix the bug.
-
-Alternatively, an improved way to manage bugs is to use the built-in **[Issues](https://www.github.com/KC-85/Modern-Classics/issues)** tracker on your GitHub repository. This can be found at the top of your repository, the tab called "Issues".
-
-If using the Issues tracker for bug management, you can simplify the documentation process for testing. Issues allow you to directly paste screenshots into the issue page without having to first save the screenshot locally. You can add labels to your issues (e.g. `bug`), assign yourself as the owner, and add comments/updates as you progress with fixing the issue(s). Once you've solved the issue/bug, you should then "Close" it.
-
-When showcasing your bug tracking for assessment, you can use the following examples below.
-
-⚠️ --- END --- ⚠️
+Bug tracking is managed through [GitHub Issues](https://www.github.com/KC-85/Modern-Classics/issues) using labels and close-state history for reproducible audit trails.
 
 ### Fixed Bugs
 
