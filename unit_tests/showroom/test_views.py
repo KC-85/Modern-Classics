@@ -122,6 +122,24 @@ class CarViewsTests(TestCase):
         resp = self.client.get(url)
         self.assertEqual(resp.status_code, 200)
 
+    def test_update_and_delete_require_superuser(self):
+        self.client.force_login(self.user)
+
+        edit_url = reverse("showroom:car_edit", kwargs={"slug": self.c1.slug})
+        delete_url = reverse("showroom:car_delete", kwargs={"slug": self.c1.slug})
+
+        edit_resp = self.client.get(edit_url)
+        delete_resp = self.client.get(delete_url)
+
+        self.assertNotEqual(edit_resp.status_code, 200)
+        self.assertNotEqual(delete_resp.status_code, 200)
+
+        # Superuser still has access
+        self.client.logout()
+        self.client.force_login(self.admin)
+        self.assertEqual(self.client.get(edit_url).status_code, 200)
+        self.assertEqual(self.client.get(delete_url).status_code, 200)
+
     def test_create_post_success(self):
         self.client.force_login(self.admin)
         url = reverse("showroom:car_create")
