@@ -6,35 +6,15 @@ Developer: Kristian Cross ([KC-85](https://www.github.com/KC-85))
 [![GitHub last commit](https://img.shields.io/github/last-commit/KC-85/Modern-Classics)](https://www.github.com/KC-85/Modern-Classics/commits/main)
 [![GitHub repo size](https://img.shields.io/github/repo-size/KC-85/Modern-Classics)](https://www.github.com/KC-85/Modern-Classics)
 
-⚠️ INSTRUCTIONS ⚠️
+Modern Classics is a full-stack Django e-commerce platform focused on classic car sales. The application allows visitors to browse a curated showroom, filter and search listings, add cars to a cart, and complete checkout using Stripe.
 
-In this section, include a few paragraphs providing an overview of your project. Essentially, this part is your "sales pitch". Describe what the project hopes to accomplish, who it is intended to target, and how it will be useful to the target audience.
+The project is aimed at enthusiast buyers who want a clean browsing experience and secure purchase flow, and at site administrators who need manageable inventory and order workflows. Admin users can manage stock and delivery options, while authenticated customers can track their orders and maintain profile data.
 
-⚠️ --- END --- ⚠️
-
-🛑 NOTES 🛑
-
-Do not add a **Table of Contents** to your Markdown files. GitHub has these built-in automatically using the headers/hashtags.
-
-Don't add screenshots for the README/TESTING into your `assets` or `static` folders. Create a new folder at the root-level called `documentation`. Consider creating sub-directories within `documentation` to handle things like `wireframes`, `features`, `validation`, `responsiveness`, etc.
-
-**Site Mockups**
-*([amiresponsive](https://ui.dev/amiresponsive?url=https://modern-classics-b10468fd6f55.herokuapp.com), [techsini](https://techsini.com/multi-mockup), etc.)*
-Having issues generating site mockups? This is likely due to security policies with your deployed site.
-If you open up your DevTools, there may be an error referencing `X-Frame-Options`.
-
-For Chrome users, head over to http://bit.ly/3iRPn4u and install the extension within your browser. Once installed, navigate back to the mockup site of your choice. You should find your site rendering in the various devices now.
-
-Alternatively, open your project in Gitpod and run the server. Once the site is running, click the `Ports` tab from your Gitpod Terminal. Click the padlock on the appropriate port for your project (`Flask: 5000`, `Django: 8000`). This will make your local page public temporarily. Now, copy the URL of your live-preview page into the responsive tool above. You should find your site rendering in the various devices.
-
-🛑 --- END ---- 🛑
+This repository contains both customer-facing functionality (showroom, cart, checkout, FAQ/contact/newsletter) and operational functionality (admin CRUD, delivery configuration, webhook payment updates, SEO pages such as robots and sitemap).
 
 ![screenshot](documentation/mockup.png)
 
 source: [Modern-Classics amiresponsive](https://ui.dev/amiresponsive?url=https://modern-classics-b10468fd6f55.herokuapp.com)
-
-> [!IMPORTANT]
-> The examples in these templates are strongly influenced by the Code Institute walkthrough project called "Boutique Ado".
 
 ## UX
 
@@ -501,19 +481,29 @@ I've decomposed my Epics into User Stories for prioritizing and implementing the
 
 ## Ecommerce Business Model
 
-⚠️ INSTRUCTIONS ⚠️
+Modern Classics follows a **B2C (Business to Consumer)** model. The core transaction is a single-customer purchase of a listed classic car through the website checkout flow.
 
-Use this space to discuss the business model for your e-commerce project. An example is provided below that aligns closely with **Boutique Ado's B2C** strategy. Be sure to align to your own project requirements.
+### Commercial Intent
 
-⚠️ --- END --- ⚠️
+- Convert showroom browsing into completed Stripe-backed purchases.
+- Build buyer trust through transparent listing details and secure payment handling.
+- Increase repeat engagement through account history and email communications.
 
-This site sells goods to individual customers, and therefore follows a **Business to Customer** model. It is of the simplest **B2C** forms, as it focuses on individual transactions, and doesn't need anything such as monthly/annual subscriptions.
+### Revenue Model
 
-It is still in its early development stages, although it already has a newsletter, and links for social media marketing.
+- Primary revenue comes from direct vehicle sales.
+- No subscription model is used; transactions are one-off purchases.
 
-Social media can potentially build a community of users around the business, and boost site visitor numbers, especially when using larger platforms such a Facebook.
+### Marketing & Retention Channels
 
-A newsletter list can be used by the business to send regular messages to site users. For example, what items are on special offer, new items in stock, updates to business hours, notifications of events, and much more!
+- **Newsletter signup** is used for audience retention and announcement campaigns.
+- **SEO pages** (sitemap/robots + metadata) support organic discovery.
+- **Social presence** and external channels are used to drive qualified traffic to listings.
+
+### Audience
+
+- Individual buyers searching for curated classic vehicles.
+- Enthusiasts who prefer a streamlined online purchasing process with clear inventory visibility.
 
 ## SEO & Marketing
 
