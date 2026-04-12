@@ -6,38 +6,42 @@ from django.views.generic        import ListView, CreateView, UpdateView, Delete
 from django.views                import View
 from django.shortcuts            import get_object_or_404, render, redirect
 from django.contrib.auth.mixins  import LoginRequiredMixin
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils.decorators     import method_decorator
 
 from .models   import DeliveryOption
 from .forms    import DeliveryDistanceForm
 from apps.checkout.models import Order
 
-# Decorator shortcut for function-based mixins
+# Decorator shortcuts for class-based views
 login_dispatch = method_decorator(login_required, name='dispatch')
+superuser_dispatch = method_decorator(
+    [login_required, user_passes_test(lambda u: u.is_superuser)],
+    name='dispatch'
+)
 
-@login_dispatch
+@superuser_dispatch
 class DeliveryOptionListView(ListView):
     model               = DeliveryOption
     template_name       = "delivery/option_list.html"
     context_object_name = "options"
     paginate_by         = 20  # optional
 
-@login_dispatch
+@superuser_dispatch
 class DeliveryOptionCreateView(CreateView):
     model         = DeliveryOption
     fields        = ['name', 'price', 'description']
     template_name = "delivery/option_form.html"
     success_url   = reverse_lazy("delivery:option_list")
 
-@login_dispatch
+@superuser_dispatch
 class DeliveryOptionUpdateView(UpdateView):
     model         = DeliveryOption
     fields        = ['name', 'price', 'description']
     template_name = "delivery/option_form.html"
     success_url   = reverse_lazy("delivery:option_list")
 
-@login_dispatch
+@superuser_dispatch
 class DeliveryOptionDeleteView(DeleteView):
     model         = DeliveryOption
     template_name = "delivery/option_confirm_delete.html"
