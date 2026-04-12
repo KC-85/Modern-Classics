@@ -30,6 +30,12 @@ class NavigationDiscoverabilityTests(TestCase):
         self.assertContains(resp, reverse("common:contact"))
         self.assertContains(resp, reverse("common:newsletter"))
 
+    def test_layout_has_external_link_with_rel_attributes(self):
+        resp = self.client.get(reverse("showroom:car_list"))
+        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, 'target="_blank"', html=False)
+        self.assertContains(resp, 'rel="noopener noreferrer"', html=False)
+
 
 class NewsletterSignupViewTests(TestCase):
     def test_get_renders_form(self):
