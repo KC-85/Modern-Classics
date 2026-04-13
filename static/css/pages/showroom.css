@@ -2,6 +2,22 @@
    Showroom page styles
    ============================ */
 
+#car-admin-toolbar {
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 0.75rem;
+  padding: 0.65rem;
+  box-shadow: 0 8px 20px rgba(17, 26, 41, 0.05);
+}
+
+form.row.g-2 {
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 0.8rem;
+  padding: 0.8rem;
+  box-shadow: 0 10px 24px rgba(18, 28, 43, 0.04);
+}
+
 /* Card polish */
 .row.g-3 .card {
   transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease;
@@ -76,6 +92,59 @@ a.stretched-link:focus-visible,
 @media (max-width: 576px) {
   .row.g-2 { --bs-gutter-y: .5rem; }
   .row.g-3 { --bs-gutter-y: 1rem; }
+
+  form.row.g-2 {
+    padding: 0.7rem;
+  }
+}
+
+@media (min-width: 375px) and (max-width: 575px) {
+  .container.my-4 {
+    margin-top: 0.75rem !important;
+    margin-bottom: 0.75rem !important;
+    padding: 0;
+  }
+
+  .container > .h3.fw-bold {
+    font-size: 1.28rem;
+  }
+
+  #car-admin-toolbar {
+    padding: 0.55rem;
+  }
+
+  #car-admin-toolbar .btn,
+  #car-admin-toolbar .form-select {
+    width: 100%;
+  }
+
+  form.row.g-2 .btn {
+    min-height: 2.7rem;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767px) {
+  .container > .h3.fw-bold {
+    font-size: 1.45rem;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .row.g-3 .card {
+    min-height: 100%;
+  }
+}
+
+@media (min-width: 1200px) and (max-width: 1439px) {
+  .container.my-4 {
+    max-width: 1240px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .container.my-4 {
+    max-width: 1320px;
+  }
 }
 
 /* Reduce motion preference */
