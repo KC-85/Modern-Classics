@@ -85,17 +85,16 @@
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
 }
 
-.hero .carousel-inner,
-.hero .carousel-item {
-  height: auto;
+.hero .carousel-inner {
+  height: clamp(320px, 50vh, 520px);
 }
 
 .hero .carousel-item > img,
 .hero .hero__img {
   display: block;
   width: 100%;
-  height: auto;
-  object-fit: contain;
+  height: 100%;
+  object-fit: cover;
   object-position: center;
 }
 
