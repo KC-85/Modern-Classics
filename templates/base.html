@@ -31,30 +31,41 @@
 <body>
   <header>
     <nav class="navbar">
-      <ul class="nav-left">
-        <li><a href="{% url 'showroom:car_list' %}">Showroom</a></li>
-        <li><a href="{% url 'common:faq_list' %}">FAQ</a></li>
-        <li><a href="{% url 'common:contact' %}">Contact</a></li>
-        <li><a href="{% url 'common:newsletter' %}">Newsletter</a></li>
-        {% if request.user.is_authenticated %}
-        <li><a href="{% url 'trailer:cart_detail' %}">Cart</a></li>
-        <li><a href="{% url 'checkout:list' %}">My Orders</a></li>
-        {% endif %}
-      </ul>
-      <ul class="nav-right">
-        {% if request.user.is_authenticated %}
-        <li><a href="{% url 'users:profile' %}">Profile</a></li>
-        <li>
-          <form method="post" action="{% url 'account_logout' %}" style="display:inline">
-            {% csrf_token %}
-            <button class="btn btn-link p-0 align-baseline" type="submit">Logout</button>
-          </form>
-        </li>
-        {% else %}
-        <li><a href="{% url 'account_login' %}">Login</a></li>
-        <li><a href="{% url 'account_signup' %}">Sign Up</a></li>
-      {% endif %}
-      </ul>
+      <a class="brand" href="{% url 'home' %}">Modern Classics</a>
+
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Toggle navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <div id="site-nav" class="nav-shell">
+        <ul class="nav-left">
+          <li><a href="{% url 'showroom:car_list' %}">Showroom</a></li>
+          <li><a href="{% url 'common:faq_list' %}">FAQ</a></li>
+          <li><a href="{% url 'common:contact' %}">Contact</a></li>
+          <li><a href="{% url 'common:newsletter' %}">Newsletter</a></li>
+          {% if request.user.is_authenticated %}
+          <li><a href="{% url 'trailer:cart_detail' %}">Cart</a></li>
+          <li><a href="{% url 'checkout:list' %}">My Orders</a></li>
+          {% endif %}
+        </ul>
+
+        <ul class="nav-right">
+          {% if request.user.is_authenticated %}
+          <li><a href="{% url 'users:profile' %}">Profile</a></li>
+          <li>
+            <form method="post" action="{% url 'account_logout' %}" class="logout-form">
+              {% csrf_token %}
+              <button class="btn btn-link nav-link-btn" type="submit">Logout</button>
+            </form>
+          </li>
+          {% else %}
+          <li><a href="{% url 'account_login' %}">Login</a></li>
+          <li><a href="{% url 'account_signup' %}">Sign Up</a></li>
+          {% endif %}
+        </ul>
+      </div>
     </nav>
   </header>
 
