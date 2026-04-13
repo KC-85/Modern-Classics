@@ -24,15 +24,15 @@ class CarViewsTests(TestCase):
         # Create several cars for filtering/sorting/search
         cls.c1 = Car.objects.create(
             make=cls.ford, model=cls.focus, year=2020,
-            specifications="Spec A", performance="A", condition="good", price="10000.00"
+            specifications="Spec A", performance="A", condition="good", price=10000
         )
         cls.c2 = Car.objects.create(
             make=cls.vw, model=cls.golf, year=2022,
-            specifications="Spec B", performance="B", condition="excellent", price="15000.00"
+            specifications="Spec B", performance="B", condition="excellent", price=15000
         )
         cls.c3 = Car.objects.create(
             make=cls.ford, model=cls.focus, year=2018,
-            specifications="Spec C", performance="C", condition="fair", price="8000.00"
+            specifications="Spec C", performance="C", condition="fair", price=8000
         )
 
     # ---------- List view ----------
@@ -150,7 +150,7 @@ class CarViewsTests(TestCase):
             "specifications": "Spec X",
             "performance": "0-60 5.8s",
             "condition": "good",
-            "price": "25000.00",
+            "price": 25000,
             "is_sold": False,
         }
         resp = self.client.post(url, data)

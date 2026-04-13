@@ -66,7 +66,7 @@ class CarFormTests(TestCase):
             "specifications": "Spec sheet",
             "performance": "0-60 6.2s",
             "condition": "good",
-            "price": "12345.67",
+                "price": "12345",
             "is_sold": False,
         }
         form = CarForm(data=data)
