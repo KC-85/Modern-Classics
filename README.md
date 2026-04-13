@@ -20,8 +20,6 @@ source: [Modern-Classics amiresponsive](https://ui.dev/amiresponsive?url=https:/
 
 ### The 5 Planes of UX
 
-⚠️ NOTE: make sure to update the text below to match your own project! ⚠️
-
 #### 1. Strategy
 
 **Purpose**
@@ -79,14 +77,6 @@ source: [Modern-Classics amiresponsive](https://ui.dev/amiresponsive?url=https:/
 
 ### Colour Scheme
 
-⚠️INSTRUCTIONS ⚠️
-
-Explain your colors and color scheme. Consider adding a link and screenshot for your color scheme using [coolors](https://coolors.co/generate).
-
-When you add a color to the palette, the URL is dynamically updated, making it easier for you to return back to your color palette later if needed. See example below:
-
-⚠️ --- END --- ⚠️
-
 I used [coolors.co](https://coolors.co/080708-3772ff-df2935-fdca40-e6e8e6) to generate my color palette.
 
 - `#000000` primary text.
@@ -98,23 +88,11 @@ I used [coolors.co](https://coolors.co/080708-3772ff-df2935-fdca40-e6e8e6) to ge
 
 ### Typography
 
-⚠️ INSTRUCTIONS ⚠️
-
-Explain any fonts and icon libraries used, like **Google Fonts**, **Font Awesome**, etc. Consider adding a link to each font used, the Font Awesome site (if used), or similar icon library.
-
-⚠️ --- END --- ⚠️
-
 - [Montserrat](https://fonts.google.com/specimen/Montserrat) was used for the primary headers and titles.
 - [Lato](https://fonts.google.com/specimen/Lato) was used for all other secondary text.
 - [Font Awesome](https://fontawesome.com) icons were used throughout the site, such as the social media icons in the footer.
 
 ## Wireframes
-
-⚠️ INSTRUCTIONS ⚠️
-
-If you've created wireframes or mock-ups, use this section to display screenshots of your wireframes. The example table below uses sample pages from the walkthrough project to give you some inspiration for your own project, so please adjust accordingly.
-
-⚠️ --- END --- ⚠️
 
 To follow best practice, wireframes were developed for mobile, tablet, and desktop sizes.
 I've used [Balsamiq](https://balsamiq.com/wireframes) to design my site wireframes.
@@ -137,12 +115,6 @@ I've used [Balsamiq](https://balsamiq.com/wireframes) to design my site wirefram
 | 404 | ![screenshot](documentation/wireframes/mobile-404.png) | ![screenshot](documentation/wireframes/tablet-404.png) | ![screenshot](documentation/wireframes/desktop-404.png) |
 
 ## User Stories
-
-⚠️ INSTRUCTIONS ⚠️
-
-In this section, list all of your possible user stories for the project. Samples have been provided below using the example walkthrough project for your inspiration. Make sure to adjust to match your own project features!
-
-⚠️ --- END --- ⚠️
 
 | Target | Expectation | Outcome |
 | --- | --- | --- |
@@ -172,14 +144,6 @@ In this section, list all of your possible user stories for the project. Samples
 
 ## Features
 
-⚠️ INSTRUCTIONS ⚠️
-
-In this section, you should go over the different parts of your project, and describe each feature. You should explain what value each of the features provides for the user, focusing on your target audience, what they want to achieve, and how your project can help them achieve these things.
-
-**IMPORTANT**: Remember to always include a screenshot of each individual feature!
-
-⚠️ --- END --- ⚠️
-
 ### Existing Features
 
 | Feature | Notes | Screenshot |
@@ -206,14 +170,6 @@ In this section, you should go over the different parts of your project, and des
 | 404 | The 404 error page will indicate when a user has navigated to a page that doesn't exist, replacing the default Heroku 404 page with one that ties into the site's look and feel. | ![screenshot](documentation/features/404.png) |
 
 ### Future Features
-
-⚠️ INSTRUCTIONS ⚠️
-
-Do you have additional ideas that you'd like to include on your project in the future? Fantastic, list them here! It's always great to have plans for future improvements. Consider adding any helpful links or notes to help remind you in the future, if you revisit the project in a couple years.
-
-A few examples are listed below to align with possible ways to improve on the sample walkthrough project, to give you some inspiration.
-
-⚠️ --- END ---⚠️
 
 - **Product Reviews & Ratings**: Allow customers to leave reviews and rate products, with admin moderation. Display average ratings and review counts on product pages.
 - **Wishlist Functionality**: Enable users to save products to a personal wishlist for future purchases. Notify users if wishlist items go on sale or are back in stock.
@@ -256,16 +212,6 @@ A few examples are listed below to align with possible ways to improve on the sa
 | [![badge](https://img.shields.io/badge/Mermaid-grey?logo=mermaid&logoColor=FF3670)](https://mermaid.live) | Generate an interactive diagram for the data/schema. |
 | [![badge](https://img.shields.io/badge/W3Schools-grey?logo=w3schools&logoColor=04AA6D)](https://www.w3schools.com) | Tutorials/Reference Guide |
 
-⚠️ NOTE ⚠️
-
-Want to add more?
-
-- Tutorial: https://shields.io/badges/static-badge
-- Icons/Logos: https://simpleicons.org
-  - FYI: not all logos are available to use
-
-🛑 --- END --- 🛑
-
 ## Database Design
 
 ### Data Model
@@ -273,24 +219,6 @@ Want to add more?
 Entity Relationship Diagrams (ERD) help to visualize database architecture before creating models. Understanding the relationships between different tables can save time later in the project.
 
 ![screenshot](documentation/erd.png)
-
-⚠️ INSTRUCTIONS ⚠️
-
-Using your defined models, create an ERD with the relationships identified. A couple of recommendations for building your own free ERDs:
-- [Lucidchart](https://www.lucidchart.com/pages/ER-diagram-symbols-and-meaning)
-- [Draw.io](https://draw.io)
-
-Looking for an interactive version of your ERD? Consider using a [`Mermaid flowchart`](https://mermaid.live). To simplify the process, you can ask ChatGPT (or similar) the following prompt:
-
-> ChatGPT Prompt:
-> "Generate a Markdown syntax Mermaid ERD using my Django models"
-> [paste-your-django-models-into-ChatGPT]
-
-The "Boutique Ado" sample ERD in Markdown syntax using Mermaid can be seen below as an example.
-
-**NOTE**: A Markdown Preview tool doesn't show the interactive ERD; you must first commit/push the code to your GitHub repository in order to see it live in action.
-
-⚠️ --- END --- ⚠️
 
 I have used `Mermaid` to generate an interactive ERD of my project.
 
@@ -417,12 +345,6 @@ erDiagram
 
 source: [Mermaid](https://mermaid.live/edit#pako:eNqVVcFu2zAM_RVD57RIHLdpfRs6DBg2bB2GXYYAhmIxjlBZcimqqdvk3yfbSVPHceP5kBh8TyRFPtKvLDUCWMwAP0ueIc_nOvDPHwsYvDbv1SM1BVIE998OpieO6Ypj4DxV8xy6CORcqq654NauDYoG2c71IeQ9mqVUMDCygCV3ipJiZTQk2uULwH6WJQSghAuBYO1kKDHsJ5JZ68Rgkkoq-1mpcfojvDCWqiac8YDliXoFm83FxWbTql0crLhNfEX2xDtOkBksB1b1dC-XKEELVSYH-C0TH1m4lAb6tw_uXFCCZ_K3tynKgqTRB2RhjKrvZ-UL2INdQCpzroICZQpdM3KSOuuG9WAGicN3Kq1NzW_PNauam82hrHGwAGV0Zr0g9tyfKAYPkKm4vfJdOqWS_5uvD8ehJabWsV4dfqzzs3N1dp6OJ0T4ypLMoX7pNlOAkk-ApZ8LS124KScZ4qoL-g2nxTFYy82gzKTmKlnw7OQdZAFJIY-3Vt3o71LDV4L8TMMr06Pjmlp13KemvBPpnRxn99afRn618k8lsddlO6NmG-Rcl6fy3R3ZK7tfyTtie890yT9gbRUQDdb-Owm_3ebOaOKD18mg0ag7nHv1daf6y6dfAyM9OrDtbVS75dqu94O2ZSOWA_rgwn9Ta7dzRivwKbLYvwqOD3M21xWPOzK_S52ymNDBiLmikvvuK8ziJVfWWwuuWfzKnlk8jSaXN9ez8HoyHc_C8TiajVjJ4ovp5XUUTqMovLqdXd2Et-FsO2Ivxngfk8vxZBpGkT_m_zxW-_tbY01QNC5b7YJt_wE0ZoQj)
 
-⚠️ RECOMMENDED ⚠️
-
-Alternatively, or in addition to, a more comprehensive ERD can be auto-generated once you're at the end of your development stages, just before you submit. Follow the steps below to obtain a thorough ERD that you can include. Feel free to leave the steps below in the README for future use to yourself.
-
-⚠️ --- END --- ⚠️
-
 I have used `pygraphviz` and `django-extensions` to auto-generate an ERD.
 
 The steps taken were as follows:
@@ -450,12 +372,6 @@ source: [medium.com](https://medium.com/@yathomasi1/1-using-django-extensions-to
 ## Agile Development Process
 
 ### GitHub Projects
-
-⚠️ TIP ⚠️
-
-Consider adding screenshots of your Projects Board(s), Issues (open and closed), and Milestone tasks.
-
-⚠️ --- END ---⚠️
 
 [GitHub Projects](https://www.github.com/KC-85/Modern-Classics/projects) served as an Agile tool for this project. Through it, EPICs, User Stories, issues/bugs, and Milestone tasks were planned, then subsequently tracked on a regular basis using the Kanban project board.
 
@@ -548,39 +464,11 @@ I've created a mockup Facebook business account using the [Balsamiq template](ht
 
 ### Newsletter Marketing
 
-I have incorporated a newsletter sign-up form on my application, to allow users to supply their email address if they are interested in learning more. 
+I have incorporated a newsletter sign-up form in the application so users can register their email address for updates.
 
-⚠️ OPTION 1: RECOMMENDED ⚠️
+Current implementation uses a Django `Newsletter` model to store subscriptions directly in the project database.
 
-**Custom Django Model Newsletter**
-
-- Create a custom `newsletter` app in your project, with a custom model/class called `Newsletter`.
-- This method satisfies two assessment criteria:
-    1. include a newsletter
-    2. one of your 3 required custom models
-- It doesn't need anything except the `email` field on the model, but feel free to add more if you need.
-- Example: (keep this in your README if you've done this method, attach your `Newsletter` model in a code block like the following example)
-    ```python
-    class Newsletter(models.Model):
-        email = models.EmailField(unique=True, null=False, blank=False)
-
-        def __str__(self):
-            return self.email
-    ```
-- Consider using the same `send_mail()` functionality used on the `webhook_handler.py` file.
-    - You can trigger an email to be sent out to subscribed users when new products are added to the site!
-
-⚠️ --- END --- ⚠️
-
-🛑 OPTION 2 🛑
-
-**MailChimp Newsletter**
-
-- Sign up for a Mailchimp account
-- This allows up to 2,500 subscription email sends per month
-- Incorporate the code and scripts into your project like in the Code Institute lessons.
-
-🛑 --- END --- 🛑
+Future enhancement path: integrate transactional or campaign email delivery (for example via Mailchimp or a custom send pipeline) when newsletter automation is required.
 
 ## Testing
 
@@ -610,7 +498,7 @@ Required deployment files:
 
 Current Procfile process:
 
-- `web: gunicorn core.wsgi --log-file -`
+- `web: python manage.py collectstatic --noinput && gunicorn core.wsgi --log-file -`
 
 ### Required Heroku Config Vars
 
@@ -796,25 +684,11 @@ There are no remaining major differences between the local version when compared
 
 ## Credits
 
-⚠️ INSTRUCTIONS ⚠️
-
-In the following sections, you need to reference where you got your content, media, and any extra help. It is common practice to use code from other repositories and tutorials (which is totally acceptable), however, it is important to be very specific about these sources to avoid potential plagiarism.
-
-⚠️ --- END ---⚠️
-
 ### Content
-
-⚠️ INSTRUCTIONS ⚠️
-
-Use this space to provide attribution links for any borrowed code snippets, elements, and resources. Ideally, you should provide an actual link to every resource used, not just a generic link to the main site. If you've used multiple components from the same source (such as Bootstrap), then you only need to list it once, but if it's multiple Codepen samples, then you should list each example individually. If you've used AI for some assistance (such as ChatGPT or Perplexity), be sure to mention that as well. A few examples have been provided below to give you some ideas.
-
-⚠️ --- END ---⚠️
 
 | Source | Notes |
 | --- | --- |
-| [Markdown Builder](https://markdown.2bn.dev) | Help generating Markdown files |
 | [Chris Beams](https://chris.beams.io/posts/git-commit) | "How to Write a Git Commit Message" |
-| [Boutique Ado](https://codeinstitute.net) | Code Institute walkthrough project inspiration |
 | [Bootstrap](https://getbootstrap.com) | Various components / responsive front-end framework |
 | [AWS S3](https://aws.amazon.com/s3) | Cloud storage for static/media files |
 | [Whitenoise](https://whitenoise.readthedocs.io) | Static file service |
@@ -825,35 +699,9 @@ Use this space to provide attribution links for any borrowed code snippets, elem
 
 ### Media
 
-⚠️ INSTRUCTIONS ⚠️
-
-Use this space to provide attribution links to any media files borrowed from elsewhere (images, videos, audio, etc.). If you're the owner (or a close acquaintance) of some/all media files, then make sure to specify this information. Let the assessors know that you have explicit rights to use the media files within your project. Ideally, you should provide an actual link to every media file used, not just a generic link to the main site, unless it's AI-generated artwork.
-
-Looking for some media files? Here are some popular sites to use. The list of examples below is by no means exhaustive. Within the Code Institute Slack community, you can find more "free media" links by sending yourself (or Slackbot) the following command: `!freemedia`.
-
-- Images
-    - [Pexels](https://www.pexels.com)
-    - [Unsplash](https://unsplash.com)
-    - [Pixabay](https://pixabay.com)
-    - [Lorem Picsum](https://picsum.photos) (placeholder images)
-    - [Wallhere](https://wallhere.com) (wallpaper / backgrounds)
-    - [This Person Does Not Exist](https://thispersondoesnotexist.com) (reload to get a new person)
-- Audio
-    - [Audio Micro](https://www.audiomicro.com/free-sound-effects)
-- Video
-    - [Videvo](https://www.videvo.net)
-- Image Compression
-    - [TinyPNG](https://tinypng.com) (for images <5MB)
-    - [CompressPNG](https://compresspng.com) (for images >5MB)
-
-A few examples have been provided below to give you some ideas on how to do your own Media credits.
-
-⚠️ --- END ---⚠️
-
 | Source | Notes |
 | --- | --- |
 | [favicon.io](https://favicon.io) | Generating the favicon |
-| [Boutique Ado](https://codeinstitute.net) | Sample images provided from the walkthrough projects |
 | [Font Awesome](https://fontawesome.com) | Icons used throughout the site |
 | [Pexels](https://images.pexels.com/photos/416160/pexels-photo-416160.jpeg) | Hero image |
 | [Wallhere](https://c.wallhere.com/images/9c/c8/da4b4009f070c8e1dfee43d25f99-2318808.jpg!d) | Background wallpaper |
@@ -864,12 +712,6 @@ A few examples have been provided below to give you some ideas on how to do your
 | [CloudConvert](https://cloudconvert.com/webp-converter) | Converting images to `.webp` |
 
 ### Acknowledgements
-
-⚠️ INSTRUCTIONS ⚠️
-
-Use this space to provide attribution and acknowledgement to any supports that helped, encouraged, or supported you throughout the development stages of this project. It's always lovely to appreciate those that help us grow and improve our developer skills. A few examples have been provided below to give you some ideas.
-
-⚠️ --- END ---⚠️
 
 - I would like to thank my Code Institute mentor, [Tim Nelson](https://www.github.com/TravelTimN) for the support throughout the development of this project.
 - I would like to thank the [Code Institute](https://codeinstitute.net) Tutor Team for their assistance with troubleshooting and debugging some project issues.
