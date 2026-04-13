@@ -1,0 +1,109 @@
+/* Checkout page UI polish */
+.container.my-5 {
+  max-width: 980px;
+}
+
+#payment-form fieldset {
+  border: 1px solid #d7deeb !important;
+  border-radius: 0.8rem;
+  background: #ffffff;
+  box-shadow: 0 8px 20px rgba(20, 28, 44, 0.04);
+}
+
+#payment-form legend {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1b2740;
+}
+
+#payment-form .form-control,
+#payment-form .form-select,
+#card-element {
+  border-radius: 0.6rem;
+}
+
+#card-element {
+  border: 1px solid #cfd7e6;
+  padding: 0.75rem 0.9rem;
+  background: #fdfefe;
+}
+
+.card-header {
+  background: linear-gradient(180deg, #1a2b47, #101d33);
+  color: #f2f6fd;
+  font-weight: 600;
+}
+
+.table thead th {
+  border-bottom-width: 1px;
+  color: #27334a;
+}
+
+.table tbody tr:last-child td {
+  border-bottom-width: 0;
+}
+
+@media (max-width: 768px) {
+  .container.my-5 {
+    margin-top: 1rem !important;
+    margin-bottom: 1rem !important;
+    padding: 0;
+  }
+
+  #payment-form fieldset {
+    padding: 1rem !important;
+  }
+}
+
+@media (min-width: 375px) and (max-width: 575px) {
+  .container.my-5 {
+    max-width: 100%;
+    padding: 0 0.25rem;
+  }
+
+  .container.my-5 h2 {
+    font-size: 1.45rem;
+  }
+
+  .table {
+    font-size: 0.9rem;
+  }
+
+  .table th,
+  .table td {
+    white-space: nowrap;
+  }
+
+  .card-body.p-0 {
+    overflow-x: auto;
+  }
+
+  #submit-button {
+    width: 100%;
+    min-height: 2.7rem;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767px) {
+  .container.my-5 {
+    max-width: 95%;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .container.my-5 {
+    max-width: 900px;
+  }
+}
+
+@media (min-width: 1200px) and (max-width: 1439px) {
+  .container.my-5 {
+    max-width: 1040px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .container.my-5 {
+    max-width: 1120px;
+  }
+}
