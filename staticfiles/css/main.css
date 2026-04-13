@@ -1,56 +1,324 @@
-/* --- Sticky footer shell --- */
-html, body { height: 100%; }
+:root {
+  --mc-bg: #f6f8fb;
+  --mc-surface: #ffffff;
+  --mc-text: #1d2639;
+  --mc-muted: #5f6f8b;
+  --mc-border: #d6deea;
+  --mc-brand: #d8a536;
+  --mc-brand-hover: #be8d24;
+  --mc-nav: #0f1827;
+  --mc-nav-2: #1b2a44;
+  --mc-nav-link: #eaf0f8;
+  --mc-nav-link-hover: #ffffff;
+}
 
-/* 2a. Apply Ubuntu site-wide */
+html,
 body {
-  font-family: 'Ubuntu', sans-serif;
+  height: 100%;
+}
+
+body {
   margin: 0;
-  padding: 0;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  font-family: "Ubuntu", sans-serif;
+  color: var(--mc-text);
+  background:
+    radial-gradient(1100px 520px at 0% 0%, rgba(216, 165, 54, 0.09), transparent 54%),
+    radial-gradient(1100px 560px at 100% 0%, rgba(27, 42, 68, 0.1), transparent 58%),
+    var(--mc-bg);
 }
 
-/* 2b. Simple navbar reset/override */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: #111828;
+}
+
+a {
+  color: #1e4c96;
+}
+
+a:hover {
+  color: #173b76;
+}
+
 .navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  background-color: #222;
-  padding: .75rem 1rem;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 1rem;
+  background: linear-gradient(135deg, var(--mc-nav), var(--mc-nav-2));
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 24px rgba(9, 14, 24, 0.32);
 }
 
-.navbar .nav-left,
-.navbar .nav-right {
+.brand {
+  color: #f8fafc;
+  text-decoration: none;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  font-size: 0.95rem;
+}
+
+.brand:hover,
+.brand:focus-visible {
+  color: #ffffff;
+}
+
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 0.2rem;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 0.5rem;
+  padding: 0.35rem 0.45rem;
+}
+
+.nav-toggle span {
+  width: 1.1rem;
+  height: 2px;
+  background: #ffffff;
+}
+
+.nav-shell {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.nav-left,
+.nav-right {
   list-style: none;
   margin: 0;
   padding: 0;
   display: flex;
-  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.35rem;
 }
 
-.navbar a {
-  color: #fff;
+.navbar a,
+.nav-link-btn {
+  color: var(--mc-nav-link);
   text-decoration: none;
+  font-weight: 500;
+  line-height: 1;
+  padding: 0.48rem 0.62rem;
+  border-radius: 0.52rem;
+  transition: background-color 140ms ease, color 140ms ease;
+}
+
+.navbar a:hover,
+.navbar a:focus-visible,
+.nav-link-btn:hover,
+.nav-link-btn:focus-visible {
+  color: var(--mc-nav-link-hover);
+  background: rgba(255, 255, 255, 0.16);
+  outline: none;
+  text-decoration: none;
+}
+
+.logout-form {
+  margin: 0;
+}
+
+.nav-link-btn {
+  border: 0;
+  background: transparent;
+}
+
+main {
+  flex: 1 0 auto;
+  padding: 1.5rem 1rem;
+}
+
+main > * {
+  max-width: 1180px;
+  margin-inline: auto;
+}
+
+.container,
+.container-fluid,
+.card,
+.table,
+.alert,
+.form-control,
+.form-select,
+.form-check-input {
+  border-color: var(--mc-border);
+}
+
+.card {
+  border-radius: 0.92rem;
+  background: var(--mc-surface);
+  box-shadow: 0 10px 24px rgba(26, 34, 51, 0.06);
+}
+
+.btn-primary {
+  background: var(--mc-brand);
+  border-color: var(--mc-brand);
+  color: #10131a;
+  font-weight: 600;
+}
+
+.btn-primary:hover,
+.btn-primary:focus-visible {
+  background: var(--mc-brand-hover);
+  border-color: var(--mc-brand-hover);
+  color: #111;
+}
+
+.btn-outline-secondary {
+  border-color: #8c99b1;
+  color: #273348;
+}
+
+.btn-outline-secondary:hover,
+.btn-outline-secondary:focus-visible {
+  background: #273348;
+  border-color: #273348;
+}
+
+.form-label {
+  color: #2d3a51;
   font-weight: 500;
 }
 
-.navbar a:hover {
-  text-decoration: underline;
+.form-control,
+.form-select {
+  min-height: 2.65rem;
 }
 
-/* 2c. Main content styling */
-main {
-  padding: 1.5rem 1rem;
-  flex: 0.5 0 auto;
+.form-control:focus,
+.form-select:focus,
+.btn:focus,
+.btn:focus-visible,
+a:focus-visible,
+.nav-toggle:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 0.22rem rgba(216, 165, 54, 0.3);
 }
 
-/* 2d. Footer styling */
+.text-muted {
+  color: var(--mc-muted) !important;
+}
+
 footer {
-  text-align: center;
-  padding: 1rem 0;
-  background: #222;
-  font-size: .9rem;
-  color: #ffffff;
   margin-top: auto;
+  text-align: center;
+  background: linear-gradient(180deg, var(--mc-nav-2), var(--mc-nav));
+  color: #eef4fc;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1.1rem 1rem;
+}
+
+footer p {
+  margin: 0.3rem 0;
+}
+
+footer a {
+  color: #f2d58c;
+}
+
+footer a:hover,
+footer a:focus-visible {
+  color: #ffe9b3;
+}
+
+@media (max-width: 960px) {
+  .nav-toggle {
+    display: inline-flex;
+  }
+
+  .nav-shell {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.35rem;
+    padding-top: 0.35rem;
+  }
+
+  .navbar.nav-open .nav-shell {
+    display: flex;
+  }
+
+  .nav-left,
+  .nav-right {
+    width: 100%;
+  }
+}
+
+@media (min-width: 375px) and (max-width: 575px) {
+  body {
+    font-size: 0.96rem;
+  }
+
+  .navbar {
+    padding: 0.72rem 0.75rem;
+  }
+
+  .brand {
+    font-size: 0.84rem;
+    letter-spacing: 0.02em;
+  }
+
+  .navbar a,
+  .nav-link-btn {
+    padding: 0.45rem 0.55rem;
+    font-size: 0.93rem;
+  }
+
+  main {
+    padding: 1rem 0.75rem;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767px) {
+  main {
+    padding: 1.15rem 0.9rem;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .navbar {
+    padding: 0.85rem 1rem;
+  }
+
+  main {
+    padding: 1.35rem 1rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  main > * {
+    max-width: 1240px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .navbar {
+    padding-inline: 2rem;
+  }
+
+  main {
+    padding-inline: 1.5rem;
+  }
+
+  main > * {
+    max-width: 1320px;
+  }
 }

@@ -1,66 +1,109 @@
-.StripeElement,
-.stripe-style-input {
-  box-sizing: border-box;
-  height: 40px;
-  padding: 10px 12px;
-  border: 1px solid transparent;
-  border-radius: 0px;
-  background-color: white;
-  box-shadow: 0 1px 3px 0 #e6ebf1;
-  -webkit-transition: box-shadow 150ms ease;
-  transition: box-shadow 150ms ease;
+/* Checkout page UI polish */
+.container.my-5 {
+  max-width: 980px;
 }
 
-.StripeElement--focus,
-.stripe-style-input:focus,
-.stripe-style-input:active {
-  box-shadow: 0 1px 3px 0 #cfd7df;
+#payment-form fieldset {
+  border: 1px solid #d7deeb !important;
+  border-radius: 0.8rem;
+  background: #ffffff;
+  box-shadow: 0 8px 20px rgba(20, 28, 44, 0.04);
 }
 
-.StripeElement--webkit-autofill {
-  background-color: #fefde5 !important;
-}
-
-.stripe-style-input::placeholder {
-    color: #aab7c4;
-}
-
-.fieldset-label {
-    position: relative;
-    right: .5rem;
+#payment-form legend {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1b2740;
 }
 
 #payment-form .form-control,
+#payment-form .form-select,
 #card-element {
-    color: #000;
-    border: 1px solid #000;
+  border-radius: 0.6rem;
 }
 
-select,
-select option {
-    color: #000000;
+#card-element {
+  border: 1px solid #cfd7e6;
+  padding: 0.75rem 0.9rem;
+  background: #fdfefe;
 }
 
-select:invalid,
-select option[value=""] {
-    color: #aab7c4 !important;
+.card-header {
+  background: linear-gradient(180deg, #1a2b47, #101d33);
+  color: #f2f6fd;
+  font-weight: 600;
 }
 
-#loading-overlay {
-	display: none;
-	position: fixed;
-    top: 0;
-    left: 0;
+.table thead th {
+  border-bottom-width: 1px;
+  color: #27334a;
+}
+
+.table tbody tr:last-child td {
+  border-bottom-width: 0;
+}
+
+@media (max-width: 768px) {
+  .container.my-5 {
+    margin-top: 1rem !important;
+    margin-bottom: 1rem !important;
+    padding: 0;
+  }
+
+  #payment-form fieldset {
+    padding: 1rem !important;
+  }
+}
+
+@media (min-width: 375px) and (max-width: 575px) {
+  .container.my-5 {
+    max-width: 100%;
+    padding: 0 0.25rem;
+  }
+
+  .container.my-5 h2 {
+    font-size: 1.45rem;
+  }
+
+  .table {
+    font-size: 0.9rem;
+  }
+
+  .table th,
+  .table td {
+    white-space: nowrap;
+  }
+
+  .card-body.p-0 {
+    overflow-x: auto;
+  }
+
+  #submit-button {
     width: 100%;
-    height: 100%;
-    background: rgba(23, 162, 184, .85);
-    z-index: 9999;
+    min-height: 2.7rem;
+  }
 }
 
-.loading-spinner {
-	display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0;
-    height: 100%;
+@media (min-width: 576px) and (max-width: 767px) {
+  .container.my-5 {
+    max-width: 95%;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .container.my-5 {
+    max-width: 900px;
+  }
+}
+
+@media (min-width: 1200px) and (max-width: 1439px) {
+  .container.my-5 {
+    max-width: 1040px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .container.my-5 {
+    max-width: 1120px;
+  }
 }
