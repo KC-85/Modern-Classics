@@ -192,6 +192,19 @@ main > * {
   border-color: #273348;
 }
 
+.btn-outline-secondary.showroom-details-btn,
+.btn-outline-secondary.showroom-details-btn:visited {
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.55);
+}
+
+.btn-outline-secondary.showroom-details-btn:hover,
+.btn-outline-secondary.showroom-details-btn:focus-visible {
+  color: #111111 !important;
+  background: #ffffff;
+  border-color: #ffffff;
+}
+
 .form-label {
   color: #2d3a51;
   font-weight: 500;
