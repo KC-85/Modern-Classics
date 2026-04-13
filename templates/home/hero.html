@@ -12,17 +12,17 @@
 <section class="hero">
   <div class="hero_sm" aria-hidden="true"></div>
 
-  <div class="container text-center hero__content">
+  <div class="container text-center hero__content hero__content--panel">
     <h1 class="display-4 fw-bold mb-2 hero__title text-white">Modern Classics</h1>
-    <p class="lead mb-4">
+    <p class="lead mb-4 hero__tagline">
       Timeless cars. For enthusiasts who know what they want.<br/>
       Simple, secure checkout.
     </p>
 
-    <div class="d-flex gap-2 justify-content-center flex-wrap">
-      <a href="{% url 'showroom:car_list' %}" class="btn btn-outline-light btn-lg">Browse Showroom</a>
-      <a href="{% url 'account_login' %}" class="btn btn-outline-light btn-lg">Sign In</a>
-      <a href="{% url 'account_signup' %}" class="btn btn-outline-light btn-lg">Sign Up</a>
+    <div class="d-flex gap-2 justify-content-center flex-wrap hero__actions">
+      <a href="{% url 'showroom:car_list' %}" class="btn btn-lg hero__btn hero__btn--primary">Browse Showroom</a>
+      <a href="{% url 'account_login' %}" class="btn btn-lg hero__btn hero__btn--secondary">Sign In</a>
+      <a href="{% url 'account_signup' %}" class="btn btn-lg hero__btn hero__btn--secondary">Sign Up</a>
     </div>
   </div>
 
@@ -53,7 +53,7 @@
     <div class="carousel-inner">
       {% for car in featured_cars %}
         {% if car.image %}
-          {% cloudinary_url car.image width=1600 height=540 crop="fill" gravity="auto" q="auto" fetch_format="auto" dpr="auto" as img_url %}
+          {% cloudinary_url car.image width=1600 q="auto" fetch_format="auto" dpr="auto" as img_url %}
         {% else %}
           {% static 'images/placeholder-hero.jpg' as img_url %}
         {% endif %}
