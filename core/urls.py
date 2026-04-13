@@ -2,7 +2,6 @@
 
 from django.contrib import admin
 from django.urls import path, include
-from django.views.generic import RedirectView
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.sitemaps import views as sitemap_views
@@ -26,14 +25,6 @@ urlpatterns = [
 
     # Hero page
     path("", HomeView.as_view(), name="home"),
-
-    # Home → redirect to showroom list
-    path(
-        "",
-        RedirectView.as_view(
-            pattern_name="showroom:car_list", permanent=False),
-        name="home",
-    ),
 
     # Showroom (cars browsing & CRUD)
     path(

@@ -37,6 +37,33 @@ class NavigationDiscoverabilityTests(TestCase):
         self.assertContains(resp, 'rel="noopener noreferrer"', html=False)
 
 
+class HomeViewAccessTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = User.objects.create_user(
+            username="home-user",
+            email="home@example.com",
+            password="pass12345",
+        )
+
+    def test_guest_sees_hero_page(self):
+        resp = self.client.get(reverse("home"))
+        self.assertEqual(resp.status_code, 200)
+        self.assertTemplateUsed(resp, "home/hero.html")
+
+    def test_authenticated_user_redirects_to_showroom(self):
+        self.client.force_login(self.user)
+        resp = self.client.get(reverse("home"))
+        self.assertRedirects(resp, reverse("showroom:car_list"))
+
+    def test_user_sees_hero_after_logout(self):
+        self.client.force_login(self.user)
+        self.client.logout()
+        resp = self.client.get(reverse("home"))
+        self.assertEqual(resp.status_code, 200)
+        self.assertTemplateUsed(resp, "home/hero.html")
+
+
 class NewsletterSignupViewTests(TestCase):
     def test_get_renders_form(self):
         url = reverse("common:newsletter")
