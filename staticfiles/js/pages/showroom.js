@@ -1,97 +1,97 @@
-// static/js/pages/showroom.js
+// Showroom page enhancements (progressive, no deps)
 (() => {
-  const qs = (sel, el=document) => el.querySelector(sel);
-  const qsa = (sel, el=document) => Array.from(el.querySelectorAll(sel));
-  const cards = qsa('.car-card');
-  if (!cards.length) return;
+  // 0) Image fallback for invalid/broken media URLs (CSP-safe, no inline handlers)
+  document.querySelectorAll("img[data-fallback-src]").forEach((img) => {
+    img.addEventListener("error", () => {
+      const fallback = img.dataset.fallbackSrc;
+      if (!fallback || img.src === fallback) return;
+      img.src = fallback;
+    }, { once: true });
+  });
 
-  /* ---------- Reveal on scroll ---------- */
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('is-visible');
-        io.unobserve(e.target);
-      }
-    });
-  }, { rootMargin: '80px 0px 80px 0px', threshold: 0.06 });
-  cards.forEach(c => io.observe(c));
+  // 1) Reveal-on-scroll for cards
+  const cards = document.querySelectorAll(".row.g-3 .card");
+  if (cards.length) {
+    cards.forEach(c => c.setAttribute("data-reveal", ""));
 
-  /* ---------- Hover “lift” + micro tilt ---------- */
-  const clamp = (n, min, max) => Math.min(max, Math.max(min, n));
-  const enableTilt = (card) => {
-    card.classList.add('is-interactive');
-    let raf = null;
-    const onMove = (e) => {
-      const r = card.getBoundingClientRect();
-      const x = (e.clientX - r.left) / r.width;   // 0..1
-      const y = (e.clientY - r.top) / r.height;   // 0..1
-      const rotY = clamp((x - 0.5) * 6, -6, 6);
-      const rotX = clamp((0.5 - y) * 6, -6, 6);
-      if (raf) cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() => {
-        card.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg) translateY(-2px)`;
+    const io = new IntersectionObserver((entries, obs) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add("in-view");
+          obs.unobserve(e.target);
+        }
       });
-    };
-    const reset = () => { card.style.transform = ''; };
-    card.addEventListener('mousemove', onMove);
-    card.addEventListener('mouseleave', reset);
-    card.addEventListener('blur', reset, true);
-  };
-  cards.forEach(enableTilt);
+    }, { rootMargin: "80px 0px", threshold: 0.1 });
 
-  /* ---------- Wishlist hearts (localStorage) ---------- */
-  const KEY = 'mc_wishlist';
-  const readSet = () => new Set(JSON.parse(localStorage.getItem(KEY) || '[]'));
-  const writeSet = (set) => localStorage.setItem(KEY, JSON.stringify([...set]));
-  const wish = readSet();
+    cards.forEach(c => io.observe(c));
+  }
+
+  // 2) Persist “Sort” selection in the URL on change (reset page)
+  const sortSel = document.getElementById("sort");
+  if (sortSel) {
+    sortSel.addEventListener("change", () => {
+      const url = new URL(window.location.href);
+      url.searchParams.set("sort", sortSel.value);
+      url.searchParams.set("page", "1");
+      window.location.assign(url.toString());
+    });
+  }
+
+  // 3) Gentle hover effect on image only (keeps layout steady)
+  const scaleUp = (img) => {
+    img.style.transition = "transform 140ms ease";
+    img.style.transform = "scale(1.02)";
+  };
+  const scaleDown = (img) => {
+    img.style.transform = "";
+  };
 
   cards.forEach(card => {
-    const id = card.getAttribute('data-car-id');
-    const btn = qs('.car-card__wish', card);
-    if (!btn || !id) return;
-
-    const sync = (active) => {
-      btn.classList.toggle('is-active', active);
-      btn.setAttribute('aria-pressed', String(active));
-      btn.textContent = active ? '♥' : '♡';
-    };
-    sync(wish.has(id));
-
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      const now = !wish.has(id);
-      if (now) wish.add(id); else wish.delete(id);
-      writeSet(wish);
-      sync(now);
+    card.addEventListener("pointerenter", () => {
+      const img = card.querySelector(".card-img-top");
+      if (img) scaleUp(img);
+    });
+    card.addEventListener("pointerleave", () => {
+      const img = card.querySelector(".card-img-top");
+      if (img) scaleDown(img);
     });
   });
 
-  /* ---------- Quick spec peek (optional) ---------- */
-  const showPeek = (card) => {
-    const spec = card.getAttribute('data-car-spec');
-    if (!spec) return;
-    let peek = qs('.car-card__peek', card);
-    if (!peek) {
-      peek = document.createElement('div');
-      peek.className = 'car-card__peek';
-      peek.style.cssText = `
-        position:absolute; inset:auto 0 0 0; padding:.6rem .8rem;
-        background:rgba(0,0,0,.55); color:#fff; font-size:.875rem;
-        transform: translateY(100%); transition: transform .2s ease;
-      `;
-      qs('.ratio', card)?.appendChild(peek);
-    }
-    peek.textContent = spec;
-    peek.style.transform = 'translateY(0)';
-    setTimeout(() => { peek.style.transform = 'translateY(100%)'; }, 1600);
-  };
-
-  cards.forEach(card => {
-    const imgWrap = qs('.ratio', card);
-    if (!imgWrap) return;
-    imgWrap.addEventListener('click', (e) => {
-      if (e.target.closest('a')) return; // don’t block Details link
-      showPeek(card);
+  // 4) Submit filters on Enter inside the search field (no extra clicks)
+  const searchInput = document.getElementById("q");
+  if (searchInput) {
+    searchInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.target.form?.requestSubmit?.() || e.target.form?.submit();
+      }
     });
+  }
+
+  // 5) Make cards feel tappable on mobile: click anywhere reveals link
+  document.addEventListener("click", (e) => {
+    const card = e.target.closest(".card");
+    if (!card) return;
+    const link = card.querySelector(".stretched-link");
+    // Ignore clicks on buttons/links/inputs already
+    if (e.target.closest("a,button,.btn,.form-control,.form-select")) return;
+    if (link) {
+      e.preventDefault();
+      link.click();
+    }
+  });
+
+
+  // 6) Handle admin delete forms on cards
+  document.querySelectorAll(".card-body form[method='post']").forEach((form) => {
+    const deleteBtn = form.querySelector("button[type='submit']");
+    if (deleteBtn) {
+      deleteBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (confirm("Delete this car? This cannot be undone.")) {
+          form.submit();
+        }
+      });
+    }
   });
 })();
