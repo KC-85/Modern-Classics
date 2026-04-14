@@ -1,3 +1,7 @@
+"""View logic for the users app.
+
+Handles HTTP requests, orchestrates domain operations, and returns rendered responses."""
+
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.urls import reverse_lazy

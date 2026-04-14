@@ -1,3 +1,7 @@
+"""View logic for the trailer app.
+
+Handles HTTP requests, orchestrates domain operations, and returns rendered responses."""
+
 # apps/trailer/views.py
 from django.views import View
 from django.shortcuts import render, redirect, get_object_or_404

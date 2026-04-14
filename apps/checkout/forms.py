@@ -1,3 +1,7 @@
+"""Form classes for the checkout app.
+
+Defines validation rules and form field behavior for user-submitted data."""
+
 # apps/checkout/forms.py
 
 from django import forms

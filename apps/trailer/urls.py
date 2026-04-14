@@ -1,3 +1,7 @@
+"""URL routing for the trailer app.
+
+Maps request paths to view callables and namespaced route names."""
+
 # apps/trailer/urls.py
 from django.urls import path
 from .views import (

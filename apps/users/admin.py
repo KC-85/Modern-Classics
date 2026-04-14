@@ -1,3 +1,7 @@
+"""Django admin configuration for the users app.
+
+Registers models and customizes list displays, filters, and management actions."""
+
 # apps/users/admin.py
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin

@@ -1,3 +1,7 @@
+"""Django admin configuration for the delivery app.
+
+Registers models and customizes list displays, filters, and management actions."""
+
 from django.contrib import admin
 from .models import DeliveryOption, OrderDelivery
 

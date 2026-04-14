@@ -1,3 +1,7 @@
+"""URL routing for the common app.
+
+Maps request paths to view callables and namespaced route names."""
+
 # apps/common/urls.py
 from django.urls import path
 from .views import (

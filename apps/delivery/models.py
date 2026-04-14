@@ -1,3 +1,7 @@
+"""Database models for the delivery app.
+
+Declares persisted entities, relationships, and model-level business rules."""
+
 from django.db import models
 
 class DeliveryOption(models.Model):

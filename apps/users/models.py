@@ -1,3 +1,7 @@
+"""Database models for the users app.
+
+Declares persisted entities, relationships, and model-level business rules."""
+
 # apps/users/models.py
 
 from django.contrib.auth.models import AbstractUser

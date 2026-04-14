@@ -1,3 +1,7 @@
+"""Database models for the checkout app.
+
+Declares persisted entities, relationships, and model-level business rules."""
+
 import uuid
 from decimal import Decimal
 from django.conf import settings

@@ -1,3 +1,7 @@
+"""Form classes for the common app.
+
+Defines validation rules and form field behavior for user-submitted data."""
+
 from django import forms
 from django.core.exceptions import ValidationError
 from .models import FAQ, Newsletter

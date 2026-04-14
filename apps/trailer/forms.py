@@ -1,3 +1,7 @@
+"""Form classes for the trailer app.
+
+Defines validation rules and form field behavior for user-submitted data."""
+
 from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit

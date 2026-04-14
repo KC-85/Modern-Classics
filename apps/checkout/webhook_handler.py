@@ -1,3 +1,7 @@
+"""Webhook event processing utilities for the checkout app.
+
+Contains event-specific handler methods used by webhook views."""
+
 # apps/checkout/webhook_handler.py
 import logging
 from decimal import Decimal

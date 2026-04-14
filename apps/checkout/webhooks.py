@@ -1,3 +1,7 @@
+"""Webhook endpoint handlers for the checkout app.
+
+Accepts external service callbacks and delegates event processing."""
+
 # apps/checkout/webhooks.py
 import logging
 import stripe

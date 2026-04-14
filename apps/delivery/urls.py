@@ -1,3 +1,7 @@
+"""URL routing for the delivery app.
+
+Maps request paths to view callables and namespaced route names."""
+
 # apps/delivery/urls.py
 from django.urls import path
 from .views import (

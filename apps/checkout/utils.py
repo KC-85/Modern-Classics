@@ -1,3 +1,7 @@
+"""Utility helpers for the checkout app.
+
+Provides shared helper functions used by multiple modules in this app."""
+
 # apps/checkout/utils.py
 from decimal import Decimal
 from django.conf import settings

@@ -1,3 +1,7 @@
+"""Database models for the showroom app.
+
+Declares persisted entities, relationships, and model-level business rules."""
+
 from django.db import models
 from django.core.validators import MinValueValidator
 from django.urls import reverse

@@ -1,3 +1,7 @@
+"""Database models for the common app.
+
+Declares persisted entities, relationships, and model-level business rules."""
+
 # Database models (Postgres)
 from django.db import models
 

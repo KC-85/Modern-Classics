@@ -1,3 +1,7 @@
+"""View logic for the common app.
+
+Handles HTTP requests, orchestrates domain operations, and returns rendered responses."""
+
 from django.http import HttpResponse
 from django.db import transaction, IntegrityError
 from django.contrib.auth.decorators import login_required, user_passes_test

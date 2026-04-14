@@ -1,3 +1,7 @@
+"""Sitemap definitions for the common app.
+
+Exposes indexable routes used for search-engine sitemap generation."""
+
 # apps/common/sitemaps.py
 from django.contrib.sitemaps import Sitemap
 from django.urls import reverse

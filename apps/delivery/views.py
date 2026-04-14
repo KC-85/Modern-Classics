@@ -1,3 +1,7 @@
+"""View logic for the delivery app.
+
+Handles HTTP requests, orchestrates domain operations, and returns rendered responses."""
+
 # apps/delivery/views.py
 
 import math

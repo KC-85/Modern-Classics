@@ -1,3 +1,7 @@
+"""View logic for the checkout app.
+
+Handles HTTP requests, orchestrates domain operations, and returns rendered responses."""
+
 # apps/checkout/views.py
 
 # Python first

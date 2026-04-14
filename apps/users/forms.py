@@ -1,3 +1,7 @@
+"""Form classes for the users app.
+
+Defines validation rules and form field behavior for user-submitted data."""
+
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from crispy_forms.helper import FormHelper

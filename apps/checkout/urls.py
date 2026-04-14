@@ -1,3 +1,7 @@
+"""URL routing for the checkout app.
+
+Maps request paths to view callables and namespaced route names."""
+
 from django.urls import path
 from . import views
 from .views import (

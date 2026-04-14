@@ -1,3 +1,7 @@
+"""View logic for the showroom app.
+
+Handles HTTP requests, orchestrates domain operations, and returns rendered responses."""
+
 # apps/showroom/views.py
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils.decorators import method_decorator

@@ -1,3 +1,7 @@
+"""Database models for the trailer app.
+
+Declares persisted entities, relationships, and model-level business rules."""
+
 from django.conf import settings
 from django.db import models
 from django.db.models import Sum, F, DecimalField

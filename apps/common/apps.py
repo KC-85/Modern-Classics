@@ -1,3 +1,7 @@
+"""Application configuration for the common app.
+
+Defines AppConfig metadata used by Django during startup and app registry loading."""
+
 # apps/common/apps.py
 
 from django.apps import AppConfig

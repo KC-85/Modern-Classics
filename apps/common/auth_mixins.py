@@ -1,3 +1,7 @@
+"""Authentication and authorization mixins for the common app.
+
+Supplies reusable permission-related behavior for class-based views."""
+
 # common/auth_mixins.py
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
