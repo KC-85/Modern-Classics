@@ -29,6 +29,23 @@
 		});
 	}
 
+	// Global broken-image fallback for media URLs that may be missing remotely.
+	const applyImageFallback = (img) => {
+		const fallback = img?.dataset?.fallbackSrc;
+		if (!fallback || img.src === fallback) {
+			return;
+		}
+		img.src = fallback;
+	};
+
+	document.querySelectorAll("img[data-fallback-src]").forEach((img) => {
+		img.addEventListener("error", () => applyImageFallback(img));
+		// If the image failed before listeners were attached, recover immediately.
+		if (img.complete && img.naturalWidth === 0) {
+			applyImageFallback(img);
+		}
+	});
+
 	document.querySelectorAll(".alert").forEach((alertEl) => {
 		if (alertEl.classList.contains("alert-danger")) {
 			return;
