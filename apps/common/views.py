@@ -8,7 +8,7 @@ from .forms import ContactForm, NewsletterForm, FAQSearchForm, FAQForm
 from .models import FAQ, Newsletter
 
 """
-In here, we will have the views for both the contact form,
+In here, we will have the views for both the contact form, FAQs,
 the newsletter and the success forms
 """
 # Contact form view
