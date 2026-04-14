@@ -135,10 +135,13 @@ if not DATABASE_URL:
 DATABASES = {
     "default": dj_database_url.parse(
         DATABASE_URL,
-        conn_max_age=600,
+        conn_max_age=600 if IS_HEROKU else 0,
         ssl_require=IS_HEROKU,
     )
 }
+
+# Avoid reusing dead/stale DB sockets (common with hosted Postgres idle timeouts).
+DATABASES["default"]["CONN_HEALTH_CHECKS"] = True
 
 # === Password Validators ===
 AUTH_PASSWORD_VALIDATORS = [

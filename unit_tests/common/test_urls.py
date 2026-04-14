@@ -17,3 +17,8 @@ class URLResolutionTests(SimpleTestCase):
         for name in ["common:faq_list", "common:contact"]:
             # just ensure reversing doesn’t throw
             reverse(name)
+
+    def test_faq_crud_routes(self):
+        self.assertEqual(reverse("common:faq_create"), "/common/faq/add/")
+        self.assertEqual(reverse("common:faq_edit", kwargs={"pk": 1}), "/common/faq/1/edit/")
+        self.assertEqual(reverse("common:faq_delete", kwargs={"pk": 1}), "/common/faq/1/delete/")

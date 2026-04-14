@@ -1,6 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from .models import Newsletter
+from .models import FAQ, Newsletter
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 
@@ -48,3 +48,9 @@ class FAQSearchForm(forms.Form):
         label="Search FAQs",
         widget=forms.TextInput(attrs={"placeholder": "Search FAQs…"})
     )
+
+
+class FAQForm(forms.ModelForm):
+    class Meta:
+        model = FAQ
+        fields = ["question", "answer", "order"]

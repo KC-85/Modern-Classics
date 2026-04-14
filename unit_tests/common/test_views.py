@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from django.urls import reverse
-from apps.common.models import Newsletter
+from apps.common.models import Newsletter, FAQ
 
 User = get_user_model()
 
@@ -103,3 +103,58 @@ class NewsletterSuccessViewTests(TestCase):
                 "You&#x27;re subscribed!" in text),
             "Success copy not found"
         )
+
+
+class FAQCrudViewTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = User.objects.create_user(
+            username="faq-user",
+            email="faq-user@example.com",
+            password="pass12345",
+        )
+        cls.superuser = User.objects.create_superuser(
+            username="faq-admin",
+            email="faq-admin@example.com",
+            password="admin12345",
+        )
+        cls.faq = FAQ.objects.create(
+            question="How do I buy a car?",
+            answer="Sign in and checkout.",
+            order=1,
+        )
+
+    def test_superuser_can_create_faq(self):
+        self.client.force_login(self.superuser)
+        resp = self.client.post(
+            reverse("common:faq_create"),
+            {"question": "Test Q", "answer": "Test A", "order": 2},
+        )
+        self.assertRedirects(resp, reverse("common:faq_list"))
+        self.assertTrue(FAQ.objects.filter(question="Test Q").exists())
+
+    def test_superuser_can_edit_faq(self):
+        self.client.force_login(self.superuser)
+        resp = self.client.post(
+            reverse("common:faq_edit", kwargs={"pk": self.faq.pk}),
+            {"question": "Updated Q", "answer": "Updated A", "order": 1},
+        )
+        self.assertRedirects(resp, reverse("common:faq_list"))
+        self.faq.refresh_from_db()
+        self.assertEqual(self.faq.question, "Updated Q")
+
+    def test_superuser_can_delete_faq(self):
+        self.client.force_login(self.superuser)
+        resp = self.client.post(reverse("common:faq_delete", kwargs={"pk": self.faq.pk}))
+        self.assertRedirects(resp, reverse("common:faq_list"))
+        self.assertFalse(FAQ.objects.filter(pk=self.faq.pk).exists())
+
+    def test_non_superuser_cannot_access_faq_crud_views(self):
+        self.client.force_login(self.user)
+        create_resp = self.client.get(reverse("common:faq_create"))
+        edit_resp = self.client.get(reverse("common:faq_edit", kwargs={"pk": self.faq.pk}))
+        delete_resp = self.client.get(reverse("common:faq_delete", kwargs={"pk": self.faq.pk}))
+
+        self.assertEqual(create_resp.status_code, 302)
+        self.assertEqual(edit_resp.status_code, 302)
+        self.assertEqual(delete_resp.status_code, 302)

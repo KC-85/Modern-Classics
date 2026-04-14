@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Delete FAQ · Modern Classics{% endblock %}
+
+{% block content %}
+<div class="container my-5" style="max-width: 760px;">
+  <h1 class="h3 fw-bold text-danger mb-3">Delete FAQ</h1>
+  <p class="mb-4">Are you sure you want to delete this FAQ?</p>
+
+  <div class="border rounded p-3 mb-4 bg-light">
+    <h2 class="h5 mb-2">{{ object.question }}</h2>
+    <p class="mb-0 text-muted">{{ object.answer|truncatechars:200 }}</p>
+  </div>
+
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Yes, delete</button>
+    <a href="{% url 'common:faq_list' %}" class="btn btn-outline-secondary ms-2">Cancel</a>
+  </form>
+</div>
+{% endblock %}
