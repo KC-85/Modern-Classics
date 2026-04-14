@@ -80,50 +80,18 @@
     }
   });
 
-  // 6) Superuser toolbar: enable Edit/Delete for selected car
-  const adminForm   = document.getElementById("car-admin-form");
-  const adminSelect = document.getElementById("adminCar");
-  const editBtn     = document.getElementById("adminEdit");
-  const deleteBtn   = document.getElementById("adminDelete");
-  const editTplEl   = document.getElementById("editTpl");
-  const delTplEl    = document.getElementById("delTpl");
 
-  if (adminForm && adminSelect && editBtn && deleteBtn && editTplEl && delTplEl) {
-    const updateButtons = () => {
-      const slug = adminSelect.value || "";
-      const ready = slug.length > 0;
-      editBtn.disabled   = !ready;
-      deleteBtn.disabled = !ready;
-
-      if (ready) {
-        editBtn.dataset.href      = editTplEl.value.replace("__SLUG__", slug);
-        adminForm.dataset.delHref =  delTplEl.value.replace("__SLUG__", slug);
-      } else {
-        delete editBtn.dataset.href;
-        delete adminForm.dataset.delHref;
-      }
-    };
-
-    adminSelect.addEventListener("change", updateButtons);
-
-    // Edit navigates
-    editBtn.addEventListener("click", () => {
-      const href = editBtn.dataset.href;
-      if (href) window.location.assign(href);
-    });
-
-    // Delete posts to delete URL; CSRF already in the form
-    adminForm.addEventListener("submit", (e) => {
-      const action = adminForm.dataset.delHref;
-      if (!action) { e.preventDefault(); return; }
-      if (!confirm("Delete this car? This cannot be undone.")) {
+  // 6) Handle admin delete forms on cards
+  document.querySelectorAll(".card-body form[method='post']").forEach((form) => {
+    const deleteBtn = form.querySelector("button[type='submit']");
+    if (deleteBtn) {
+      deleteBtn.addEventListener("click", (e) => {
         e.preventDefault();
-        return;
-      }
-      adminForm.action = action;
-      // method="post" is set in the template
-    });
-
-    updateButtons();
-  }
+        e.stopPropagation();
+        if (confirm("Delete this car? This cannot be undone.")) {
+          form.submit();
+        }
+      });
+    }
+  });
 })();

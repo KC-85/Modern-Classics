@@ -19,26 +19,9 @@
 
   {% if request.user.is_superuser %}
   <div class="row">
-    <div class="col-12 col-xl-10">  {# match your main content width if needed #}
-      <div class="d-flex flex-wrap align-items-center gap-2 mb-3" id="car-admin-toolbar">
+    <div class="col-12 col-xl-10">
+      <div class="d-flex gap-2 mb-3" id="car-admin-toolbar">
         <a href="{% url 'showroom:car_create' %}" class="btn btn-success btn-sm">+ Add Car</a>
-
-        <form id="car-admin-form" method="post" class="d-inline-flex align-items-center">
-          {% csrf_token %}
-          <select id="adminCar" class="form-select form-select-sm me-2" aria-label="Select a car to edit or delete">
-            <option value="" selected disabled>Choose…</option>
-            {% for car in object_list %}
-              <option value="{{ car.slug }}">{{ car.make.name }} {{ car.model.name }} ({{ car.year }})</option>
-            {% endfor %}
-          </select>
-
-          <button id="adminEdit"   type="button" class="btn btn-outline-warning btn-sm me-2" disabled>Edit</button>
-          <button id="adminDelete" type="submit" class="btn btn-outline-danger  btn-sm" disabled>Delete</button>
-
-          {# URL templates (Django resolves once; JS swaps __SLUG__) #}
-          <input type="hidden" id="editTpl" value="{% url 'showroom:car_edit'   slug='__SLUG__' %}">
-          <input type="hidden" id="delTpl"  value="{% url 'showroom:car_delete' slug='__SLUG__' %}">
-        </form>
       </div>
     </div>
   </div>
@@ -104,6 +87,13 @@
 
             <div class="mt-auto d-flex gap-2">
               <a class="btn btn-outline-secondary btn-sm showroom-details-btn" href="{{ car.get_absolute_url }}">Details</a>
+              {% if request.user.is_superuser %}
+                <a class="btn btn-outline-warning btn-sm" href="{% url 'showroom:car_edit' slug=car.slug %}">Edit</a>
+                <form method="post" action="{% url 'showroom:car_delete' slug=car.slug %}" class="d-inline">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
+                </form>
+              {% endif %}
             </div>
           </div>
 
