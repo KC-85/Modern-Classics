@@ -83,7 +83,7 @@
           <!-- Image -->
           <div class="position-relative">
             {% if car.image %}
-              <img src="{{ car.image.url }}" class="card-img-top" alt="{{ car }}" loading="lazy">
+              <img src="{{ car.image.url }}" class="card-img-top" alt="{{ car }}" loading="lazy" data-fallback-src="{% static 'images/placeholder-hero.jpg' %}">
             {% else %}
               <img src="{% static 'images/placeholder-hero.jpg' %}" class="card-img-top" alt="{{ car }}" loading="lazy">
             {% endif %}

@@ -1,5 +1,14 @@
 // Showroom page enhancements (progressive, no deps)
 (() => {
+  // 0) Image fallback for invalid/broken media URLs (CSP-safe, no inline handlers)
+  document.querySelectorAll("img[data-fallback-src]").forEach((img) => {
+    img.addEventListener("error", () => {
+      const fallback = img.dataset.fallbackSrc;
+      if (!fallback || img.src === fallback) return;
+      img.src = fallback;
+    }, { once: true });
+  });
+
   // 1) Reveal-on-scroll for cards
   const cards = document.querySelectorAll(".row.g-3 .card");
   if (cards.length) {
