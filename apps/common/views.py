@@ -1,8 +1,10 @@
 from django.http import HttpResponse
 from django.db import transaction, IntegrityError
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.utils.decorators import method_decorator
 from django.urls import reverse_lazy
-from django.views.generic import FormView, TemplateView, ListView
-from .forms import ContactForm, NewsletterForm, FAQSearchForm
+from django.views.generic import FormView, TemplateView, ListView, CreateView, UpdateView, DeleteView
+from .forms import ContactForm, NewsletterForm, FAQSearchForm, FAQForm
 from .models import FAQ, Newsletter
 
 """
@@ -67,6 +69,32 @@ class FAQListView(ListView):
         ctx = super().get_context_data(**kwargs)
         ctx["search_form"] = FAQSearchForm(self.request.GET)
         return ctx
+
+
+superuser_required = user_passes_test(lambda user: user.is_superuser)
+
+
+@method_decorator([login_required, superuser_required], name="dispatch")
+class FAQCreateView(CreateView):
+    model = FAQ
+    form_class = FAQForm
+    template_name = "common/faq_form.html"
+    success_url = reverse_lazy("common:faq_list")
+
+
+@method_decorator([login_required, superuser_required], name="dispatch")
+class FAQUpdateView(UpdateView):
+    model = FAQ
+    form_class = FAQForm
+    template_name = "common/faq_form.html"
+    success_url = reverse_lazy("common:faq_list")
+
+
+@method_decorator([login_required, superuser_required], name="dispatch")
+class FAQDeleteView(DeleteView):
+    model = FAQ
+    template_name = "common/faq_confirm_delete.html"
+    success_url = reverse_lazy("common:faq_list")
 
 
 def robots_txt(request):
