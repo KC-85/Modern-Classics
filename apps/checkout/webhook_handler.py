@@ -63,7 +63,7 @@ class StripeWH_Handler:
         Fallback for unhandled event types. Always return 200 so Stripe
         won’t keep retrying forever on unknown events.
         """
-        logger.warning("Unhandled webhook event type: %s", event.get("type"))
+        logger.info("Unhandled webhook event type: %s", event.get("type"))
         return HttpResponse(status=200)
 
     # ---------------------------- key events ---------------------------

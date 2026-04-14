@@ -26,14 +26,14 @@ def stripe_webhook(request):
 
     try:
         event = stripe.Webhook.construct_event(payload, sig_header, WH_SECRET)
-    except ValueError:
-        logger.exception("Stripe webhook: invalid JSON payload")
+    except ValueError as err:
+        logger.warning("Stripe webhook: invalid JSON payload (%s)", err)
         return HttpResponse(status=400)
-    except stripe.error.SignatureVerificationError:
-        logger.exception("Stripe webhook: invalid signature")
+    except stripe.error.SignatureVerificationError as err:
+        logger.warning("Stripe webhook: invalid signature (%s)", err)
         return HttpResponse(status=400)
-    except Exception:
-        logger.exception("Stripe webhook: unexpected error")
+    except Exception as err:
+        logger.error("Stripe webhook: unexpected error (%s)", err)
         return HttpResponse(status=400)
 
     logger.info("Stripe webhook received: id=%s type=%s",
