@@ -10,9 +10,9 @@
 
   {% if object.image %}
     {% cloudinary_url object.image width=1600 crop="scale" fetch_format="auto" quality="auto" secure=true as img_url %}
-    <img src="{{ img_url }}" alt="{{ object }}" class="img-fluid mb-3" loading="lazy" decoding="async" data-fallback-src="{% static 'images/placeholder-hero.jpg' %}">
+    <img src="{{ img_url }}" alt="{{ object }}" class="img-fluid mb-3" loading="lazy" decoding="async" data-fallback-src="{% static 'images/placeholder-car.svg' %}">
   {% else %}
-    <img src="{% static 'images/placeholder-hero.jpg' %}" alt="{{ object }}" class="img-fluid mb-3" loading="lazy" decoding="async">
+    <img src="{% static 'images/placeholder-car.svg' %}" alt="{{ object }}" class="img-fluid mb-3" loading="lazy" decoding="async">
   {% endif %}
 
   <p><strong>Performance:</strong> {{ object.performance }}</p>

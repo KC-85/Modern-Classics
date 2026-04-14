@@ -55,7 +55,7 @@
         {% if car.image %}
           {% cloudinary_url car.image width=1600 height=540 crop="fill" gravity="auto" q="auto" fetch_format="auto" dpr="auto" as img_url %}
         {% else %}
-          {% static 'images/placeholder-hero.jpg' as img_url %}
+          {% static 'images/placeholder-car.svg' as img_url %}
         {% endif %}
         <div class="carousel-item {% if forloop.first %}active{% endif %}">
           <img

@@ -83,9 +83,9 @@
           <!-- Image -->
           <div class="position-relative">
             {% if car.image %}
-              <img src="{{ car.image.url }}" class="card-img-top" alt="{{ car }}" loading="lazy" data-fallback-src="{% static 'images/placeholder-hero.jpg' %}">
+              <img src="{{ car.image.url }}" class="card-img-top" alt="{{ car }}" loading="lazy" data-fallback-src="{% static 'images/placeholder-car.svg' %}">
             {% else %}
-              <img src="{% static 'images/placeholder-hero.jpg' %}" class="card-img-top" alt="{{ car }}" loading="lazy">
+              <img src="{% static 'images/placeholder-car.svg' %}" class="card-img-top" alt="{{ car }}" loading="lazy">
             {% endif %}
 
             {% if car.is_sold %}
