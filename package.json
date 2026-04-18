@@ -7,7 +7,8 @@
     "doc": "docs"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
+    "test:js": "jest --runInBand",
     "sass:build": "sass --load-path=node_modules static/scss/hero/hero.scss static/css/hero/hero.css --no-source-map --style=compressed",
     "sass:watch": "sass --load-path=node_modules --watch static/scss/hero/hero.scss:static/css/hero/hero.css --style=compressed"
   },
@@ -23,6 +24,8 @@
   },
   "homepage": "https://github.com/KC-85/Modern-Classics#readme",
   "devDependencies": {
+    "jest": "^30.3.0",
+    "jest-environment-jsdom": "^30.3.0",
     "sass": "^1.93.2"
   },
   "dependencies": {
