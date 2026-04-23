@@ -28,7 +28,7 @@
   <title>{% block title %}Modern Classics{% endblock %}</title>
 
 </head>
-<body>
+<body class="{% block body_class %}{% endblock %}">
   <header>
     <nav class="navbar">
       <a class="brand" href="{% url 'home' %}">Modern Classics</a>
