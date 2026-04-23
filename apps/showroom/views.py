@@ -4,6 +4,7 @@ Handles HTTP requests, orchestrates domain operations, and returns rendered resp
 
 # apps/showroom/views.py
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib import messages
 from django.utils.decorators import method_decorator
 from django.urls import reverse_lazy
 from urllib.parse import urlencode
@@ -105,9 +106,20 @@ class CarUpdateView(UpdateView):
     template_name = "showroom/car_form.html"
     success_url = reverse_lazy("showroom:car_list")
 
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, f"Car updated successfully: {self.object}")
+        return response
+
 
 @method_decorator([login_required, superuser_required], name="dispatch")
 class CarDeleteView(DeleteView):
     model = Car
     template_name = "showroom/car_confirm_delete.html"
     success_url = reverse_lazy("showroom:car_list")
+
+    def form_valid(self, form):
+        car_label = str(self.object)
+        response = super().form_valid(form)
+        messages.success(self.request, f"Car deleted successfully: {car_label}")
+        return response
