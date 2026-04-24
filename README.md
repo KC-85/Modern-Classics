@@ -77,7 +77,7 @@ source: [Modern-Classics amiresponsive](https://ui.dev/amiresponsive?url=https:/
 
 ### Colour Scheme
 
-I used [coolors.co](https://coolors.co/080708-3772ff-df2935-fdca40-e6e8e6) to generate my color palette.
+I used [coolors.co](https://coolors.co/f6f8fb-ffffff-0f1827-1b2a44) to generate my color palette.
 
 - `#000000` primary text.
 - `#3772FF` primary highlights.
@@ -582,15 +582,15 @@ As a backup, in case users prematurely close the purchase-order page during paym
 - You'll have a new key here:
     - `STRIPE_WEBHOOK_SECRET` = Signing secret (starts with **wh**)
 
-### Gmail API
+### Yahoo API
 
-This project uses [Gmail](https://mail.google.com) to handle sending emails to users for purchase order confirmations.
+This project uses [Yahoo](https://mail.yahoo.com) to handle sending emails to users for purchase order confirmations.
 
-Once you've created a Gmail (Google) account and logged-in, follow these series of steps to get your project connected.
+Once you've created a Yahoo account and logged-in, follow these series of steps to get your project connected.
 
-- Click on the **Account Settings** (cog icon) in the top-right corner of Gmail.
+- Click on the **Account Settings** (cog icon) in the top-right corner of Yahoo Mail.
 - Click on the **Accounts and Import** tab.
-- Within the section called "Change account settings", click on the link for **Other Google Account settings**.
+- Within the section called "Change account settings", click on the link for **Other Yahoo Account settings**.
 - From this new page, select **Security** on the left.
 - Select **2-Step Verification** to turn it on. (*verify your password and account*)
 - Once verified, select **Turn On** for 2FA.
@@ -603,7 +603,7 @@ Once you've created a Gmail (Google) account and logged-in, follow these series 
     - Save this somewhere locally, as you cannot access this key again later!
     - If your 16-character password contains *spaces*, make sure to remove them entirely.
     - `EMAIL_HOST_PASS` = user's 16-character API key
-    - `EMAIL_HOST_USER` = user's own personal Gmail email address
+    - `EMAIL_HOST_USER` = user's own personal Gmail/Yahoo email address
 
 ### WhiteNoise
 
@@ -637,7 +637,7 @@ Recommended local setup:
 ```bash
 python3.12 -m venv venv
 source venv/bin/activate
-pip install -r requirements.txt
+pip3/pip install -r requirements.txt
 python3 manage.py migrate
 python3 manage.py createsuperuser
 python3 manage.py runserver
