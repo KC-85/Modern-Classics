@@ -103,14 +103,18 @@ I've used [Balsamiq](https://balsamiq.com/wireframes) to design my site wirefram
 | Login | ![screenshot](documentation/wireframes/mobile-login.png) | ![screenshot](documentation/wireframes/tablet-login.png) | ![screenshot](documentation/wireframes/desktop-login.png) |
 | Profile | ![screenshot](documentation/wireframes/mobile-profile.png) | ![screenshot](documentation/wireframes/tablet-profile.png) | ![screenshot](documentation/wireframes/desktop-profile.png) |
 | Showroom | ![screenshot](documentation/wireframes/mobile-showroom.png) | ![screenshot](documentation/wireframes/tablet-showroom.png) | ![screenshot](documentation/wireframes/desktop-showroom.png) |
-| Product Details | ![screenshot](documentation/wireframes/mobile-product-details.png) | ![screenshot](documentation/wireframes/tablet-product-details.png) | ![screenshot](documentation/wireframes/desktop-product-details.png) |
-| Bag | ![screenshot](documentation/wireframes/mobile-bag.png) | ![screenshot](documentation/wireframes/tablet-bag.png) | ![screenshot](documentation/wireframes/desktop-bag.png) |
+| Car Details | ![screenshot](documentation/wireframes/mobile-car-details.png) | ![screenshot](documentation/wireframes/tablet-car-details.png) | ![screenshot](documentation/wireframes/desktop-car-details.png) |
+| Cart | ![screenshot](documentation/wireframes/mobile-cart.png) | ![screenshot](documentation/wireframes/tablet-cart.png) | ![screenshot](documentation/wireframes/desktop-cart.png) |
 | Checkout | ![screenshot](documentation/wireframes/mobile-checkout.png) | ![screenshot](documentation/wireframes/tablet-checkout.png) | ![screenshot](documentation/wireframes/desktop-checkout.png) |
 | Checkout Success | ![screenshot](documentation/wireframes/mobile-checkout-success.png) | ![screenshot](documentation/wireframes/tablet-checkout-success.png) | ![screenshot](documentation/wireframes/desktop-checkout-success.png) |
 | Add Product | ![screenshot](documentation/wireframes/mobile-add-product.png) | ![screenshot](documentation/wireframes/tablet-add-product.png) | ![screenshot](documentation/wireframes/desktop-add-product.png) |
 | Edit Product | ![screenshot](documentation/wireframes/mobile-edit-product.png) | ![screenshot](documentation/wireframes/tablet-edit-product.png) | ![screenshot](documentation/wireframes/desktop-edit-product.png) |
 | Newsletter | ![screenshot](documentation/wireframes/mobile-newsletter.png) | ![screenshot](documentation/wireframes/tablet-newsletter.png) | ![screenshot](documentation/wireframes/desktop-newsletter.png) |
 | Contact | ![screenshot](documentation/wireframes/mobile-contact.png) | ![screenshot](documentation/wireframes/tablet-contact.png) | ![screenshot](documentation/wireframes/desktop-contact.png) |
+| FAQ | ![screenshot](documentation/wireframes/mobile-FAQ.png) | ![screenshot](documentation/wireframes/tablet-FAQ.png) | ![screenshot](documentation/wireframes/desktop-FAQ.png) |
+| Add FAQ | ![screenshot](documentation/wireframes/mobile-add-FAQ.png) | ![screenshot](documentation/wireframes/tablet-add-FAQ.png) | ![screenshot](documentation/wireframes/desktop-add-FAQ.png) |
+| Edit FAQ | ![screenshot](documentation/wireframes/mobile-edit-FAQ.png) | ![screenshot](documentation/wireframes/tablet-edit-FAQ.png) | ![screenshot](documentation/wireframes/desktop-edit-FAQ.png) |
+| Delete FAQ | ![screenshot](documentation/wireframes/mobile-delete-FAQ.png) | ![screenshot](documentation/wireframes/tablet-delete-FAQ.png) | ![screenshot](documentation/wireframes/desktop-delete-FAQ.png) |
 | 404 | ![screenshot](documentation/wireframes/mobile-404.png) | ![screenshot](documentation/wireframes/tablet-404.png) | ![screenshot](documentation/wireframes/desktop-404.png) |
 
 ## User Stories
