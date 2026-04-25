@@ -4,8 +4,9 @@ Declares persisted entities, relationships, and model-level business rules."""
 
 # Database models (Postgres)
 from django.db import models
+from django.utils import timezone
 
-# Newsletter
+# Newsletter subscriber list
 class Newsletter(models.Model):
     email         = models.EmailField(unique=True)
     subscribed_at = models.DateTimeField(auto_now_add=True)
@@ -21,6 +22,33 @@ class Newsletter(models.Model):
 
     def __str__(self):
         return self.email
+
+
+# Newsletter email campaigns
+class NewsletterEmail(models.Model):
+    STATUS_CHOICES = [
+        ("draft", "Draft"),
+        ("scheduled", "Scheduled"),
+        ("sent", "Sent"),
+    ]
+
+    subject      = models.CharField(max_length=255)
+    body         = models.TextField(help_text="HTML or plain text body of the newsletter")
+    status       = models.CharField(max_length=10, choices=STATUS_CHOICES, default="draft")
+    created_at   = models.DateTimeField(auto_now_add=True)
+    scheduled_at = models.DateTimeField(null=True, blank=True, help_text="When to send (optional)")
+    sent_at      = models.DateTimeField(null=True, blank=True, help_text="Timestamp when email was sent")
+    recipient_count = models.PositiveIntegerField(default=0, help_text="Number of subscribers who received it")
+
+    class Meta:
+        ordering = ("-created_at",)
+
+    def __str__(self):
+        return f"{self.subject} ({self.get_status_display()})"
+
+    @property
+    def is_sent(self) -> bool:
+        return self.status == "sent"
 
 # Contact
 class Contact(models.Model):
