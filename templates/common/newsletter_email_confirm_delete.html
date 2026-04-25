@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Delete Newsletter{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+  <div class="alert alert-warning">
+    <h4>Are you sure?</h4>
+    <p>
+      You are about to delete the newsletter:
+    </p>
+    <p>
+      <strong>{{ object.subject }}</strong>
+    </p>
+    <p class="mb-0">
+      This action cannot be undone.
+    </p>
+  </div>
+
+  <form method="post" class="d-inline">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">
+      Yes, Delete This Newsletter
+    </button>
+  </form>
+
+  <a href="{% url 'common:newsletter_email_list' %}" class="btn btn-outline-secondary">
+    Cancel
+  </a>
+</div>
+{% endblock %}

@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Newsletter Campaigns{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+  <div class="row mb-4">
+    <div class="col">
+      <h1>Newsletter Campaigns</h1>
+    </div>
+    <div class="col text-end">
+      <a href="{% url 'common:newsletter_email_create' %}" class="btn btn-primary">
+        + New Newsletter
+      </a>
+    </div>
+  </div>
+
+  {% if newsletters %}
+  <div class="table-responsive">
+    <table class="table table-hover">
+      <thead class="table-light">
+        <tr>
+          <th>Subject</th>
+          <th>Status</th>
+          <th>Recipients</th>
+          <th>Created</th>
+          <th>Sent</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for newsletter in newsletters %}
+        <tr>
+          <td>
+            <strong>{{ newsletter.subject }}</strong>
+          </td>
+          <td>
+            {% if newsletter.status == "draft" %}
+              <span class="badge bg-warning text-dark">Draft</span>
+            {% elif newsletter.status == "scheduled" %}
+              <span class="badge bg-info">Scheduled</span>
+            {% elif newsletter.status == "sent" %}
+              <span class="badge bg-success">Sent</span>
+            {% endif %}
+          </td>
+          <td>{{ newsletter.recipient_count }}</td>
+          <td>{{ newsletter.created_at|date:"j M Y, H:i" }}</td>
+          <td>
+            {% if newsletter.sent_at %}
+              {{ newsletter.sent_at|date:"j M Y, H:i" }}
+            {% else %}
+              —
+            {% endif %}
+          </td>
+          <td>
+            {% if not newsletter.is_sent %}
+              <a href="{% url 'common:newsletter_email_edit' newsletter.pk %}" class="btn btn-sm btn-outline-primary">
+                Edit
+              </a>
+            {% endif %}
+            
+            {% if newsletter.status == "draft" %}
+              <form method="post" action="{% url 'common:newsletter_email_send' newsletter.pk %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-sm btn-success" onclick="return confirm('Send this newsletter to all subscribers?');">
+                  Send
+                </button>
+              </form>
+            {% endif %}
+
+            {% if not newsletter.is_sent %}
+              <a href="{% url 'common:newsletter_email_delete' newsletter.pk %}" class="btn btn-sm btn-outline-danger">
+                Delete
+              </a>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {% if is_paginated %}
+  <nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+      {% if page_obj.has_previous %}
+        <li class="page-item"><a class="page-link" href="?page=1">First</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+      {% endif %}
+
+      {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+          <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+        {% else %}
+          <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+        {% endif %}
+      {% endfor %}
+
+      {% if page_obj.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last</a></li>
+      {% endif %}
+    </ul>
+  </nav>
+  {% endif %}
+
+  {% else %}
+  <div class="alert alert-info">
+    No newsletters yet. <a href="{% url 'common:newsletter_email_create' %}">Create one now</a>.
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
