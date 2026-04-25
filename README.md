@@ -107,8 +107,8 @@ I've used [Balsamiq](https://balsamiq.com/wireframes) to design my site wirefram
 | Cart | ![screenshot](documentation/wireframes/mobile-cart.png) | ![screenshot](documentation/wireframes/tablet-cart.png) | ![screenshot](documentation/wireframes/desktop-cart.png) |
 | Checkout | ![screenshot](documentation/wireframes/mobile-checkout.png) | ![screenshot](documentation/wireframes/tablet-checkout.png) | ![screenshot](documentation/wireframes/desktop-checkout.png) |
 | Checkout Success | ![screenshot](documentation/wireframes/mobile-checkout-success.png) | ![screenshot](documentation/wireframes/tablet-checkout-success.png) | ![screenshot](documentation/wireframes/desktop-checkout-success.png) |
-| Add Product | ![screenshot](documentation/wireframes/mobile-add-product.png) | ![screenshot](documentation/wireframes/tablet-add-product.png) | ![screenshot](documentation/wireframes/desktop-add-product.png) |
-| Edit Product | ![screenshot](documentation/wireframes/mobile-edit-product.png) | ![screenshot](documentation/wireframes/tablet-edit-product.png) | ![screenshot](documentation/wireframes/desktop-edit-product.png) |
+| Add Car | ![screenshot](documentation/wireframes/mobile-add-car.png) | ![screenshot](documentation/wireframes/tablet-add-car.png) | ![screenshot](documentation/wireframes/desktop-add-car.png) |
+| Edit Car | ![screenshot](documentation/wireframes/mobile-edit-car.png) | ![screenshot](documentation/wireframes/tablet-edit-car.png) | ![screenshot](documentation/wireframes/desktop-edit-car.png) |
 | Newsletter | ![screenshot](documentation/wireframes/mobile-newsletter.png) | ![screenshot](documentation/wireframes/tablet-newsletter.png) | ![screenshot](documentation/wireframes/desktop-newsletter.png) |
 | Contact | ![screenshot](documentation/wireframes/mobile-contact.png) | ![screenshot](documentation/wireframes/tablet-contact.png) | ![screenshot](documentation/wireframes/desktop-contact.png) |
 | FAQ | ![screenshot](documentation/wireframes/mobile-FAQ.png) | ![screenshot](documentation/wireframes/tablet-FAQ.png) | ![screenshot](documentation/wireframes/desktop-FAQ.png) |
