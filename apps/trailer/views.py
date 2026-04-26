@@ -5,6 +5,7 @@ Handles HTTP requests, orchestrates domain operations, and returns rendered resp
 # apps/trailer/views.py
 from django.views import View
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
 
 from apps.common.auth_mixins import LoginRequiredMessageMixin  # <-- use your mixin
 from .models import Cart, CartItem
@@ -35,6 +36,15 @@ class AddToCartView(LoginRequiredMessageMixin, View):
             if not created:
                 item.quantity += qty
                 item.save()
+                messages.success(
+                    request,
+                    f"Updated quantity of {item.car} in your cart (now {item.quantity})."
+                )
+            else:
+                messages.success(
+                    request,
+                    f"✓ Added {item.car} to your cart."
+                )
         return redirect("trailer:cart_detail")
 
 
@@ -52,11 +62,14 @@ class UpdateCartItemView(LoginRequiredMessageMixin, View):
         except ValueError:
             qty = 1
 
+        car_name = str(item.car)
         if qty < 1:
             item.delete()
+            messages.success(request, f"Removed {car_name} from your cart.")
         else:
             item.quantity = qty
             item.save()
+            messages.success(request, f"Updated {car_name} quantity to {qty}.")
 
         return redirect("trailer:cart_detail")
 
@@ -64,5 +77,8 @@ class UpdateCartItemView(LoginRequiredMessageMixin, View):
 class ClearCartView(LoginRequiredMessageMixin, View):
     def post(self, request):
         cart, _ = Cart.objects.get_or_create(user=request.user)
+        count = cart.items.count()
         cart.items.all().delete()
+        if count > 0:
+            messages.success(request, f"Cleared your cart ({count} item(s) removed).")
         return redirect("trailer:cart_detail")
