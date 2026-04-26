@@ -3,6 +3,7 @@
 Handles HTTP requests, orchestrates domain operations, and returns rendered responses."""
 
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.utils.decorators import method_decorator
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, TemplateView
@@ -21,6 +22,11 @@ class ProfileView(UpdateView):
 
     def get_object(self):
         return self.request.user
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, "Your profile has been updated successfully.")
+        return response
 
 # Profile success view
 class ProfileSuccessView(TemplateView):

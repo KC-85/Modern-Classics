@@ -35,6 +35,23 @@ class UserProfileForm(UserChangeForm):
         super().__init__(*args, **kwargs)
         # remove the password field entirely
         self.fields.pop("password", None)
+
+        # Add Bootstrap styling to all fields
+        for field in self.fields:
+            if field == "date_of_birth":
+                self.fields[field].widget.attrs.update({
+                    "type": "date",
+                    "class": "form-control"
+                })
+            elif field == "profile_image":
+                self.fields[field].widget.attrs.update({
+                    "class": "form-control"
+                })
+            else:
+                self.fields[field].widget.attrs.update({
+                    "class": "form-control"
+                })
+
         self.helper = FormHelper()
         self.helper.form_method = "post"
         self.helper.add_input(Submit("update", "Update Profile"))
