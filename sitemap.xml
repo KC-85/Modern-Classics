@@ -1,18 +1,89 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-	<url>
-		<loc>https://modern-classics-b10468fd6f55.herokuapp.com/</loc>
-	</url>
-	<url>
-		<loc>https://modern-classics-b10468fd6f55.herokuapp.com/showroom/</loc>
-	</url>
-	<url>
-		<loc>https://modern-classics-b10468fd6f55.herokuapp.com/common/faq/</loc>
-	</url>
-	<url>
-		<loc>https://modern-classics-b10468fd6f55.herokuapp.com/common/contact/</loc>
-	</url>
-	<url>
-		<loc>https://modern-classics-b10468fd6f55.herokuapp.com/common/newsletter/</loc>
-	</url>
+
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<!--  created with Free Online Sitemap Generator www.xml-sitemaps.com  -->
+<url>
+<loc>https://modern-classics-b10468fd6f55.herokuapp.com/</loc>
+<lastmod>2026-04-26T11:58:44+00:00</lastmod>
+<priority>1.00</priority>
+</url>
+<url>
+<loc>https://modern-classics-b10468fd6f55.herokuapp.com/showroom/</loc>
+<lastmod>2026-04-26T11:58:44+00:00</lastmod>
+<priority>0.80</priority>
+</url>
+<url>
+<loc>https://modern-classics-b10468fd6f55.herokuapp.com/common/faq/</loc>
+<lastmod>2026-04-26T11:58:44+00:00</lastmod>
+<priority>0.80</priority>
+</url>
+<url>
+<loc>https://modern-classics-b10468fd6f55.herokuapp.com/common/contact/</loc>
+<lastmod>2026-04-26T11:58:44+00:00</lastmod>
+<priority>0.80</priority>
+</url>
+<url>
+<loc>https://modern-classics-b10468fd6f55.herokuapp.com/common/newsletter/</loc>
+<lastmod>2026-04-26T11:58:44+00:00</lastmod>
+<priority>0.80</priority>
+</url>
+<url>
+<loc>https://modern-classics-b10468fd6f55.herokuapp.com/showroom/volkswagen-golf-gti-1983/</loc>
+<lastmod>2026-04-26T11:58:44+00:00</lastmod>
+<priority>0.80</priority>
+</url>
+<url>
+<loc>https://modern-classics-b10468fd6f55.herokuapp.com/showroom/8-8-2005/</loc>
+<lastmod>2026-04-26T11:58:44+00:00</lastmod>
+<priority>0.80</priority>
+</url>
+<url>
+<loc>https://modern-classics-b10468fd6f55.herokuapp.com/showroom/7-7-1990/</loc>
+<lastmod>2026-04-26T11:58:44+00:00</lastmod>
+<priority>0.80</priority>
+</url>
+<url>
+<loc>https://modern-classics-b10468fd6f55.herokuapp.com/showroom/9-10-1994/</loc>
+<lastmod>2026-04-26T11:58:44+00:00</lastmod>
+<priority>0.64</priority>
+</url>
+<url>
+<loc>https://modern-classics-b10468fd6f55.herokuapp.com/showroom/4-4-1992/</loc>
+<lastmod>2026-04-26T11:58:44+00:00</lastmod>
+<priority>0.64</priority>
+</url>
+<url>
+<loc>https://modern-classics-b10468fd6f55.herokuapp.com/showroom/6-6-1991/</loc>
+<lastmod>2026-04-26T11:58:44+00:00</lastmod>
+<priority>0.64</priority>
+</url>
+<url>
+<loc>https://modern-classics-b10468fd6f55.herokuapp.com/showroom/5-5-1990/</loc>
+<lastmod>2026-04-26T11:58:44+00:00</lastmod>
+<priority>0.64</priority>
+</url>
+<url>
+<loc>https://modern-classics-b10468fd6f55.herokuapp.com/showroom/2-2-1987/</loc>
+<lastmod>2026-04-26T11:58:44+00:00</lastmod>
+<priority>0.64</priority>
+</url>
+<url>
+<loc>https://modern-classics-b10468fd6f55.herokuapp.com/showroom/3-3-1985/</loc>
+<lastmod>2026-04-26T11:58:44+00:00</lastmod>
+<priority>0.64</priority>
+</url>
+<url>
+<loc>https://modern-classics-b10468fd6f55.herokuapp.com/showroom/1-1-1985/</loc>
+<lastmod>2026-04-26T11:58:44+00:00</lastmod>
+<priority>0.64</priority>
+</url>
+<url>
+<loc>https://modern-classics-b10468fd6f55.herokuapp.com/common/faq/?page=2</loc>
+<lastmod>2026-04-26T11:58:44+00:00</lastmod>
+<priority>0.64</priority>
+</url>
+<url>
+<loc>https://modern-classics-b10468fd6f55.herokuapp.com/common/faq/?page=1</loc>
+<lastmod>2026-04-26T11:58:44+00:00</lastmod>
+<priority>0.51</priority>
+</url>
 </urlset>
