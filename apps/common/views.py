@@ -219,6 +219,12 @@ class FAQDeleteView(DeleteView):
     template_name = "common/faq_confirm_delete.html"
     success_url = reverse_lazy("common:faq_list")
 
+    def form_valid(self, form):
+        faq_label = str(self.object)
+        response = super().form_valid(form)
+        messages.success(self.request, f"FAQ deleted successfully: {faq_label}")
+        return response
+
 
 def robots_txt(request):
     sitemap_url = request.build_absolute_uri(reverse_lazy("sitemap"))

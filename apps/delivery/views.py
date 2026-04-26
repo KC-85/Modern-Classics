@@ -9,6 +9,7 @@ from django.urls                 import reverse_lazy
 from django.views.generic        import ListView, CreateView, UpdateView, DeleteView
 from django.views                import View
 from django.shortcuts            import get_object_or_404, render, redirect
+from django.contrib import messages
 from django.contrib.auth.mixins  import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils.decorators     import method_decorator
@@ -50,6 +51,12 @@ class DeliveryOptionDeleteView(DeleteView):
     model         = DeliveryOption
     template_name = "delivery/option_confirm_delete.html"
     success_url   = reverse_lazy("delivery:option_list")
+
+    def form_valid(self, form):
+        option_label = str(self.object)
+        response = super().form_valid(form)
+        messages.success(self.request, f"Delivery option deleted successfully: {option_label}")
+        return response
 
 
 class OrderDeliveryUpdateView(LoginRequiredMixin, View):
