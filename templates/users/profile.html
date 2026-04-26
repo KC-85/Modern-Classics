@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
 
-{% block title %}Your Profile{% endblock %}
+{% block title %}Update Profile{% endblock %}
 
 {% block content %}
 <div class="container my-5">
   <div class="row">
     <div class="col-lg-8 mx-auto">
-      <h1 class="mb-4">Your Profile</h1>
+      <h1 class="mb-4">Update Profile</h1>
 
       {% if messages %}
         {% for message in messages %}
@@ -141,7 +141,8 @@
           <button type="submit" class="btn btn-primary btn-lg">
             Update Profile
           </button>
-          <a href="{% url 'home' %}" class="btn btn-outline-secondary btn-lg">Cancel</a>
+          <a href="{% url 'users:profile' %}" class="btn btn-outline-secondary btn-lg">Back to Profile</a>
+          <a href="{% url 'users:profile_delete' %}" class="btn btn-outline-danger btn-lg">Delete Profile</a>
         </div>
       </form>
 
