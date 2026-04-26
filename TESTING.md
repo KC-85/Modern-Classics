@@ -74,12 +74,10 @@ I have used the recommended [CSS Jigsaw Validator](https://jigsaw.w3.org/css-val
 
 | Directory | File | URL | Screenshot | Notes |
 | --- | --- | --- | --- | --- |
-| static | [carousel.css](https://github.com/KC-85/Modern-Classics/blob/main/static/css/components/carousel.css) | Link (if applicable) | ![screenshot](documentation/validation/css-static-carousel.png) | Notes (if applicable) |
-| static | [cartBadge.css](https://github.com/KC-85/Modern-Classics/blob/main/static/css/components/cartBadge.css) | Link (if applicable) | ![screenshot](documentation/validation/css-static-cartBadge.png) | Notes (if applicable) |
-| static | [filterPanel.css](https://github.com/KC-85/Modern-Classics/blob/main/static/css/components/filterPanel.css) | Link (if applicable) | ![screenshot](documentation/validation/css-static-filterPanel.png) | Notes (if applicable) |
-| static | [main.css](https://github.com/KC-85/Modern-Classics/blob/main/static/css/main.css) | Link (if applicable) | ![screenshot](documentation/validation/css-static-main.png) | Notes (if applicable) |
-| static | [checkout.css](https://github.com/KC-85/Modern-Classics/blob/main/static/css/pages/checkout.css) | Link (if applicable) | ![screenshot](documentation/validation/css-static-checkout.png) | Notes (if applicable) |
-| static | [showroom.css](https://github.com/KC-85/Modern-Classics/blob/main/static/css/pages/showroom.css) | Link (if applicable) | ![screenshot](documentation/validation/css-static-showroom.png) | Notes (if applicable) |
+| static | [hero.css](https://github.com/KC-85/Modern-Classics/blob/main/static/css/components/hero.css) | Link (if applicable) | ![screenshot](documentation/validation/css/css-carousel-hero.png) | Notes (if applicable) |
+| static | [main.css](https://github.com/KC-85/Modern-Classics/blob/main/static/css/main.css) | Link (if applicable) | ![screenshot](documentation/validation//css/css-main.png) | Notes (if applicable) |
+| static | [checkout.css](https://github.com/KC-85/Modern-Classics/blob/main/static/css/pages/checkout.css) | Link (if applicable) | ![screenshot](documentation/validation/css/css-checkout.png) | Notes (if applicable) |
+| static | [showroom.css](https://github.com/KC-85/Modern-Classics/blob/main/static/css/pages/showroom.css) | Link (if applicable) | ![screenshot](documentation/validation/css/css-showroom.png) | Notes (if applicable) |
 
 
 ### JavaScript
