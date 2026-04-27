@@ -1,22 +1,22 @@
 """View logic for the users app.
 
-Handles HTTP requests, orchestrates domain operations, and returns rendered responses."""
+Handles HTTP requests, orchestrates domain operations
+and returns rendered responses."""
 
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth import logout
 from django.contrib import messages
-from django.utils.decorators import method_decorator
-from django.urls import reverse_lazy
-from django.views.generic import CreateView, UpdateView, TemplateView, DeleteView
+from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
+from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
+from django.views.generic import DeleteView, TemplateView, UpdateView
+
 from .forms import UserProfileForm
 from .models import CustomUser
 
-"""
-These here, are the views for creating a user profile
-"""
-
 # Profile landing page
+
+
 @method_decorator(login_required, name="dispatch")
 class ProfileLandingView(TemplateView):
     template_name = "users/profile_overview.html"
@@ -26,15 +26,16 @@ class ProfileLandingView(TemplateView):
 @method_decorator(login_required, name="dispatch")
 class ProfileView(UpdateView):
     template_name = "users/profile.html"
-    form_class    = UserProfileForm
-    success_url   = reverse_lazy("users:profile")
+    form_class = UserProfileForm
+    success_url = reverse_lazy("users:profile")
 
     def get_object(self):
         return self.request.user
 
     def form_valid(self, form):
         response = super().form_valid(form)
-        messages.success(self.request, "Your profile has been updated successfully.")
+        messages.success
+        (self.request, "Your profile has been updated successfully.")
         return response
 
 
@@ -58,7 +59,10 @@ class ProfileDeleteView(DeleteView):
         if confirmation_value not in allowed_values:
             messages.error(
                 request,
-                "Confirmation failed. Type your exact username or email to delete your profile."
+                (
+                    "Confirmation failed. Type your exact username or email "
+                    "to delete your profile."
+                ),
             )
             return redirect("users:profile_delete")
 
@@ -69,8 +73,12 @@ class ProfileDeleteView(DeleteView):
         username = user.username
         user.delete()
         logout(request)
-        messages.success(request, f"Your profile has been deleted successfully. Goodbye, {username}.")
+        messages.success(
+            request,
+            f"Your profile has been deleted successfully. Goodbye, {username}."
+        )
         return redirect(self.success_url)
+
 
 # Profile success view
 class ProfileSuccessView(TemplateView):
