@@ -8,6 +8,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from .models import CustomUser
 
+
 class UserRegistrationForm(UserCreationForm):
     class Meta:
         model = CustomUser
@@ -18,6 +19,7 @@ class UserRegistrationForm(UserCreationForm):
         self.helper = FormHelper()
         self.helper.form_method = "post"
         self.helper.add_input(Submit("register", "Sign Up"))
+
 
 class UserProfileForm(UserChangeForm):
     class Meta:
