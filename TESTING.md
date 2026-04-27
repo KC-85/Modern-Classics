@@ -106,7 +106,7 @@ I have used the recommended [JShint Validator](https://jshint.com) to validate a
 
 | Directory | File | URL | Screenshot | Notes |
 | --- | --- | --- | --- | --- |
-| static | [carousel.js](https://github.com/KC-85/Modern-Classics/blob/main/static/js/components/carousel.js) | N/A | ![screenshot](documentation/validation/js-static-carousel.png) | Notes (if applicable) |
+| static | [hero.js](https://github.com/KC-85/Modern-Classics/blob/main/static/js/components/hero.js) | N/A | ![screenshot](documentation/validation/js/js-hero.png) | Notes (if applicable) |
 | static | [cartBadge.js](https://github.com/KC-85/Modern-Classics/blob/main/static/js/components/cartBadge.js) | N/A | ![screenshot](documentation/validation/js-static-cartBadge.png) | Notes (if applicable) |
 | static | [filterPanel.js](https://github.com/KC-85/Modern-Classics/blob/main/static/js/components/filterPanel.js) | N/A | ![screenshot](documentation/validation/js-static-filterPanel.png) | Notes (if applicable) |
 | static | [main.js](https://github.com/KC-85/Modern-Classics/blob/main/static/js/main.js) | N/A | ![screenshot](documentation/validation/js-static-main.png) | Notes (if applicable) |
@@ -377,7 +377,7 @@ Defensive programming was manually tested with the below user acceptance testing
 | | Feature is expected to filter products by category. | Applied category filters while browsing products. | Filters worked as expected, displaying only relevant products. | ![screenshot](documentation/defensive/filtering.png) |
 | | Feature is expected to show detailed product information. | Clicked on individual products to view details. | Product details (description, price, image) were displayed correctly. | ![screenshot](documentation/defensive/product-details.png) |
 | Shopping Cart | Feature is expected to allow customers to add items to the cart with quantity controls. | Added products to the cart and adjusted quantities. | Items were added successfully, and quantities updated as expected. | ![screenshot](documentation/defensive/add-to-cart.png) |
-| | Feature is expected to allow customers to view and manage their cart. | Opened the cart page and edited cart contents. | Cart contents were displayed, updated, and removed correctly. | ![screenshot](documentation/defensive/manage-cart.png) |
+| Manage Cart | Feature is expected to allow customers to view and manage their cart. | Opened the cart page and edited cart contents. | Cart contents were displayed, updated, and removed correctly. | ![screenshot](documentation/defensive/manage-cart.png) |
 | Checkout | Feature is expected to display cart items, grand total, and input fields for checkout. | Proceeded to checkout with items in the cart. | Checkout page displayed cart items, total, and input fields as expected. | ![screenshot](documentation/defensive/checkout.png) |
 | | Feature is expected to allow secure payment via Stripe. | Entered valid card details using Stripe at checkout. | Payment was processed securely, and an order confirmation page was displayed. | ![screenshot](documentation/defensive/stripe-payment.png) |
 | | Feature is expected to send a confirmation email after purchase. | Completed a purchase and checked email inbox. | Confirmation email was received with order details. | ![screenshot](documentation/defensive/confirmation-email.png) |
