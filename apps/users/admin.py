@@ -1,6 +1,7 @@
 """Django admin configuration for the users app.
 
-Registers models and customizes list displays, filters, and management actions."""
+Registers models and customizes list displays, filters,
+and management actions."""
 
 # apps/users/admin.py
 from django.contrib import admin
@@ -38,7 +39,10 @@ class CustomUserAdmin(UserAdmin):
             )
         }),
         ("Permissions", {
-            "fields": ("is_active", "is_staff", "is_superuser", "groups", "user_permissions")
+            "fields": (
+                "is_active",
+                "is_staff", "is_superuser",
+                "groups", "user_permissions")
         }),
         ("Important dates", {"fields": ("last_login", "date_joined")}),
     )
@@ -47,6 +51,12 @@ class CustomUserAdmin(UserAdmin):
     add_fieldsets = (
         (None, {
             "classes": ("wide",),
-            "fields": ("username", "email", "password1", "password2", "is_staff", "is_active"),
+            "fields": (
+                "username",
+                "email",
+                "password1",
+                "password2",
+                "is_staff",
+                "is_active"),
         }),
     )
