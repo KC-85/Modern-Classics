@@ -1,3 +1,5 @@
+/* jshint esversion: 11 */
+
 // Showroom page enhancements (progressive, no deps)
 (() => {
   // 0) Image fallback for invalid/broken media URLs (CSP-safe, no inline handlers)

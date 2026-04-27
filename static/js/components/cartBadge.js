@@ -1,3 +1,5 @@
+/* jshint esversion: 11 */
+
 import { $, $$ } from "../utils/dom.js";
 
 // Simple badge updater (you can wire this with a real count endpoint later)

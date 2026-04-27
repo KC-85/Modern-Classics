@@ -1,3 +1,5 @@
+/* jshint esversion: 11 */
+
 (() => {
   const el = document.getElementById("heroCarousel");
   if (!el || typeof bootstrap === "undefined") {

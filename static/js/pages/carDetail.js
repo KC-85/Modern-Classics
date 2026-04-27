@@ -1,3 +1,5 @@
+/* jshint esversion: 11 */
+
 import { $, toast } from "../utils/dom.js";
 import { addToCart } from "../services/cartService.js";
 import { updateCartBadge } from "../components/cartBadge.js";

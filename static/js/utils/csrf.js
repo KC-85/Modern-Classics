@@ -1,3 +1,5 @@
+/* jshint esversion: 11 */
+
 // Read Django's csrftoken cookie
 export function getCSRFToken(name = "csrftoken") {
   const m = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`));
