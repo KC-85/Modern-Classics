@@ -15,7 +15,8 @@ for path in ("apps.delivery.forms", "delivery.forms"):
 class DeliveryFormsSmokeTests(SimpleTestCase):
     def test_forms_are_django_forms(self):
         """
-        Sanity: any attributes ending with 'Form' are subclasses of Form/ModelForm.
+        Sanity: any attributes ending with 'Form'
+        are subclasses of Form/ModelForm.
         """
         found = 0
         for mod in _FORM_MODULES:

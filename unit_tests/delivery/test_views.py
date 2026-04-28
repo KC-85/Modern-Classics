@@ -10,7 +10,8 @@ class DeliveryViewSmokeTests(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.user = User.objects.create_user(
-            username="delivery-user", password="pass12345", email="user@example.com"
+            username="delivery-user",
+            password="pass12345", email="user@example.com"
         )
 
     def test_all_delivery_urls_without_kwargs_are_reachable(self):
@@ -43,7 +44,8 @@ class DeliveryViewSmokeTests(TestCase):
 
         for name in ["delivery:option_list", "delivery:option_add"]:
             resp = self.client.get(reverse(name))
-            self.assertIn(resp.status_code, {302, 403}, msg=f"{name} should be denied")
+            self.assertIn(
+                resp.status_code, {302, 403}, msg=f"{name} should be denied")
 
         from apps.delivery.models import DeliveryOption
 
@@ -53,4 +55,5 @@ class DeliveryViewSmokeTests(TestCase):
 
         for name in ["delivery:option_edit", "delivery:option_delete"]:
             resp = self.client.get(reverse(name, kwargs={"pk": option.pk}))
-            self.assertIn(resp.status_code, {302, 403}, msg=f"{name} should be denied")
+            self.assertIn(
+                resp.status_code, {302, 403}, msg=f"{name} should be denied")

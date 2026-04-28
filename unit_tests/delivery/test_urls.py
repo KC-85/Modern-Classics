@@ -9,5 +9,8 @@ class DeliveryURLTests(SimpleTestCase):
         """
         resolver = get_resolver()
         namespaces = {ns for (ns, _) in resolver.namespace_dict.items()}
-        self.assertIn("delivery", namespaces,
-                      "Include('delivery.urls', namespace='delivery') missing?")
+        self.assertIn(
+            "delivery",
+            namespaces,
+            "Include('delivery.urls', namespace='delivery') missing?",
+        )
