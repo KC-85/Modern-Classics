@@ -26,13 +26,17 @@ SECRET_KEY = config("SECRET_KEY")
 ALLOWED_HOSTS = config(
     "ALLOWED_HOSTS",
     default=(
-        "127.0.0.1,localhost,0.0.0.0,https://modern-classics-b10468fd6f55.herokuapp.com",
+        "127.0.0.1,localhost,0.0.0.0,"
+        "https://modern-classics-b10468fd6f55.herokuapp.com"
+    ),
     cast=Csv(),
 )
 CSRF_TRUSTED_ORIGINS = config(
     "CSRF_TRUSTED_ORIGINS",
     default=(
-        "https://127.0.0.1,https://localhost,https://modern-classics-b10468fd6f55.herokuapp.com",)
+        "https://127.0.0.1,https://localhost,"
+        "https://modern-classics-b10468fd6f55.herokuapp.com"
+    ),
     cast=Csv(),
 )
 
