@@ -1,6 +1,7 @@
 """View logic for the showroom app.
 
-Handles HTTP requests, orchestrates domain operations, and returns rendered responses."""
+Handles HTTP requests, orchestrates domain operations,
+and returns rendered responses."""
 
 # apps/showroom/views.py
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -60,7 +61,7 @@ class CarListView(ListView):
         elif sort == "price_desc":
             qs = qs.order_by("-price", "-id")
         else:  # "new"
-            if hasattr(Car, "created"):           # prefer a created timestamp if you have one
+            if hasattr(Car, "created"):
                 qs = qs.order_by("-created", "-id")
             else:
                 # fallback: newest year first, then newest id
@@ -108,7 +109,8 @@ class CarUpdateView(UpdateView):
 
     def form_valid(self, form):
         response = super().form_valid(form)
-        messages.success(self.request, f"Car updated successfully: {self.object}")
+        messages.success(
+            self.request, f"Car updated successfully: {self.object}")
         return response
 
 
@@ -121,5 +123,6 @@ class CarDeleteView(DeleteView):
     def form_valid(self, form):
         car_label = str(self.object)
         response = super().form_valid(form)
-        messages.success(self.request, f"Car deleted successfully: {car_label}")
+        messages.success(
+            self.request, f"Car deleted successfully: {car_label}")
         return response
