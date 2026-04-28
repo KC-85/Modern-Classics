@@ -12,7 +12,8 @@ class OrderFormTests(TestCase):
             form.fields["full_name"].widget.attrs.get("autofocus"), True)
 
     def test_labels_prefixed_for_required(self):
-        # By default most are required; 'country' is skipped for placeholder/label tweak
+        # By default most are required;
+        # 'country' is skipped for placeholder/label tweak
         form = OrderForm()
         for name, field in form.fields.items():
             if name != "country" and field.required:

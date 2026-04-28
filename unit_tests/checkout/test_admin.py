@@ -15,8 +15,10 @@ class CheckoutAdminTests(TestCase):
         self.assertTrue(any(i.model is OrderLineItem for i in ma.inlines))
         # readonly fields
         for f in (
-            "order_number", "date", "order_total", "delivery_cost", "grand_total",
-            "original_trailer", "stripe_pid", "paid_amount", "currency", "paid_at"
+            "order_number", "date", "order_total", "delivery_cost",
+            "grand_total",
+            "original_trailer",
+            "stripe_pid", "paid_amount", "currency", "paid_at"
         ):
             self.assertIn(f, ma.readonly_fields)
         # list display basics

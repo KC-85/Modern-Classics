@@ -8,12 +8,18 @@ from apps.checkout.webhooks import stripe_webhook
 from apps.checkout.models import Order
 
 
-@override_settings(STRIPE_SECRET_KEY="sk_x", STRIPE_WEBHOOK_SECRET="whsec_x", DEFAULT_FROM_EMAIL="noreply@example.com")
+@override_settings(
+    STRIPE_SECRET_KEY="sk_x",
+    STRIPE_WEBHOOK_SECRET="whsec_x",
+    DEFAULT_FROM_EMAIL="noreply@example.com",
+)
 class WebhookHandlerTests(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
         self.order = Order.objects.create(
-            user=None, original_trailer={"items": []})
+            user=None,
+            original_trailer={"items": []},
+        )
 
     @patch("apps.checkout.webhook_handler.send_mail")
     def test_payment_intent_succeeded_updates_order(self, mock_send):
@@ -55,26 +61,48 @@ class WebhookHandlerTests(TestCase):
         resp = handler.handle_event({"type": "unhandled.type"})
         self.assertEqual(resp.status_code, 200)
 
-    @patch("apps.checkout.webhooks.StripeWH_Handler.handle_payment_intent_succeeded", return_value=HttpResponse(status=200))
-    @patch("apps.checkout.webhooks.stripe.Webhook.construct_event", return_value={"type": "payment_intent.succeeded"})
+    @patch(
+        "apps.checkout.webhooks."
+        "StripeWH_Handler.handle_payment_intent_succeeded",
+        return_value=HttpResponse(status=200),
+    )
+    @patch(
+        "apps.checkout.webhooks.stripe.Webhook.construct_event",
+        return_value={"type": "payment_intent.succeeded"},
+    )
     def test_webhook_dispatch_success(self, mock_construct, mock_handler):
         req = self.factory.post(
-            "/stripe/webhook/", data=b"{}", content_type="application/json")
+            "/stripe/webhook/",
+            data=b"{}",
+            content_type="application/json",
+        )
         resp = stripe_webhook(req)
         self.assertEqual(resp.status_code, 200)
         mock_construct.assert_called_once()
         mock_handler.assert_called_once()
 
-    @patch("apps.checkout.webhooks.stripe.Webhook.construct_event", side_effect=ValueError)
+    @patch(
+        "apps.checkout.webhooks.stripe.Webhook.construct_event",
+        side_effect=ValueError,
+    )
     def test_webhook_bad_json(self, mock_construct):
         req = self.factory.post(
-            "/stripe/webhook/", data=b"not-json", content_type="application/json")
+            "/stripe/webhook/",
+            data=b"not-json",
+            content_type="application/json",
+        )
         resp = stripe_webhook(req)
         self.assertEqual(resp.status_code, 400)
 
-    @patch("apps.checkout.webhooks.stripe.Webhook.construct_event", side_effect=Exception)
+    @patch(
+        "apps.checkout.webhooks.stripe.Webhook.construct_event",
+        side_effect=Exception,
+    )
     def test_webhook_unexpected_error(self, mock_construct):
         req = self.factory.post(
-            "/stripe/webhook/", data=b"{}", content_type="application/json")
+            "/stripe/webhook/",
+            data=b"{}",
+            content_type="application/json",
+        )
         resp = stripe_webhook(req)
         self.assertEqual(resp.status_code, 400)

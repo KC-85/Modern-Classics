@@ -62,13 +62,15 @@ class CheckoutViewsTests(TestCase):
 
     @patch("apps.checkout.views.stripe.PaymentIntent.create")
     @patch("apps.checkout.views.get_object_or_404")
-    def test_checkout_view_get_sets_totals_and_creates_pi(self, mock_get, mock_pi_create):
+    def test_checkout_view_get_sets_totals_and_creates_pi
+    (self, mock_get, mock_pi_create):
         # Prepare order with one line item
         order = Order.objects.create(
             user=self.user, original_trailer={"items": []})
         OrderLineItem.objects.create(
             order=order, car=self.car, quantity=1, unit_price=self.car.price)
-        # mock cart lookup inside CreateOrderView isn't used here; we mock get() to return order
+        # mock cart lookup inside CreateOrderView isn't used here;
+        # we mock get() to return order
         mock_get.return_value = order
 
         mock_pi_create.return_value = Mock(
@@ -80,7 +82,8 @@ class CheckoutViewsTests(TestCase):
         order.refresh_from_db()
         # order_total equals item total
         self.assertEqual(order.order_total, Decimal("10000.00"))
-        # delivery computed based on settings threshold (defaults → likely 0 if >=50)
+        # delivery computed based on settings threshold
+        # (defaults → likely 0 if >=50)
         self.assertIsNotNone(order.delivery_cost)
         self.assertTrue(order.grand_total >= order.order_total)
         self.assertEqual(order.stripe_pid, "pi_123")
@@ -88,7 +91,8 @@ class CheckoutViewsTests(TestCase):
 
     @patch("apps.checkout.views.send_mail")
     @patch("apps.checkout.views.Cart")
-    def test_success_view_sends_receipt_and_marks_cars_sold_and_deletes_cart(self, mock_cart, mock_send):
+    def test_success_view_sends_receipt_and_marks_cars_sold_and_deletes_cart
+    (self, mock_cart, mock_send):
         order = Order.objects.create(
             user=self.user,
             original_trailer={"items": []},
@@ -111,10 +115,13 @@ class CheckoutViewsTests(TestCase):
         self.assertTrue(self.car.is_sold)
         # cart delete called
         self.assertTrue(
-            mock_cart.objects.filter.return_value.first.return_value.delete.called)
+            mock_cart.objects.filter.return_value.first.return_value.delete(
+            ).called
+        )
 
     @patch("apps.checkout.views.stripe.PaymentIntent.retrieve")
-    def test_checkout_post_marks_order_paid_when_intent_succeeds(self, mock_pi_retrieve):
+    def test_checkout_post_marks_order_paid_when_intent_succeeds
+    (self, mock_pi_retrieve):
         order = Order.objects.create(
             user=self.user,
             original_trailer={"items": []},
@@ -161,7 +168,8 @@ class CheckoutViewsTests(TestCase):
         self.assertIsNotNone(order.paid_at)
 
     @patch("apps.checkout.views.stripe.PaymentIntent.retrieve")
-    def test_checkout_post_keeps_order_pending_when_intent_not_succeeded(self, mock_pi_retrieve):
+    def test_checkout_post_keeps_order_pending_when_intent_not_succeeded
+    (self, mock_pi_retrieve):
         order = Order.objects.create(
             user=self.user,
             original_trailer={"items": []},
@@ -230,5 +238,8 @@ class CheckoutViewsTests(TestCase):
         resp3 = self.client.get(url3)
         self.assertEqual(resp3.status_code, 200)
         self.assertQuerySetEqual(
-            resp3.context["orders"], [my_order], transform=lambda o: o, ordered=False
+            resp3.context["orders"],
+            [my_order],
+            transform=lambda o: o,
+            ordered=False,
         )
