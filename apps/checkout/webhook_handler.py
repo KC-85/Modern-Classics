@@ -66,7 +66,7 @@ class StripeWH_Handler:
         logger.info("Unhandled webhook event type: %s", event.get("type"))
         return HttpResponse(status=200)
 
-    # ---------------------------- key events ---------------------------
+    # key events
 
     def handle_payment_intent_succeeded(self, event):
         intent = event["data"]["object"]
@@ -88,14 +88,17 @@ class StripeWH_Handler:
             and order.status == Order.PaymentStatus.PAID
             and getattr(order, "paid_at", None)
         ):
-            logger.info("Order %s already marked paid; skipping duplicate webhook", order.pk)
+            logger.info(
+                "Order %s already marked paid; skipping duplicate webhook",
+                order.pk)
             return HttpResponse(status=200)
 
         # Persist PI id if not recorded yet
         if pid and not order.stripe_pid:
             order.stripe_pid = pid
 
-        # Stripe amounts are in the smallest unit (pence); prefer amount_received
+        # Stripe amounts are in the smallest unit (pence);
+        # prefer amount_received
         amt = intent.get("amount_received") or intent.get("amount")
         if amt is not None and hasattr(order, "paid_amount"):
             order.paid_amount = Decimal(amt) / Decimal("100")
@@ -115,7 +118,8 @@ class StripeWH_Handler:
                 fields_to_update.append(f)
         order.save(update_fields=fields_to_update)
 
-        # (Optional) mark cars sold & clear from other carts here if you added that logic
+        # (Optional) mark cars sold & clear from other carts here
+        # Only if logic is added
 
         self._send_confirmation_email(order)
         return HttpResponse(status=200)
@@ -136,7 +140,7 @@ class StripeWH_Handler:
 
         return HttpResponse(status=200)
 
-    # ---------------------- optional: Checkout Session ------------------
+    # optional: Checkout Session
 
     def handle_checkout_session_completed(self, event):
         """
