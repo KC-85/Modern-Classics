@@ -358,4 +358,7 @@ class OrderHistoryView(LoginRequiredMessageMixin, ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        return Order.objects.filter(user=self.request.user).order_by("-date")
+    return Order.objects.filter(
+        user=self.request.user,
+        status=Order.PaymentStatus.PAID,
+    ).order_by("-date")
