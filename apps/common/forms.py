@@ -90,6 +90,7 @@ class NewsletterEmailForm(forms.ModelForm):
 
         # If scheduling, require a scheduled_at time
         if status == "scheduled" and not scheduled_at:
-            raise ValidationError("Scheduled newsletters must have a scheduled time.")
+            raise ValidationError(
+                "Scheduled newsletters must have a scheduled time.")
 
         return cleaned_data

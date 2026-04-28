@@ -1,6 +1,7 @@
 """View logic for the common app.
 
-Handles HTTP requests, orchestrates domain operations, and returns rendered responses."""
+Handles HTTP requests, orchestrates domain operations,
+and returns rendered responses."""
 
 from django.http import HttpResponse, JsonResponse
 from django.db import transaction, IntegrityError
@@ -8,11 +9,25 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 from django.utils.decorators import method_decorator
 from django.urls import reverse_lazy
-from django.views.generic import FormView, TemplateView, ListView, CreateView, UpdateView, DeleteView, View
+from django.views.generic import (
+    FormView,
+    TemplateView,
+    ListView,
+    CreateView,
+    UpdateView,
+    DeleteView,
+    View,
+)
 from django.core.mail import send_mass_mail
 from django.utils import timezone
 from django.shortcuts import redirect, get_object_or_404
-from .forms import ContactForm, NewsletterForm, FAQSearchForm, FAQForm, NewsletterEmailForm
+from .forms import (
+    ContactForm,
+    NewsletterForm,
+    FAQSearchForm,
+    FAQForm,
+    NewsletterEmailForm,
+)
 from .models import FAQ, Newsletter, NewsletterEmail
 
 """
@@ -97,7 +112,9 @@ class NewsletterEmailUpdateView(UpdateView):
     def form_valid(self, form):
         # Prevent editing of sent newsletters
         if self.object.is_sent:
-            messages.error(self.request, "Cannot edit a newsletter that has already been sent.")
+            messages.error(
+                self.request,
+                "Cannot edit a newsletter that has already been sent.")
             return redirect("common:newsletter_email_list")
         response = super().form_valid(form)
         messages.success(self.request, "Newsletter updated successfully.")
@@ -115,7 +132,9 @@ class NewsletterEmailDeleteView(DeleteView):
         # Prevent deletion of sent newsletters
         self.object = self.get_object()
         if self.object.is_sent:
-            messages.error(request, "Cannot delete a newsletter that has already been sent.")
+            messages.error(
+                request,
+                "Cannot delete a newsletter that has already been sent.")
             return redirect("common:newsletter_email_list")
         messages.success(request, "Newsletter deleted successfully.")
         return super().delete(request, *args, **kwargs)
@@ -146,7 +165,7 @@ class NewsletterEmailSendView(View):
                 (
                     newsletter.subject,
                     newsletter.body,
-                    "noreply@modernclassics.com",  # Use your default from email
+                    "noreply@modernclassics.com",
                     [subscriber_email],
                 )
             )
@@ -222,7 +241,8 @@ class FAQDeleteView(DeleteView):
     def form_valid(self, form):
         faq_label = str(self.object)
         response = super().form_valid(form)
-        messages.success(self.request, f"FAQ deleted successfully: {faq_label}")
+        messages.success(
+            self.request, f"FAQ deleted successfully: {faq_label}")
         return response
 
 
