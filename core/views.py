@@ -2,6 +2,7 @@ from django.views.generic import TemplateView
 from django.shortcuts import redirect
 from apps.showroom.models import Car
 
+
 class HomeView(TemplateView):
     template_name = "home/hero.html"
 
