@@ -1,3 +1,6 @@
+/* jshint esversion: 11, jquery: true */
+/* global global, describe, beforeEach, afterEach, jest, test, require, expect, bootstrap */
+
 describe('getCSRFToken', () => {
 	beforeEach(() => {
 		document.cookie = 'csrftoken=; Max-Age=0; path=/';

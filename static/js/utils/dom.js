@@ -1,4 +1,5 @@
-/* jshint esversion: 11 */
+/* jshint esversion: 11, jquery: true */
+/* global global, describe, beforeEach, afterEach, jest, test, require, expect, bootstrap */
 
 export const $  = (sel, root = document) => root.querySelector(sel);
 export const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];

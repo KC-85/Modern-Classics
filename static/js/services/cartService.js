@@ -1,4 +1,5 @@
-/* jshint esversion: 11 */
+/* jshint esversion: 11, jquery: true */
+/* global global, describe, beforeEach, afterEach, jest, test, require, expect, bootstrap */
 
 import { getCSRFToken } from "../utils/csrf.js";
 
