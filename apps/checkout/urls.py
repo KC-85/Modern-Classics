@@ -6,9 +6,9 @@ from django.urls import path
 from . import views
 from .views import (
     cache_checkout_data,
-    CreateOrderView, 
+    CreateOrderView,
     CheckoutView,
-    CheckoutSuccessView, 
+    CheckoutSuccessView,
     stripe_webhook,
     OrderHistoryView,
 )
@@ -19,8 +19,12 @@ urlpatterns = [
     path("cache-data/", cache_checkout_data, name="cache_data"),
     path("order/create/", CreateOrderView.as_view(), name="create_order"),
     path("<int:order_id>/", CheckoutView.as_view(), name="checkout"),
-    path("detail/<uuid:order_number>/", views.OrderDetailView.as_view(), name="order_detail"),
-    path("success/<int:order_id>/", CheckoutSuccessView.as_view(), name="success"),
+    path(
+        "detail/<uuid:order_number>/", views.OrderDetailView.as_view(),
+        name="order_detail"),
+    path(
+        "success/<int:order_id>/", CheckoutSuccessView.as_view(),
+        name="success"),
     path("stripe/webhook/", stripe_webhook, name="stripe-webhook"),
     path('list/', OrderHistoryView.as_view(), name='list'),
 ]
