@@ -1,6 +1,7 @@
 """View logic for the checkout app.
 
-Handles HTTP requests, orchestrates domain operations, and returns rendered responses."""
+Handles HTTP requests, orchestrates domain operations,
+and returns rendered responses."""
 
 # apps/checkout/views.py
 
@@ -118,25 +119,28 @@ class CreateOrderView(LoginRequiredMessageMixin, View):
 
         order = Order.objects.create(
             user=request.user,
-            original_trailer={"items": [
-        {
-            "car_id": ci.car_id,
-            "name": str(ci.car),
-            "qty": ci.quantity,
-            "unit": float(ci.car.price),
-            "total": float(ci.car.price * ci.quantity),
-        } for ci in cart.items.select_related("car")
-    ]},
-    full_name=request.user.get_full_name(),
-    email=request.user.email or "",
-    phone_number=request.user.phone_number or "",
-    country=request.user.country or "",
-    postcode=request.user.postal_code or "",
-    town_or_city=request.user.city or "",
-    street_address1=request.user.address_line1 or "",
-    street_address2=request.user.address_line2 or "",
-    county="",
-)
+            original_trailer={
+                "items": [
+                    {
+                        "car_id": ci.car_id,
+                        "name": str(ci.car),
+                        "qty": ci.quantity,
+                        "unit": float(ci.car.price),
+                        "total": float(ci.car.price * ci.quantity),
+                    }
+                    for ci in cart.items.select_related("car")
+                ]
+            },
+            full_name=request.user.get_full_name(),
+            email=request.user.email or "",
+            phone_number=request.user.phone_number or "",
+            country=request.user.country or "",
+            postcode=request.user.postal_code or "",
+            town_or_city=request.user.city or "",
+            street_address1=request.user.address_line1 or "",
+            street_address2=request.user.address_line2 or "",
+            county="",
+        )
 
         for ci in cart.items.select_related("car"):
             OrderLineItem.objects.create(
@@ -178,14 +182,20 @@ class CheckoutView(LoginRequiredMessageMixin, View):
                 order.currency = currency.upper()
             if not order.paid_at:
                 order.paid_at = timezone.now()
-            order.save(update_fields=["status", "paid_amount", "currency", "paid_at"])
+            order.save(update_fields=[
+                "status",
+                "paid_amount",
+                "currency",
+                "paid_at"])
             return redirect("checkout:success", order_id=order.pk)
 
         if not intent:
             intent = stripe.PaymentIntent.create(
                 amount=int(order.grand_total * Decimal("100")),
                 currency="gbp",
-                metadata={"order_id": order.pk},
+                metadata={
+                    "order_id": order.pk,
+                },
             )
             order.stripe_pid = intent.id
             order.save(update_fields=["stripe_pid"])
@@ -242,7 +252,8 @@ class CheckoutView(LoginRequiredMessageMixin, View):
             }
 
         if not form.is_valid():
-            ctx = _checkout_context(order, form, request.POST.get("client_secret", ""))
+            ctx = _checkout_context(
+                order, form, request.POST.get("client_secret", ""))
             messages.error(request, "Please fix the errors in the form.")
             return render(request, self.template_name, ctx)
 
@@ -251,9 +262,11 @@ class CheckoutView(LoginRequiredMessageMixin, View):
         # Server-side confirmation of payment keeps status accurate even
         # when webhook delivery is delayed or misconfigured.
         client_secret = request.POST.get("client_secret", "")
-        pid = client_secret.split("_secret")[0] if "_secret" in client_secret else ""
+        pid = client_secret.split(
+            "_secret")[0] if "_secret" in client_secret else ""
         if not pid:
-            messages.error(request, "Payment could not be verified. Please try again.")
+            messages.error(
+                request, "Payment could not be verified. Please try again.")
             ctx = _checkout_context(order, form, client_secret)
             return render(request, self.template_name, ctx)
 
@@ -263,7 +276,9 @@ class CheckoutView(LoginRequiredMessageMixin, View):
             intent = None
 
         if not intent or intent.get("status") != "succeeded":
-            messages.error(request, "Payment was not completed. Your order remains pending.")
+            messages.error(
+                request,
+                "Payment was not completed. Your order remains pending.")
             ctx = _checkout_context(order, form, client_secret)
             return render(request, self.template_name, ctx)
 
@@ -275,7 +290,8 @@ class CheckoutView(LoginRequiredMessageMixin, View):
         if currency:
             order.currency = currency.upper()
         order.paid_at = timezone.now()
-        order.save(update_fields=["status", "paid_amount", "currency", "paid_at"])
+        order.save(
+            update_fields=["status", "paid_amount", "currency", "paid_at"])
 
         return redirect("checkout:success", order_id=order.pk)
 
@@ -303,7 +319,8 @@ class CheckoutSuccessView(LoginRequiredMessageMixin, TemplateView):
         # does not resend emails or re-run fulfillment logic.
         existing_cart = Cart.objects.filter(user=self.request.user).first()
         all_items_already_sold = all(
-            line_item.car.is_sold for line_item in order.lineitems.select_related("car")
+            line_item.car.is_sold
+            for line_item in order.lineitems.select_related("car")
         )
         if not existing_cart and all_items_already_sold:
             return False
@@ -344,7 +361,10 @@ class CheckoutSuccessView(LoginRequiredMessageMixin, TemplateView):
     def get(self, request, order_id, *args, **kwargs):
         order = get_object_or_404(Order, pk=order_id, user=request.user)
         if getattr(order, "status", None) != Order.PaymentStatus.PAID:
-            messages.error(request, "Payment is not complete yet. Please try checkout again.")
+            messages.error(
+                request,
+                "Payment is not complete yet. Please try checkout again.",
+            )
             return redirect("checkout:checkout", order_id=order.pk)
 
         self.send_receipt(order)
@@ -358,7 +378,9 @@ class OrderHistoryView(LoginRequiredMessageMixin, ListView):
     paginate_by = 10
 
     def get_queryset(self):
-    return Order.objects.filter(
-        user=self.request.user,
-        status=Order.PaymentStatus.PAID,
-    ).order_by("-date")
+        return (
+            Order.objects.filter(
+                user=self.request.user,
+                status=Order.PaymentStatus.PAID,
+            ).order_by("-date")
+        )
