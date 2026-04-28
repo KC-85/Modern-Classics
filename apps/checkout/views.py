@@ -111,21 +111,32 @@ class CreateOrderView(LoginRequiredMessageMixin, View):
             messages.error(request, "Your cart is empty.")
             return redirect("trailer:cart_detail")
 
+        Order.objects.filter(
+            user=request.user,
+            status=Order.PaymentStatus.PENDING,
+        ).delete()
+
         order = Order.objects.create(
             user=request.user,
             original_trailer={"items": [
-                {
-                    "car_id": ci.car_id,
-                    "name":   str(ci.car),
-                    "qty":    ci.quantity,
-                    "unit":   float(ci.car.price),
-                    "total":  float(ci.car.price * ci.quantity),
-                } for ci in cart.items.select_related("car")
-            ]},
-            full_name="", email=request.user.email or "",
-            phone_number="", country="", postcode="",
-            town_or_city="", street_address1="", street_address2="", county="",
-        )
+        {
+            "car_id": ci.car_id,
+            "name": str(ci.car),
+            "qty": ci.quantity,
+            "unit": float(ci.car.price),
+            "total": float(ci.car.price * ci.quantity),
+        } for ci in cart.items.select_related("car")
+    ]},
+    full_name=request.user.get_full_name(),
+    email=request.user.email or "",
+    phone_number=request.user.phone_number or "",
+    country=request.user.country or "",
+    postcode=request.user.postal_code or "",
+    town_or_city=request.user.city or "",
+    street_address1=request.user.address_line1 or "",
+    street_address2=request.user.address_line2 or "",
+    county="",
+)
 
         for ci in cart.items.select_related("car"):
             OrderLineItem.objects.create(
