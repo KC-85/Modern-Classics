@@ -1,21 +1,22 @@
 """View logic for the delivery app.
 
-Handles HTTP requests, orchestrates domain operations, and returns rendered responses."""
+Handles HTTP requests, orchestrates domain operations,
+and returns rendered responses."""
 
 # apps/delivery/views.py
 
 import math
-from django.urls                 import reverse_lazy
-from django.views.generic        import ListView, CreateView, UpdateView, DeleteView
-from django.views                import View
-from django.shortcuts            import get_object_or_404, render, redirect
+from django.urls import reverse_lazy
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views import View
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib import messages
-from django.contrib.auth.mixins  import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.utils.decorators     import method_decorator
+from django.utils.decorators import method_decorator
 
-from .models   import DeliveryOption
-from .forms    import DeliveryDistanceForm
+from .models import DeliveryOption
+from .forms import DeliveryDistanceForm
 from apps.checkout.models import Order
 
 # Decorator shortcuts for class-based views
@@ -25,37 +26,43 @@ superuser_dispatch = method_decorator(
     name='dispatch'
 )
 
+
 @superuser_dispatch
 class DeliveryOptionListView(ListView):
-    model               = DeliveryOption
-    template_name       = "delivery/option_list.html"
+    model = DeliveryOption
+    template_name = "delivery/option_list.html"
     context_object_name = "options"
-    paginate_by         = 20  # optional
+    paginate_by = 20
+
 
 @superuser_dispatch
 class DeliveryOptionCreateView(CreateView):
-    model         = DeliveryOption
-    fields        = ['name', 'price', 'description']
+    model = DeliveryOption
+    fields = ['name', 'price', 'description']
     template_name = "delivery/option_form.html"
-    success_url   = reverse_lazy("delivery:option_list")
+    success_url = reverse_lazy("delivery:option_list")
+
 
 @superuser_dispatch
 class DeliveryOptionUpdateView(UpdateView):
-    model         = DeliveryOption
-    fields        = ['name', 'price', 'description']
+    model = DeliveryOption
+    fields = ['name', 'price', 'description']
     template_name = "delivery/option_form.html"
-    success_url   = reverse_lazy("delivery:option_list")
+    success_url = reverse_lazy("delivery:option_list")
+
 
 @superuser_dispatch
 class DeliveryOptionDeleteView(DeleteView):
-    model         = DeliveryOption
+    model = DeliveryOption
     template_name = "delivery/option_confirm_delete.html"
-    success_url   = reverse_lazy("delivery:option_list")
+    success_url = reverse_lazy("delivery:option_list")
 
     def form_valid(self, form):
         option_label = str(self.object)
         response = super().form_valid(form)
-        messages.success(self.request, f"Delivery option deleted successfully: {option_label}")
+        messages.success(
+            self.request, f"Delivery option deleted successfully:"
+            "{option_label}")
         return response
 
 
