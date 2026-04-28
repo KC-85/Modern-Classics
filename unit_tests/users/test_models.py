@@ -27,7 +27,8 @@ class UsersModelTests(TestCase):
         self.assertEqual(str(su), "admin")
 
     def test_email_is_not_unique_by_default(self):
-        # Your model does NOT set unique=True on email; creating duplicates should be allowed.
+        # Your model does NOT set unique=True on email;
+        # Creating duplicates should be allowed.
         User.objects.create_user(
             username="a", email="dupe@example.com", password="x")
         User.objects.create_user(
