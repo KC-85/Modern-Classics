@@ -10,10 +10,14 @@ class CarViewsTests(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.admin = User.objects.create_user(
-            username="admin", email="admin@example.com", password="pass", is_superuser=True, is_staff=True
+            username="admin",
+            email="admin@example.com",
+            password="pass", is_superuser=True, is_staff=True
         )
         cls.user = User.objects.create_user(
-            username="user", email="user@example.com", password="pass", is_superuser=False, is_staff=False
+            username="user",
+            email="user@example.com",
+            password="pass", is_superuser=False, is_staff=False
         )
 
         cls.ford = CarMake.objects.create(name="Ford")
@@ -24,15 +28,18 @@ class CarViewsTests(TestCase):
         # Create several cars for filtering/sorting/search
         cls.c1 = Car.objects.create(
             make=cls.ford, model=cls.focus, year=2020,
-            specifications="Spec A", performance="A", condition="good", price=10000
+            specifications="Spec A",
+            performance="A", condition="good", price=10000
         )
         cls.c2 = Car.objects.create(
             make=cls.vw, model=cls.golf, year=2022,
-            specifications="Spec B", performance="B", condition="excellent", price=15000
+            specifications="Spec B",
+            performance="B", condition="excellent", price=15000
         )
         cls.c3 = Car.objects.create(
             make=cls.ford, model=cls.focus, year=2018,
-            specifications="Spec C", performance="C", condition="fair", price=8000
+            specifications="Spec C",
+            performance="C", condition="fair", price=8000
         )
 
     # ---------- List view ----------
@@ -40,7 +47,7 @@ class CarViewsTests(TestCase):
         resp = self.client.get(reverse("showroom:car_list"))
         self.assertEqual(resp.status_code, 200)
         cars = list(resp.context["cars"])
-        # default sort uses "-year", "-id" fallback (since Car has no "created")
+        # default sort uses "-year", "-id" fallback.
         self.assertEqual(cars[0], self.c2)
 
     def test_list_filter_by_make_and_model(self):
@@ -56,7 +63,8 @@ class CarViewsTests(TestCase):
     def test_list_filter_by_year_range_and_condition(self):
         url = reverse("showroom:car_list")
         resp = self.client.get(
-            url, {"year_from": 2019, "year_to": 2022, "condition": "excellent"})
+            url, {"year_from": 2019,
+                  "year_to": 2022, "condition": "excellent"})
         cars = list(resp.context["cars"])
         self.assertEqual(cars, [self.c2])  # only 2022 excellent
 
@@ -126,7 +134,9 @@ class CarViewsTests(TestCase):
         self.client.force_login(self.user)
 
         edit_url = reverse("showroom:car_edit", kwargs={"slug": self.c1.slug})
-        delete_url = reverse("showroom:car_delete", kwargs={"slug": self.c1.slug})
+        delete_url = reverse(
+            "showroom:car_delete",
+            kwargs={"slug": self.c1.slug})
 
         edit_resp = self.client.get(edit_url)
         delete_resp = self.client.get(delete_url)

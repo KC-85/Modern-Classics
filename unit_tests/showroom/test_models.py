@@ -52,8 +52,11 @@ class CarTests(TestCase):
         self.car1.save()
         self.assertEqual(self.car1.slug, original)
         # slug shape
-        expected_prefix = f"{self.car1.make.name}-{self.car1.model.name}-{self.car1.year}".lower(
-        ).replace(" ", "-")
+        expected_prefix = (
+            f"{self.car1.make.name}-{self.car1.model.name}-{self.car1.year}"
+            .lower()
+            .replace(" ", "-")
+        )
         self.assertTrue(self.car1.slug.startswith(expected_prefix[:150]))
 
     def test_get_absolute_url(self):
