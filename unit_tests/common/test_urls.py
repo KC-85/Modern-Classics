@@ -10,7 +10,12 @@ class URLResolutionTests(SimpleTestCase):
         self.assertTrue(
             resolve("/common/newsletter/").view_name.endswith("newsletter"))
         self.assertTrue(
-            resolve("/common/newsletter/success/").view_name.endswith("newsletter_success"))
+            resolve(
+                "/common/newsletter/success/"
+                ).view_name.endswith(
+                    "newsletter_success"
+                )
+            )
 
     def test_misc_routes_exist(self):
         # Adjust these paths/names to your actual routes
@@ -20,5 +25,10 @@ class URLResolutionTests(SimpleTestCase):
 
     def test_faq_crud_routes(self):
         self.assertEqual(reverse("common:faq_create"), "/common/faq/add/")
-        self.assertEqual(reverse("common:faq_edit", kwargs={"pk": 1}), "/common/faq/1/edit/")
-        self.assertEqual(reverse("common:faq_delete", kwargs={"pk": 1}), "/common/faq/1/delete/")
+        self.assertEqual(
+            reverse(
+                "common:faq_edit", kwargs={"pk": 1}), "/common/faq/1/edit/")
+        self.assertEqual(
+            reverse(
+                "common:faq_delete",
+                kwargs={"pk": 1}), "/common/faq/1/delete/")

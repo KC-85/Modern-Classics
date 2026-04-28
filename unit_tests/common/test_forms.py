@@ -22,10 +22,11 @@ class NewsletterFormTests(TestCase):
         Newsletter.objects.create(email="dupe@example.com")
         form = NewsletterForm(
             data={"email": "dupe@example.com", "consent": True})
-        # Depending on your form, you may or may not catch duplicate at form level.
+        """Depending on your form,
+        you may or may not catch duplicate at form level."""
         # We at least expect the form to be invalid if you validate uniqueness.
         if form.is_valid():
-            # If the form allows it, saving must raise due to DB unique constraint.
+            # If form allows, saving must raise due to DB unique constraint.
             with self.assertRaises(Exception):
                 form.save()
         else:

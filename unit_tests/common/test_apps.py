@@ -17,12 +17,14 @@ class CommonAppsConfigTests(SimpleTestCase):
         """Labels are stable; verbose_name optional unless you set it."""
         cfg = apps.get_app_config("common")
         self.assertEqual(cfg.label, "common")
-        # Only assert verbose_name if you set one in CommonConfig; otherwise ensure it’s a str
+        # Only assert verbose_name if you set one in CommonConfig;
+        # otherwise ensure it’s a str
         self.assertIsInstance(getattr(cfg, "verbose_name", "Common"), str)
 
     def test_ready_does_not_crash(self):
         """ready() should be safe to call multiple times."""
         cfg = apps.get_app_config("common")
-        # If you connect signals in ready(), calling twice should still be safe (idempotent).
+        # If you connect signals in ready(),
+        # calling twice should still be safe (idempotent).
         cfg.ready()
         cfg.ready()  # no exception

@@ -15,7 +15,7 @@ class NewsletterAdminTests(TestCase):
         self.superuser = User.objects.create_superuser(
             email="admin@example.com",
             password="pass1234",
-            username="admin",  # in case username is still required by your User model
+            username="admin",
         )
         self.client.force_login(self.superuser)
 
@@ -55,7 +55,8 @@ class NewsletterAdminTests(TestCase):
         self.assertNotContains(resp, "beta@example.com")
 
     def test_admin_config_fields(self):
-        """Check list_display, readonly_fields, search_fields match expectations."""
+        """Check list_display, readonly_fields,
+        search_fields match expectations."""
         ma = admin.site._registry[Newsletter]
         self.assertEqual(tuple(ma.list_display), ("email", "subscribed_at"))
         self.assertEqual(tuple(ma.readonly_fields), ("subscribed_at",))

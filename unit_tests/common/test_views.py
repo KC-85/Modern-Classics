@@ -84,7 +84,7 @@ class NewsletterSignupViewTests(TestCase):
         url = reverse("common:newsletter")
         resp = self.client.post(
             url, {"email": "dupe@example.com", "consent": True})
-        # Expect form to re-render (200) with an error message you add in the view
+        # Expect form to re-render (200) with an error message
         self.assertEqual(resp.status_code, 200)
         # Match your view’s error text exactly:
         self.assertContains(resp, "already subscribed",
@@ -145,15 +145,18 @@ class FAQCrudViewTests(TestCase):
 
     def test_superuser_can_delete_faq(self):
         self.client.force_login(self.superuser)
-        resp = self.client.post(reverse("common:faq_delete", kwargs={"pk": self.faq.pk}))
+        resp = self.client.post(
+            reverse("common:faq_delete", kwargs={"pk": self.faq.pk}))
         self.assertRedirects(resp, reverse("common:faq_list"))
         self.assertFalse(FAQ.objects.filter(pk=self.faq.pk).exists())
 
     def test_non_superuser_cannot_access_faq_crud_views(self):
         self.client.force_login(self.user)
         create_resp = self.client.get(reverse("common:faq_create"))
-        edit_resp = self.client.get(reverse("common:faq_edit", kwargs={"pk": self.faq.pk}))
-        delete_resp = self.client.get(reverse("common:faq_delete", kwargs={"pk": self.faq.pk}))
+        edit_resp = self.client.get(
+            reverse("common:faq_edit", kwargs={"pk": self.faq.pk}))
+        delete_resp = self.client.get(
+            reverse("common:faq_delete", kwargs={"pk": self.faq.pk}))
 
         self.assertEqual(create_resp.status_code, 302)
         self.assertEqual(edit_resp.status_code, 302)
