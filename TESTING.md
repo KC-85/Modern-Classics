@@ -215,7 +215,6 @@ I have used the recommended [PEP8 CI Python Linter](https://pep8ci.herokuapp.com
 | core | [settings.py](https://github.com/KC-85/Modern-Classics/blob/main/core/settings.py) | [PEP8 CI Link](https://pep8ci.herokuapp.com/https://raw.githubusercontent.com/KC-85/Modern-Classics/main/core/settings.py) | ![screenshot](documentation/validation/py-core-settings.png) | Notes (if applicable) |
 | core | [urls.py](https://github.com/KC-85/Modern-Classics/blob/main/core/urls.py) | [PEP8 CI Link](https://pep8ci.herokuapp.com/https://raw.githubusercontent.com/KC-85/Modern-Classics/main/core/urls.py) | ![screenshot](documentation/validation/py-core-urls.png) | Notes (if applicable) |
 |  | [manage.py](https://github.com/KC-85/Modern-Classics/blob/main/manage.py) | [PEP8 CI Link](https://pep8ci.herokuapp.com/https://raw.githubusercontent.com/KC-85/Modern-Classics/main/manage.py) | ![screenshot](documentation/validation/py--manage.png) | Notes (if applicable) |
-| scripts | [import_test_data.py](https://github.com/KC-85/Modern-Classics/blob/main/scripts/import_test_data.py) | [PEP8 CI Link](https://pep8ci.herokuapp.com/https://raw.githubusercontent.com/KC-85/Modern-Classics/main/scripts/import_test_data.py) | ![screenshot](documentation/validation/py-scripts-import_test_data.png) | Notes (if applicable) |
 
 
 ## Responsiveness
