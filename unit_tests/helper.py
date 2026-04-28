@@ -9,13 +9,15 @@ class BaseTestCase(TestCase):
     def make_user(self, **kw):
         data = dict(username="u", email="u@example.com", password="pass12345")
         data.update(kw)
-        return User.objects.create_user(**{k: data[k] for k in ("username", "email", "password")})
+        return User.objects.create_user(
+             **{k: data[k] for k in ("username", "email", "password")})
 
     def make_superuser(self, **kw):
         data = dict(username="admin", email="admin@example.com",
                     password="adminpass")
         data.update(kw)
-        return User.objects.create_superuser(**{k: data[k] for k in ("username", "email", "password")})
+        return User.objects.create_superuser(
+             **{k: data[k] for k in ("username", "email", "password")})
 
     def login(self, user, password=None):
         self.client.logout()
