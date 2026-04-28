@@ -6,6 +6,7 @@ Provides shared helper functions used by multiple modules in this app."""
 from decimal import Decimal
 from django.conf import settings
 
+
 def compute_delivery(subtotal: Decimal) -> Decimal:
     """
     Example policy:
@@ -13,7 +14,7 @@ def compute_delivery(subtotal: Decimal) -> Decimal:
       - Otherwise STANDARD_DELIVERY_PERCENT % of subtotal
     """
     threshold = getattr(settings, "FREE_DELIVERY_THRESHOLD", Decimal("50.00"))
-    pct       = getattr(settings, "STANDARD_DELIVERY_PERCENT", Decimal("10.0"))
+    pct = getattr(settings, "STANDARD_DELIVERY_PERCENT", Decimal("10.0"))
 
     if subtotal >= threshold:
         return Decimal("0.00")
