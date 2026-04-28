@@ -1,11 +1,13 @@
 """Django admin configuration for the checkout app.
 
-Registers models and customizes list displays, filters, and management actions."""
+Registers models and customizes list displays, filters,
+and management actions."""
 
 # checkout/admin.py
 
 from django.contrib import admin
 from .models import Order, OrderLineItem
+
 
 class OrderLineItemInline(admin.TabularInline):
     model = OrderLineItem
