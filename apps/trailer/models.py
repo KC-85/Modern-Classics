@@ -7,12 +7,13 @@ from django.db import models
 from django.db.models import Sum, F, DecimalField
 from apps.showroom.models import Car
 
+
 class Cart(models.Model):
-    user       = models.OneToOneField(
-                     settings.AUTH_USER_MODEL,
-                     on_delete=models.CASCADE,
-                     related_name="cart"
-                 )
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="cart"
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -32,11 +33,12 @@ class Cart(models.Model):
     def clear(self):
         self.items.all().delete()
 
+
 class CartItem(models.Model):
-    cart     = models.ForeignKey(
-                   Cart, related_name="items", on_delete=models.CASCADE
-               )
-    car      = models.ForeignKey(Car, on_delete=models.CASCADE)
+    cart = models.ForeignKey(
+        Cart, related_name="items", on_delete=models.CASCADE
+    )
+    car = models.ForeignKey(Car, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
 
     class Meta:

@@ -1,15 +1,16 @@
 """View logic for the trailer app.
 
-Handles HTTP requests, orchestrates domain operations, and returns rendered responses."""
+Handles HTTP requests, orchestrates domain operations,
+and returns rendered responses."""
 
 # apps/trailer/views.py
 from django.views import View
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 
-from apps.common.auth_mixins import LoginRequiredMessageMixin  # <-- use your mixin
+from apps.common.auth_mixins import LoginRequiredMessageMixin
 from .models import Cart, CartItem
-from .forms  import AddToCartForm, UpdateCartForm
+from .forms import AddToCartForm, UpdateCartForm
 
 
 class CartDetailView(LoginRequiredMessageMixin, View):
@@ -38,7 +39,8 @@ class AddToCartView(LoginRequiredMessageMixin, View):
                 item.save()
                 messages.success(
                     request,
-                    f"Updated quantity of {item.car} in your cart (now {item.quantity})."
+                    f"(Updated quantity of {item.car} in your cart)"
+                    "(now {item.quantity})."
                 )
             else:
                 messages.success(
@@ -80,5 +82,6 @@ class ClearCartView(LoginRequiredMessageMixin, View):
         count = cart.items.count()
         cart.items.all().delete()
         if count > 0:
-            messages.success(request, f"Cleared your cart ({count} item(s) removed).")
+            messages.success(
+                request, f"Cleared your cart ({count} item(s) removed).")
         return redirect("trailer:cart_detail")
