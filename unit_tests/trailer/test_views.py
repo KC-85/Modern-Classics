@@ -76,7 +76,8 @@ class TrailerViewsTests(TestCase):
             cart=self.cart, car=self.car, quantity=1)
         try:
             url = optional_reverse(
-                ["trailer:update_item", "trailer:update", "trailer:item_update"],
+                ["trailer:update_item",
+                 "trailer:update", "trailer:item_update"],
                 pk=item.pk,
             )
         except Exception:
@@ -92,7 +93,8 @@ class TrailerViewsTests(TestCase):
             cart=self.cart, car=self.car, quantity=1)
         try:
             url = optional_reverse(
-                ["trailer:remove_from_cart", "trailer:remove", "trailer:item_remove"],
+                ["trailer:remove_from_cart",
+                 "trailer:remove", "trailer:item_remove"],
                 pk=item.pk,
             )
         except Exception:

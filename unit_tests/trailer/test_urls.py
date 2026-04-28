@@ -4,7 +4,7 @@ from django.urls import include, path, reverse, resolve
 
 class TrailerURLNamespaceTests(SimpleTestCase):
     def test_namespace_is_included(self):
-        # This will 404 if the namespace isn't present; we only care that reversing works.
+        # This will 404 if the namespace isn't present.
         resolved = resolve(reverse("trailer:cart_detail"))
         self.assertTrue(resolved.namespace ==
                         "trailer" or resolved.app_name == "trailer")
@@ -21,5 +21,5 @@ class TrailerURLNamespaceTests(SimpleTestCase):
             try:
                 reverse(f"trailer:{name}", kwargs=kwargs)
             except Exception:
-                # It's okay if you don't expose a specific route name—these are optional
+                # Exposing specific route names are optional
                 continue

@@ -6,7 +6,8 @@ from django.test import TestCase
 class TrailerFormsSmokeTests(TestCase):
     def test_all_form_classes_are_forms(self):
         """
-        If you add forms (e.g., QuantityForm), ensure they subclass Form/ModelForm.
+        If you add forms (e.g., QuantityForm),
+        ensure they subclass Form/ModelForm.
         If there are no forms yet, this will pass.
         """
         try:
