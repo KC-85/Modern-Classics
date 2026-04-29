@@ -247,7 +247,7 @@ class FAQDeleteView(DeleteView):
 
 
 def robots_txt(request):
-    sitemap_url = request.build_absolute_uri(reverse_lazy("sitemap"))
+    sitemap_url = request.build_absolute_uri("/sitemap.xml")
     lines = [
         "User-agent: *",
         "Disallow: /admin/",

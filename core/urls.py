@@ -4,17 +4,10 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from django.contrib.sitemaps import views as sitemap_views
 
 from core.views import HomeView
 
-from apps.common.sitemaps import CarSitemap, StaticViewSitemap
 from apps.common.views import robots_txt
-
-sitemaps = {
-    "cars":   CarSitemap,
-    "static": StaticViewSitemap,
-}
 
 urlpatterns = [
     # Admin
@@ -54,8 +47,6 @@ urlpatterns = [
     ),
 
     # SEO
-    path("sitemap.xml", sitemap_views.sitemap, {
-         "sitemaps": sitemaps}, name="sitemap"),
     path("robots.txt", robots_txt, name="robots_txt"),
 ]
 
