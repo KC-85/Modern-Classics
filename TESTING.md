@@ -128,28 +128,6 @@ I have used the recommended [JShint Validator](https://jshint.com) to validate a
 
 ### Python
 
-⚠️ INSTRUCTIONS ⚠️
-
-The [CI Python Linter](https://pep8ci.herokuapp.com) can be used two different ways.
-
-- Copy/Paste your Python code directly into the linter.
-- As an API, using the "raw" URL appended to the linter URL.
-    - To find the "raw" URL, navigate to your file directly on the GitHub repo.
-    - On that page, GitHub provides a button on the right called "Raw" that you can click.
-    - From that new page, copy the full URL, and paste it after the CI Python Linter URL (with a `/` separator).
-
-It's recommended to validate each file using the API URL. This will give you a custom URL which you can use on your testing documentation. It makes it easier to return back to a file for validating it again in the future. Use the steps above to generate your own custom URLs for each Python file.
-
-**IMPORTANT**: `E501 line too long` errors
-
-You must strive to fix all Python lines that are too long (>80 characters). In rare cases where you cannot break the lines [*without breaking the functionality*], adding "`  # noqa`" (*NO Quality Assurance*) to the end of those lines will ignore linting validation. Do not use "`  # noqa`" all over your project just to clear down validation errors! This can still cause a project to fail, for failing to fix actual PEP8 validation errors.
-
-Sometimes variables can get too long, or excessive `if/else` conditional statements. These are acceptable instances to use the "`  # noqa`" comment.
-
-When trying to fix "line too long" errors, try to avoid using `/` to split lines. A better approach would be to use any type of opening bracket, and hit `<Enter>` just after that. Any opening bracket type will work: `(`, `[`, `{`. By using an opening bracket, Python knows where to appropriately indent the next line of code, without having to *guess* for yourself and attempt to "tab" to the correct indentation level.
-
-⚠️ --- END --- ⚠️
-
 🛑 IMPORTANT 🛑
 
 **IMPORTANT**: Django settings
@@ -208,7 +186,7 @@ I have used the recommended [PEP8 CI Python Linter](https://pep8ci.herokuapp.com
 | apps | [urls.py](https://github.com/KC-85/Modern-Classics/blob/main/apps/showroom/urls.py) | [PEP8 CI Link](https://pep8ci.herokuapp.com/https://raw.githubusercontent.com/KC-85/Modern-Classics/main/apps/showroom/urls.py) | ![screenshot](documentation/validation/python/py-apps-showroom-urls.png) | Notes (if applicable) |
 | apps | [views.py](https://github.com/KC-85/Modern-Classics/blob/main/apps/showroom/views.py) | [PEP8 CI Link](https://pep8ci.herokuapp.com/https://raw.githubusercontent.com/KC-85/Modern-Classics/main/apps/showroom/views.py) | ![screenshot](documentation/validation/python/py-apps-showroom-views.png) | Notes (if applicable) |
 | apps | [admin.py](https://github.com/KC-85/Modern-Classics/blob/main/apps/trailer/admin.py) | [PEP8 CI Link](https://pep8ci.herokuapp.com/https://raw.githubusercontent.com/KC-85/Modern-Classics/main/apps/trailer/admin.py) | ![screenshot](documentation/validation/python/py-apps-trailer-admin.png) | Notes (if applicable) |
-| apps | [forms.py](https://github.com/KC-85/Modern-Classics/blob/main/apps/trailer/forms.py) | [PEP8 CI Link](https://pep8ci.herokuapp.com/https://raw.githubusercontent.com/KC-85/Modern-Classics/main/apps/trailer/forms.py) | ![screenshot](documentation/validation/python/py-apps-trailer/forms.png) | Notes (if applicable) |
+| apps | [forms.py](https://github.com/KC-85/Modern-Classics/blob/main/apps/trailer/forms.py) | [PEP8 CI Link](https://pep8ci.herokuapp.com/https://raw.githubusercontent.com/KC-85/Modern-Classics/main/apps/trailer/forms.py) | ![screenshot](documentation/validation/python/py-apps-trailer-forms.png) | Notes (if applicable) |
 | apps | [models.py](https://github.com/KC-85/Modern-Classics/blob/main/apps/trailer/models.py) | [PEP8 CI Link](https://pep8ci.herokuapp.com/https://raw.githubusercontent.com/KC-85/Modern-Classics/main/apps/trailer/models.py) | ![screenshot](documentation/validation/python/py-apps-trailer-models.png) | Notes (if applicable) |
 | apps | [urls.py](https://github.com/KC-85/Modern-Classics/blob/main/apps/trailer/urls.py) | [PEP8 CI Link](https://pep8ci.herokuapp.com/https://raw.githubusercontent.com/KC-85/Modern-Classics/main/apps/trailer/urls.py) | ![screenshot](documentation/validation/python/py-apps-trailer-urls.png) | Notes (if applicable) |
 | apps | [views.py](https://github.com/KC-85/Modern-Classics/blob/main/apps/trailer/views.py) | [PEP8 CI Link](https://pep8ci.herokuapp.com/https://raw.githubusercontent.com/KC-85/Modern-Classics/main/apps/trailer/views.py) | ![screenshot](documentation/validation/python/py-apps-trailer-views.png) | Notes (if applicable) |
@@ -220,7 +198,7 @@ I have used the recommended [PEP8 CI Python Linter](https://pep8ci.herokuapp.com
 | core | [settings.py](https://github.com/KC-85/Modern-Classics/blob/main/core/settings.py) | [PEP8 CI Link](https://pep8ci.herokuapp.com/https://raw.githubusercontent.com/KC-85/Modern-Classics/main/core/settings.py) | ![screenshot](documentation/validation/python/py-core-settings.png) | Notes (if applicable) |
 | core | [urls.py](https://github.com/KC-85/Modern-Classics/blob/main/core/urls.py) | [PEP8 CI Link](https://pep8ci.herokuapp.com/https://raw.githubusercontent.com/KC-85/Modern-Classics/main/core/urls.py) | ![screenshot](documentation/validation/python/py-core-urls.png) | Notes (if applicable) |
 | core | [views.py](https://github.com/KC-85/Modern-Classics/blob/main/core/views.py) | [PEP8 CI Link](https://pep8ci.herokuapp.com/https://raw.githubusercontent.com/KC-85/Modern-Classics/main/core/views.py) | ![screenshot](documentation/validation/python/py-core-views.png) | Notes (if applicable) |
-|  | [manage.py](https://github.com/KC-85/Modern-Classics/blob/main/manage.py) | [PEP8 CI Link](https://pep8ci.herokuapp.com/https://raw.githubusercontent.com/KC-85/Modern-Classics/main/manage.py) | ![screenshot](documentation/validation/py--manage.png) | Notes (if applicable) |
+|  | [manage.py](https://github.com/KC-85/Modern-Classics/blob/main/manage.py) | [PEP8 CI Link](https://pep8ci.herokuapp.com/https://raw.githubusercontent.com/KC-85/Modern-Classics/main/manage.py) | ![screenshot](documentation/validation/python/py--manage.png) | Notes (if applicable) |
 | unit_tests | [test_admin.py](https://github.com/KC-85/Modern-Classics/blob/main/unit_tests/checkout/test_admin.py) | [PEP8 CI Link](https://pep8ci.herokuapp.com/https://raw.githubusercontent.com/KC-85/Modern-Classics/main/unit_tests/checkout/test_admin.py) | ![screenshot](documentation/validation/python/py-unit_tests-test_admin.png) | ⚠️ Notes (if applicable) |
 | unit_tests | [test_apps.py](https://github.com/KC-85/Modern-Classics/blob/main/unit_tests/checkout/test_apps.py) | [PEP8 CI Link](https://pep8ci.herokuapp.com/https://raw.githubusercontent.com/KC-85/Modern-Classics/main/unit_tests/checkout/test_apps.py) | ![screenshot](documentation/validation/python/py-unit_tests-test_apps.png) | ⚠️ Notes (if applicable) |
 | unit_tests | [test_forms.py](https://github.com/KC-85/Modern-Classics/blob/main/unit_tests/checkout/test_forms.py) | [PEP8 CI Link](https://pep8ci.herokuapp.com/https://raw.githubusercontent.com/KC-85/Modern-Classics/main/unit_tests/checkout/test_forms.py) | ![screenshot](documentation/validation/python/py-unit_tests-test_forms.png) | ⚠️ Notes (if applicable) |
@@ -242,7 +220,7 @@ I have used the recommended [PEP8 CI Python Linter](https://pep8ci.herokuapp.com
 | unit_tests | [test_models.py](https://github.com/KC-85/Modern-Classics/blob/main/unit_tests/delivery/test_models.py) | [PEP8 CI Link](https://pep8ci.herokuapp.com/https://raw.githubusercontent.com/KC-85/Modern-Classics/main/unit_tests/delivery/test_models.py) | ![screenshot](documentation/validation/python/py-unit_tests-test_models-delivery.png) | ⚠️ Notes (if applicable) |
 | unit_tests | [test_urls.py](https://github.com/KC-85/Modern-Classics/blob/main/unit_tests/delivery/test_urls.py) | [PEP8 CI Link](https://pep8ci.herokuapp.com/https://raw.githubusercontent.com/KC-85/Modern-Classics/main/unit_tests/delivery/test_urls.py) | ![screenshot](documentation/validation/python/py-unit_tests-test_urls-delivery.png) | ⚠️ Notes (if applicable) |
 | unit_tests | [test_views.py](https://github.com/KC-85/Modern-Classics/blob/main/unit_tests/delivery/test_views.py) | [PEP8 CI Link](https://pep8ci.herokuapp.com/https://raw.githubusercontent.com/KC-85/Modern-Classics/main/unit_tests/delivery/test_views.py) | ![screenshot](documentation/validation/python/py-unit_tests-test_views-delivery.png) | ⚠️ Notes (if applicable) |
-| unit_tests | [helper.py](https://github.com/KC-85/Modern-Classics/blob/main/unit_tests/helper.py) | [PEP8 CI Link](https://pep8ci.herokuapp.com/https://raw.githubusercontent.com/KC-85/Modern-Classics/main/unit_tests/helper.py) | ![screenshot](documentation/validation/python/py-unit_tests-helper.png) | ⚠️ Notes (if applicable) |
+| unit_tests | [helper.py](https://github.com/KC-85/Modern-Classics/blob/main/unit_tests/helper.py) | [PEP8 CI Link](https://pep8ci.herokuapp.com/https://raw.githubusercontent.com/KC-85/Modern-Classics/main/unit_tests/helper.py) | ![screenshot](documentation/validation/python/py-unit_tests-test_helper.png) | ⚠️ Notes (if applicable) |
 | unit_tests | [test_admin.py](https://github.com/KC-85/Modern-Classics/blob/main/unit_tests/showroom/test_admin.py) | [PEP8 CI Link](https://pep8ci.herokuapp.com/https://raw.githubusercontent.com/KC-85/Modern-Classics/main/unit_tests/showroom/test_admin.py) | ![screenshot](documentation/validation/python/py-unit_tests-test_admin-showroom.png) | ⚠️ Notes (if applicable) |
 | unit_tests | [test_apps.py](https://github.com/KC-85/Modern-Classics/blob/main/unit_tests/showroom/test_apps.py) | [PEP8 CI Link](https://pep8ci.herokuapp.com/https://raw.githubusercontent.com/KC-85/Modern-Classics/main/unit_tests/showroom/test_apps.py) | ![screenshot](documentation/validation/python/py-unit_tests-test_apps-showroom.png) | ⚠️ Notes (if applicable) |
 | unit_tests | [test_forms.py](https://github.com/KC-85/Modern-Classics/blob/main/unit_tests/showroom/test_forms.py) | [PEP8 CI Link](https://pep8ci.herokuapp.com/https://raw.githubusercontent.com/KC-85/Modern-Classics/main/unit_tests/showroom/test_forms.py) | ![screenshot](documentation/validation/python/py-unit_tests-test_forms-showroom.png) | ⚠️ Notes (if applicable) |
@@ -303,24 +281,6 @@ I've tested my deployed project to check for responsiveness issues.
 | 404 | ![screenshot](documentation/responsiveness/mobile-404.png) | ![screenshot](documentation/responsiveness/tablet-404.png) | ![screenshot](documentation/responsiveness/desktop-404.png) | Works as expected |
 
 ## Browser Compatibility
-
-⚠️ INSTRUCTIONS ⚠️
-
-Use this space to discuss testing the live/deployed site on various browsers. Consider testing at least 3 different browsers, if available on your system. You DO NOT need to use all of the browsers below, just pick any 3 (minimum).
-
-Recommended browsers to consider:
-- [Chrome](https://www.google.com/chrome)
-- [Firefox (Developer Edition)](https://www.mozilla.org/firefox/developer)
-- [Edge](https://www.microsoft.com/edge)
-- [Safari](https://support.apple.com/downloads/safari)
-- [Brave](https://brave.com/download)
-- [Opera](https://www.opera.com/download)
-
-**IMPORTANT**: You must provide screenshots of the browsers you've tested, to "prove" that you've actually tested them.
-
-Please note, there are services out there that can test multiple browser compatibilities at the same time. Some of these are paid services, but some are free. If you use these, you must provide a link to the source used for attribution, and multiple screenshots of the results.
-
-⚠️ --- END --- ⚠️
 
 I've tested my deployed project on multiple browsers to check for compatibility issues.
 
