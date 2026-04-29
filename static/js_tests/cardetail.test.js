@@ -1,5 +1,5 @@
 /* jshint esversion: 11, jquery: true */
-/* global global, describe, beforeEach, afterEach, jest, test, require, expect, bootstrap */
+/* global describe, beforeEach, jest, test, require, expect */
 
 jest.mock('../js/services/cartService.js', () => ({
 	addToCart: jest.fn(),
