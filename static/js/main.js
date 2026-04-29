@@ -1,5 +1,4 @@
 /* jshint esversion: 11, jquery: true */
-/* global global, describe, beforeEach, afterEach, jest, test, require, expect, bootstrap */
 
 (() => {
 	const navbar = document.querySelector(".navbar");

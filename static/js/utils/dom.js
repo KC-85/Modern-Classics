@@ -1,11 +1,11 @@
 /* jshint esversion: 11, jquery: true */
-/* global global, describe, beforeEach, afterEach, jest, test, require, expect, bootstrap */
 
-export const $  = (sel, root = document) => root.querySelector(sel);
+const query = (sel, root = document) => root.querySelector(sel);
 export const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
+export { query as $ };
 
 export function toast(msg, {type="info", timeout=2500} = {}) {
-  let box = $("#mc-toast");
+  let box = query("#mc-toast");
   if (!box) {
     box = document.createElement("div");
     box.id = "mc-toast";

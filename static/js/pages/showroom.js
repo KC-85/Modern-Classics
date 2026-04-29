@@ -1,5 +1,4 @@
 /* jshint esversion: 11, jquery: true */
-/* global global, describe, beforeEach, afterEach, jest, test, require, expect, bootstrap */
 
 // Showroom page enhancements (progressive, no deps)
 (() => {
@@ -65,7 +64,14 @@
   if (searchInput) {
     searchInput.addEventListener("keydown", (e) => {
       if (e.key === "Enter") {
-        e.target.form?.requestSubmit?.() || e.target.form?.submit();
+        const form = e.target.form;
+        if (form) {
+          if (form.requestSubmit) {
+            form.requestSubmit();
+          } else {
+            form.submit();
+          }
+        }
       }
     });
   }
