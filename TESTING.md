@@ -106,19 +106,24 @@ I have used the recommended [JShint Validator](https://jshint.com) to validate a
 
 | Directory | File | URL | Screenshot | Notes |
 | --- | --- | --- | --- | --- |
-| static | [hero.js](https://github.com/KC-85/Modern-Classics/blob/main/static/js/components/hero.js) | N/A | ![screenshot](documentation/validation/js/js-hero.png) | Notes (if applicable) |
-| static | [cartBadge.js](https://github.com/KC-85/Modern-Classics/blob/main/static/js/components/cartBadge.js) | N/A | ![screenshot](documentation/validation/js-static-cartBadge.png) | Notes (if applicable) |
-| static | [filterPanel.js](https://github.com/KC-85/Modern-Classics/blob/main/static/js/components/filterPanel.js) | N/A | ![screenshot](documentation/validation/js-static-filterPanel.png) | Notes (if applicable) |
-| static | [main.js](https://github.com/KC-85/Modern-Classics/blob/main/static/js/main.js) | N/A | ![screenshot](documentation/validation/js-static-main.png) | Notes (if applicable) |
-| static | [carDetail.js](https://github.com/KC-85/Modern-Classics/blob/main/static/js/pages/carDetail.js) | N/A | ![screenshot](documentation/validation/js-static-carDetail.png) | Notes (if applicable) |
-| static | [checkout.js](https://github.com/KC-85/Modern-Classics/blob/main/static/js/pages/checkout.js) | N/A | ![screenshot](documentation/validation/js-static-checkout.png) | Notes (if applicable) |
-| static | [showroom.js](https://github.com/KC-85/Modern-Classics/blob/main/static/js/pages/showroom.js) | N/A | ![screenshot](documentation/validation/js-static-showroom.png) | Notes (if applicable) |
-| static | [cartService.js](https://github.com/KC-85/Modern-Classics/blob/main/static/js/services/cartService.js) | N/A | ![screenshot](documentation/validation/js-static-cartService.png) | Notes (if applicable) |
-| static | [orderService.js](https://github.com/KC-85/Modern-Classics/blob/main/static/js/services/orderService.js) | N/A | ![screenshot](documentation/validation/js-static-orderService.png) | Notes (if applicable) |
-| static | [userService.js](https://github.com/KC-85/Modern-Classics/blob/main/static/js/services/userService.js) | N/A | ![screenshot](documentation/validation/js-static-userService.png) | Notes (if applicable) |
-| static | [csrf.js](https://github.com/KC-85/Modern-Classics/blob/main/static/js/utils/csrf.js) | N/A | ![screenshot](documentation/validation/js-static-csrf.png) | Notes (if applicable) |
-| static | [dom.js](https://github.com/KC-85/Modern-Classics/blob/main/static/js/utils/dom.js) | N/A | ![screenshot](documentation/validation/js-static-dom.png) | Notes (if applicable) |
-| static | [events.js](https://github.com/KC-85/Modern-Classics/blob/main/static/js/utils/events.js) | N/A | ![screenshot](documentation/validation/js-static-events.png) | Notes (if applicable) |
+|  | [babel.config.js](https://github.com/KC-85/Modern-Classics/blob/main/babel.config.js) |  | ![screenshot](documentation/validation/js--babel.config.png) | ⚠️ Notes (if applicable) |
+|  | [jest.config.js](https://github.com/KC-85/Modern-Classics/blob/main/jest.config.js) |  | ![screenshot](documentation/validation/js--jest.config.png) | ⚠️ Notes (if applicable) |
+| static | [cartBadge.js](https://github.com/KC-85/Modern-Classics/blob/main/static/js/components/cartBadge.js) |  | ![screenshot](documentation/validation/js/static-cartBadge.png) | ⚠️ Notes (if applicable) |
+| static | [main.js](https://github.com/KC-85/Modern-Classics/blob/main/static/js/main.js) |  | ![screenshot](documentation/validation/js/static-main.png) | ⚠️ Notes (if applicable) |
+| static | [carDetail.js](https://github.com/KC-85/Modern-Classics/blob/main/static/js/pages/carDetail.js) |  | ![screenshot](documentation/validation/js/static-carDetail.png) | ⚠️ Notes (if applicable) |
+| static | [hero.js](https://github.com/KC-85/Modern-Classics/blob/main/static/js/pages/hero.js) |  | ![screenshot](documentation/validation/js/static-hero.png) | ⚠️ Notes (if applicable) |
+| static | [showroom.js](https://github.com/KC-85/Modern-Classics/blob/main/static/js/pages/showroom.js) |  | ![screenshot](documentation/validation/js/static-showroom.png) | ⚠️ Notes (if applicable) |
+| static | [cartService.js](https://github.com/KC-85/Modern-Classics/blob/main/static/js/services/cartService.js) |  | ![screenshot](documentation/validation/js/static-cartService.png) | ⚠️ Notes (if applicable) |
+| static | [csrf.js](https://github.com/KC-85/Modern-Classics/blob/main/static/js/utils/csrf.js) |  | ![screenshot](documentation/validation/js/static-csrf.png) | ⚠️ Notes (if applicable) |
+| static | [dom.js](https://github.com/KC-85/Modern-Classics/blob/main/static/js/utils/dom.js) |  | ![screenshot](documentation/validation/js/static-dom.png) | ⚠️ Notes (if applicable) |
+| static | [cardetail.test.js](https://github.com/KC-85/Modern-Classics/blob/main/static/js_tests/cardetail.test.js) |  | ![screenshot](documentation/validation/js/static-cardetail.test.png) | ⚠️ Notes (if applicable) |
+| static | [cartbadge.test.js](https://github.com/KC-85/Modern-Classics/blob/main/static/js_tests/cartbadge.test.js) |  | ![screenshot](documentation/validation/js/static-cartbadge.test.png) | ⚠️ Notes (if applicable) |
+| static | [cartservice.test.js](https://github.com/KC-85/Modern-Classics/blob/main/static/js_tests/cartservice.test.js) |  | ![screenshot](documentation/validation/js/static-cartservice.test.png) | ⚠️ Notes (if applicable) |
+| static | [csrf.test.js](https://github.com/KC-85/Modern-Classics/blob/main/static/js_tests/csrf.test.js) |  | ![screenshot](documentation/validation/js/static-csrf.test.png) | ⚠️ Notes (if applicable) |
+| static | [dom.test.js](https://github.com/KC-85/Modern-Classics/blob/main/static/js_tests/dom.test.js) |  | ![screenshot](documentation/validation/js/static-dom.test.png) | ⚠️ Notes (if applicable) |
+| static | [hero.test.js](https://github.com/KC-85/Modern-Classics/blob/main/static/js_tests/hero.test.js) |  | ![screenshot](documentation/validation/js/static-hero.test.png) | ⚠️ Notes (if applicable) |
+| static | [main.test.js](https://github.com/KC-85/Modern-Classics/blob/main/static/js_tests/main.test.js) |  | ![screenshot](documentation/validation/js/static-main.test.png) | ⚠️ Notes (if applicable) |
+| static | [showroom.test.js](https://github.com/KC-85/Modern-Classics/blob/main/static/js_tests/showroom.test.js) |  | ![screenshot](documentation/validation/js/static-showroom.test.png) | ⚠️ Notes (if applicable) |
 
 
 ### Python
