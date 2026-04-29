@@ -331,27 +331,27 @@ Defensive programming was manually tested with the below user acceptance testing
 
 | Target | Expectation | Outcome | Screenshot |
 | --- | --- | --- | --- |
-| As a guest user | I would like to browse products without needing to register | so that I can browse freely before deciding to create an account. | ![screenshot](documentation/features/us01.png) |
-| As a guest user | I would like to be prompted to create an account or log in at add to cart | so that I can complete my purchase and track my order history. | ![screenshot](documentation/features/us02.png) |
-| As a user | I would like to sign up to the site's newsletter | so that I can stay up to date with any upcoming sales or promotions. | ![screenshot](documentation/features/us03.png) |
-| As a customer | I would like to browse various product categories (make, model etc.) | so that I can easily find what I'm looking for. | ![screenshot](documentation/features/us04.png) |
-| As a customer | I would like to sort products by price (low-to-high/high-to-low/newest) | so that I can quickly organize items in a way that suits my shopping style. | ![screenshot](documentation/features/us05.png) |
-| As a customer | I would like to click on individual products to view more details (description, price, image, etc.) | so that I can make an informed decision about my purchase. | ![screenshot](documentation/features/us06.png) |
-| As a customer | I would like to view and manage my shopping cart | so that I can review, add, or remove items before proceeding to checkout. | ![screenshot](documentation/features/us07.png) |
-| As a customer | I would like to adjust the quantity of items in my cart | so that I can modify my purchase preferences without leaving the cart. | ![screenshot](documentation/features/us08.png) |
-| As a customer | I would like to remove items from my cart | so that I can remove products I no longer wish to buy. | ![screenshot](documentation/features/us09.png) |
-| As a customer | I would like to proceed to checkout where I see my cart items, grand total, and input my name, email, shipping address, and card details | so that I can complete my purchase. | ![screenshot](documentation/features/us10.png) |
-| As a customer | I would like to receive a confirmation email after my purchase | so that I can have a record of my transaction and order details. | ![screenshot](documentation/features/us11.png) |
-| As a customer | I would like to see an order confirmation page with a checkout order number after completing my purchase | so that I know my order has been successfully placed. | ![screenshot](documentation/features/us12.png) |
-| As a customer | I would like to securely enter my card details using Stripe at checkout | so that I can feel confident my payment information is protected. | ![screenshot](documentation/features/us13.png) |
-| As a returning customer | I would like to be able to log in and view my past orders | so that I can track my previous purchases and order history. | ![screenshot](documentation/features/us14.png) |
-| As a returning customer | I would like the checkout process to remember my shipping address | so that future purchases are quicker and easier. | ![screenshot](documentation/features/us15.png) |
-| As a site owner | I would like to create new products with a name, description, price, images, and category | so that I can add additional items to the store inventory. | ![screenshot](documentation/features/us16.png) |
-| As a site owner | I would like to update product details (name, price, description, image, category) at any time | so that I can keep my product listings accurate and up to date. | ![screenshot](documentation/features/us17.png) |
-| As a site owner | I would like to delete products that are no longer available or relevant | so that I can maintain a clean and accurate inventory. | ![screenshot](documentation/features/us18.png) |
-| As a site owner | I would like to view all orders placed on the website | so that I can track and manage customer purchases. | ![screenshot](documentation/features/us19.png) |
-| As a site owner | I would like to manage product categories | so that I can ensure items are correctly organized and easy for customers to find. | ![screenshot](documentation/features/us20.png) |
-| As a user | I would like to see a 404 error page if I get lost | so that it's obvious that I've stumbled upon a page that doesn't exist. | ![screenshot](documentation/features/us21.png) |
+| As a guest user | I would like to browse products without needing to register | so that I can browse freely before deciding to create an account. | ![screenshot](documentation/usfeatures/us01.png) |
+| As a guest user | I would like to be prompted to create an account or log in at add to cart | so that I can complete my purchase and track my order history. | ![screenshot](documentation/usfeatures/us02.png) |
+| As a user | I would like to sign up to the site's newsletter | so that I can stay up to date with any upcoming sales or promotions. | ![screenshot](documentation/usfeatures/us03.png) |
+| As a customer | I would like to browse various product categories (make, model etc.) | so that I can easily find what I'm looking for. | ![screenshot](documentation/usfeatures/us04.png) |
+| As a customer | I would like to sort products by price (low-to-high/high-to-low/newest) | so that I can quickly organize items in a way that suits my shopping style. | ![screenshot](documentation/usfeatures/us05.png) |
+| As a customer | I would like to click on individual products to view more details (description, price, image, etc.) | so that I can make an informed decision about my purchase. | ![screenshot](documentation/usfeatures/us06.png) |
+| As a customer | I would like to view and manage my shopping cart | so that I can review, add, or remove items before proceeding to checkout. | ![screenshot](documentation/usfeatures/us07.png) |
+| As a customer | I would like to adjust the quantity of items in my cart | so that I can modify my purchase preferences without leaving the cart. | ![screenshot](documentation/usfeatures/us08.png) |
+| As a customer | I would like to remove items from my cart | so that I can remove products I no longer wish to buy. | ![screenshot](documentation/usfeatures/us09.png) |
+| As a customer | I would like to proceed to checkout where I see my cart items, grand total, and input my name, email, shipping address, and card details | so that I can complete my purchase. | ![screenshot](documentation/usfeatures/us10.png) |
+| As a customer | I would like to receive a confirmation email after my purchase | so that I can have a record of my transaction and order details. | ![screenshot](documentation/usfeatures/us11.png) |
+| As a customer | I would like to see an order confirmation page with a checkout order number after completing my purchase | so that I know my order has been successfully placed. | ![screenshot](documentation/usfeatures/us12.png) |
+| As a customer | I would like to securely enter my card details using Stripe at checkout | so that I can feel confident my payment information is protected. | ![screenshot](documentation/usfeatures/us13.png) |
+| As a returning customer | I would like to be able to log in and view my past orders | so that I can track my previous purchases and order history. | ![screenshot](documentation/usfeatures/us14.png) |
+| As a returning customer | I would like the checkout process to remember my shipping address | so that future purchases are quicker and easier. | ![screenshot](documentation/usfeatures/us15.png) |
+| As a site owner | I would like to create new products with a name, description, price, images, and category | so that I can add additional items to the store inventory. | ![screenshot](documentation/usfeatures/us16.png) |
+| As a site owner | I would like to update product details (name, price, description, image, category) at any time | so that I can keep my product listings accurate and up to date. | ![screenshot](documentation/usfeatures/us17.png) |
+| As a site owner | I would like to delete products that are no longer available or relevant | so that I can maintain a clean and accurate inventory. | ![screenshot](documentation/usfeatures/us18.png) |
+| As a site owner | I would like to view all orders placed on the website | so that I can track and manage customer purchases. | ![screenshot](documentation/usfeatures/us19.png) |
+| As a site owner | I would like to manage product categories | so that I can ensure items are correctly organized and easy for customers to find. | ![screenshot](documentation/usfeatures/us20.png) |
+| As a user | I would like to see a 404 error page if I get lost | so that it's obvious that I've stumbled upon a page that doesn't exist. | ![screenshot](documentation/usfeatures/us21.png) |
 
 ## Automated Testing
 
@@ -402,25 +402,6 @@ I've used [GitHub Issues](https://www.github.com/KC-85/Modern-Classics/issues) t
 All previously closed/fixed bugs can be tracked [here](https://www.github.com/KC-85/Modern-Classics/issues?q=is%3Aissue+is%3Aclosed+label%3Abug).
 
 ![screenshot](documentation/bugs/gh-issues-closed.png)
-
-### Unfixed Bugs
-
-[![GitHub issues](https://img.shields.io/github/issues/KC-85/Modern-Classics)](https://www.github.com/KC-85/Modern-Classics/issues)
-
-Any remaining open issues can be tracked [here](https://www.github.com/KC-85/Modern-Classics/issues).
-
-![screenshot](documentation/bugs/gh-issues-open.png)
-
-### Known Issues
-
-| Issue | Screenshot |
-| --- | --- |
-| On devices smaller than 375px, the page starts to have horizontal `overflow-x` scrolling. | ![screenshot](documentation/issues/overflow.png) |
-| When validating HTML with a semantic `<section>` element, the validator warns about lacking a header `h2-h6`. This is acceptable. | ![screenshot](documentation/issues/section-header.png) |
-| Validation errors on "signup.html" coming from the Django Allauth package. | ![screenshot](documentation/issues/allauth.png) |
-| With a known order-number, users can brute-force "checkout_success.html" and see potentially sensitive information. | ![screenshot](documentation/issues/checkout-success.png) |
-| If a product is in your bag/cart, but then gets deleted from the database, it throws errors from the session storage memory. | ![screenshot](documentation/issues/session-storage.png) |
-
 
 > [!IMPORTANT]
 > There are no remaining bugs that I am aware of, though, even after thorough testing, I cannot rule out the possibility.
