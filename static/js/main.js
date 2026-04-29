@@ -56,6 +56,6 @@
 			alertEl.style.transition = "opacity 260ms ease";
 			alertEl.style.opacity = "0";
 			window.setTimeout(() => alertEl.remove(), 280);
-		}, 4500);
+		}, 10000);
 	});
 })();
