@@ -22,6 +22,7 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  padding-bottom: calc(5.75rem + env(safe-area-inset-bottom));
   font-family: "Ubuntu", sans-serif;
   color: var(--mc-text);
   background:
@@ -230,16 +231,22 @@ a:focus-visible,
 }
 
 footer {
-  margin-top: auto;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 950;
   text-align: center;
   background: linear-gradient(180deg, var(--mc-nav-2), var(--mc-nav));
   color: #eef4fc;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 1.1rem 1rem;
+  padding: 0.65rem 0.9rem;
+  font-size: 0.93rem;
+  line-height: 1.25;
 }
 
 footer p {
-  margin: 0.3rem 0;
+  margin: 0.15rem 0;
 }
 
 footer a {
@@ -249,6 +256,19 @@ footer a {
 footer a:hover,
 footer a:focus-visible {
   color: #ffe9b3;
+}
+
+body.home-hero {
+  padding-bottom: 0;
+}
+
+body.home-hero footer {
+  position: static;
+  left: auto;
+  right: auto;
+  bottom: auto;
+  z-index: auto;
+  margin-top: auto;
 }
 
 @media (max-width: 960px) {
@@ -278,6 +298,7 @@ footer a:focus-visible {
 @media (min-width: 375px) and (max-width: 575px) {
   body {
     font-size: 0.96rem;
+    padding-bottom: calc(6.75rem + env(safe-area-inset-bottom));
   }
 
   .navbar {

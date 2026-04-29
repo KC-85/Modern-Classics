@@ -1,4 +1,6 @@
-import { $, $$ } from "../utils/dom.js";
+/* jshint esversion: 11, jquery: true */
+
+import { $ } from "../utils/dom.js";
 
 // Simple badge updater (you can wire this with a real count endpoint later)
 export function updateCartBadge(delta = +1) {

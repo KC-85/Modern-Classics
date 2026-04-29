@@ -1,3 +1,5 @@
+/* jshint esversion: 11, jquery: true */
+
 // Showroom page enhancements (progressive, no deps)
 (() => {
   // 0) Image fallback for invalid/broken media URLs (CSP-safe, no inline handlers)
@@ -62,7 +64,14 @@
   if (searchInput) {
     searchInput.addEventListener("keydown", (e) => {
       if (e.key === "Enter") {
-        e.target.form?.requestSubmit?.() || e.target.form?.submit();
+        const form = e.target.form;
+        if (form) {
+          if (form.requestSubmit) {
+            form.requestSubmit();
+          } else {
+            form.submit();
+          }
+        }
       }
     });
   }

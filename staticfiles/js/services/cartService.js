@@ -1,3 +1,5 @@
+/* jshint esversion: 11, jquery: true */
+
 import { getCSRFToken } from "../utils/csrf.js";
 
 export async function addToCart(carId, quantity = 1) {

@@ -1,3 +1,5 @@
+/* jshint esversion: 11, jquery: true */
+
 import { $, toast } from "../utils/dom.js";
 import { addToCart } from "../services/cartService.js";
 import { updateCartBadge } from "../components/cartBadge.js";
@@ -14,7 +16,9 @@ export function initCarDetailPage() {
     if (!carId) return;
 
     btn.disabled = true;
-    btn.dataset.originalText ??= btn.textContent;
+    if (!btn.dataset.originalText) {
+      btn.dataset.originalText = btn.textContent;
+    }
     btn.textContent = "Adding…";
 
     try {

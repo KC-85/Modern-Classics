@@ -1,3 +1,5 @@
+/* jshint esversion: 11, jquery: true */
+
 (() => {
 	const navbar = document.querySelector(".navbar");
 	const toggle = document.querySelector(".nav-toggle");
