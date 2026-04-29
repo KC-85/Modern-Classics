@@ -64,8 +64,7 @@ class StripeWebhookHandlerTests(TestCase):
         self.assertEqual(order.stripe_pid, "pi_123")
         self.assertIsNotNone(order.paid_at)
 
-    def test_payment_intent_succeeded_is_idempotent_for_already_paid_order
-    (self):
+    def test_payment_intent_succeeded_is_idempotent_for_already_paid_order(self):
         order = self._create_order()
         original_paid_at = timezone.now()
         order.status = Order.PaymentStatus.PAID

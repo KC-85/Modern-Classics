@@ -62,8 +62,7 @@ class CheckoutViewsTests(TestCase):
 
     @patch("apps.checkout.views.stripe.PaymentIntent.create")
     @patch("apps.checkout.views.get_object_or_404")
-    def test_checkout_view_get_sets_totals_and_creates_pi
-    (self, mock_get, mock_pi_create):
+    def test_checkout_view_get_sets_totals_and_creates_pi(self, mock_get, mock_pi_create):
         # Prepare order with one line item
         order = Order.objects.create(
             user=self.user, original_trailer={"items": []})
@@ -91,8 +90,7 @@ class CheckoutViewsTests(TestCase):
 
     @patch("apps.checkout.views.send_mail")
     @patch("apps.checkout.views.Cart")
-    def test_success_view_sends_receipt_and_marks_cars_sold_and_deletes_cart
-    (self, mock_cart, mock_send):
+    def test_success_view_sends_receipt_and_marks_cars_sold_and_deletes_cart(self, mock_cart, mock_send):
         order = Order.objects.create(
             user=self.user,
             original_trailer={"items": []},
@@ -114,14 +112,11 @@ class CheckoutViewsTests(TestCase):
         self.car.refresh_from_db()
         self.assertTrue(self.car.is_sold)
         # cart delete called
-        self.assertTrue(
-            mock_cart.objects.filter.return_value.first.return_value.delete(
-            ).called
-        )
+        mock_cart.objects.filter.assert_called_once_with(user=self.user)
+        mock_cart.objects.filter.return_value.first.return_value.delete.assert_called_once()
 
     @patch("apps.checkout.views.stripe.PaymentIntent.retrieve")
-    def test_checkout_post_marks_order_paid_when_intent_succeeds
-    (self, mock_pi_retrieve):
+    def test_checkout_post_marks_order_paid_when_intent_succeeds(self, mock_pi_retrieve):
         order = Order.objects.create(
             user=self.user,
             original_trailer={"items": []},
@@ -168,8 +163,7 @@ class CheckoutViewsTests(TestCase):
         self.assertIsNotNone(order.paid_at)
 
     @patch("apps.checkout.views.stripe.PaymentIntent.retrieve")
-    def test_checkout_post_keeps_order_pending_when_intent_not_succeeded
-    (self, mock_pi_retrieve):
+    def test_checkout_post_keeps_order_pending_when_intent_not_succeeded(self, mock_pi_retrieve):
         order = Order.objects.create(
             user=self.user,
             original_trailer={"items": []},
@@ -216,9 +210,11 @@ class CheckoutViewsTests(TestCase):
         other = User.objects.create_user(
             username="o", password="x", email="o@example.com")
         my_order = Order.objects.create(
-            user=self.user, original_trailer={"items": []})
+            user=self.user, original_trailer={"items": []},
+            status=Order.PaymentStatus.PAID)
         other_order = Order.objects.create(
-            user=other, original_trailer={"items": []})
+            user=other, original_trailer={"items": []},
+            status=Order.PaymentStatus.PAID)
 
         # Order detail: I can see mine
         url = reverse("checkout:order_detail", kwargs={
