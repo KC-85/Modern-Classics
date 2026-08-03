@@ -1,6 +1,6 @@
 @import "tailwindcss" source(none);
 @source "../../templates";
-@source "../js";
+@source "../../static/js";
 
 @theme {
   --color-ink: #0a0c0d;

@@ -9,8 +9,8 @@
   "scripts": {
     "test": "jest",
     "test:js": "jest --runInBand",
-    "css:build": "tailwindcss -i ./static/css/tailwind.css -o ./static/css/app.css --minify",
-    "css:watch": "tailwindcss -i ./static/css/tailwind.css -o ./static/css/app.css --watch",
+    "css:build": "tailwindcss -i ./assets/css/tailwind.css -o ./static/css/app.css --minify",
+    "css:watch": "tailwindcss -i ./assets/css/tailwind.css -o ./static/css/app.css --watch",
     "sass:build": "sass --load-path=node_modules static/scss/hero/hero.scss static/css/hero/hero.css --no-source-map --style=compressed",
     "sass:watch": "sass --load-path=node_modules --watch static/scss/hero/hero.scss:static/css/hero/hero.css --style=compressed"
   },
