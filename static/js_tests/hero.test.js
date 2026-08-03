@@ -1,75 +1,38 @@
-/* jshint esversion: 11, jquery: true */
-/* global global, describe, beforeEach, jest, test, require, expect */
+/* global describe, beforeEach, afterEach, jest, test, require, expect */
 
-describe('hero page script', () => {
-	beforeEach(() => {
-		document.body.innerHTML = '';
-		jest.resetModules();
-		delete global.bootstrap;
-	});
+describe("hero carousel", () => {
+  beforeEach(() => {
+    jest.useFakeTimers();
+    jest.resetModules();
+    window.matchMedia = jest.fn(() => ({ matches: false }));
+    document.body.innerHTML = `
+      <section id="heroCarousel">
+        <article data-carousel-slide class="opacity-100 scale-100" aria-hidden="false"></article>
+        <article data-carousel-slide class="opacity-0 scale-[1.03] pointer-events-none" aria-hidden="true"></article>
+        <button data-carousel-prev></button><button data-carousel-next></button>
+        <span data-carousel-current>01</span>
+      </section>`;
+  });
 
-	test('initializes bootstrap carousel with expected options', () => {
-		const pause = jest.fn();
-		const cycle = jest.fn();
-		const getOrCreateInstance = jest.fn(() => ({ pause, cycle }));
+  afterEach(() => jest.useRealTimers());
 
-		global.bootstrap = {
-			Carousel: {
-				getOrCreateInstance,
-			},
-		};
+  test("moves to the next slide with controls", () => {
+    require("../js/pages/hero.js");
+    document.querySelector("[data-carousel-next]").click();
+    const slides = document.querySelectorAll("[data-carousel-slide]");
+    expect(slides[0].getAttribute("aria-hidden")).toBe("true");
+    expect(slides[1].getAttribute("aria-hidden")).toBe("false");
+    expect(document.querySelector("[data-carousel-current]").textContent).toBe("02");
+  });
 
-		document.body.innerHTML = '<div id="heroCarousel"></div>';
+  test("advances automatically", () => {
+    require("../js/pages/hero.js");
+    jest.advanceTimersByTime(6500);
+    expect(document.querySelectorAll("[data-carousel-slide]")[1].getAttribute("aria-hidden")).toBe("false");
+  });
 
-		require('../js/pages/hero.js');
-
-		const el = document.getElementById('heroCarousel');
-		expect(getOrCreateInstance).toHaveBeenCalledWith(el, {
-			interval: 5000,
-			ride: 'carousel',
-			pause: 'hover',
-			keyboard: true,
-			touch: true,
-			wrap: true,
-		});
-	});
-
-	test('pauses and resumes carousel on visibility changes', () => {
-		const pause = jest.fn();
-		const cycle = jest.fn();
-
-		global.bootstrap = {
-			Carousel: {
-				getOrCreateInstance: jest.fn(() => ({ pause, cycle })),
-			},
-		};
-
-		document.body.innerHTML = '<div id="heroCarousel"></div>';
-		require('../js/pages/hero.js');
-
-		Object.defineProperty(document, 'hidden', {
-			configurable: true,
-			get: () => true,
-		});
-		document.dispatchEvent(new Event('visibilitychange'));
-		expect(pause).toHaveBeenCalledTimes(1);
-
-		Object.defineProperty(document, 'hidden', {
-			configurable: true,
-			get: () => false,
-		});
-		document.dispatchEvent(new Event('visibilitychange'));
-		expect(cycle).toHaveBeenCalledTimes(1);
-	});
-
-	test('exits safely when carousel element is missing', () => {
-		global.bootstrap = {
-			Carousel: {
-				getOrCreateInstance: jest.fn(),
-			},
-		};
-
-		expect(() => require('../js/pages/hero.js')).not.toThrow();
-		expect(global.bootstrap.Carousel.getOrCreateInstance).not.toHaveBeenCalled();
-	});
+  test("exits safely when the carousel is absent", () => {
+    document.body.innerHTML = "";
+    expect(() => require("../js/pages/hero.js")).not.toThrow();
+  });
 });

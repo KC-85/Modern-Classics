@@ -1,51 +1,9 @@
 {% extends "base.html" %}
 {% load i18n account %}
-
-{% block title %}{% trans "Sign Up" %}{% endblock %}
-
+{% block title %}Join the Club — Modern Classics{% endblock %}
 {% block content %}
-  <div class="container mt-5">
-    <h1>{% trans "Create an Account" %}</h1>
-    <form method="post" action="{% url 'account_signup' %}">
-      {% csrf_token %}
-      {% if form.non_field_errors %}
-        <div class="alert alert-danger" role="alert">
-          {% for error in form.non_field_errors %}
-            <div>{{ error }}</div>
-          {% endfor %}
-        </div>
-      {% endif %}
-
-      {% for field in form %}
-        <div class="mb-3">
-          <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
-          {{ field }}
-          {% if field.errors %}
-            <div class="text-danger mt-1">
-              {% for error in field.errors %}
-                <div>{{ error }}</div>
-              {% endfor %}
-            </div>
-          {% endif %}
-          {% if field.help_text %}
-            <div class="form-text" id="{{ field.id_for_label }}_helptext">{{ field.help_text|safe }}</div>
-          {% endif %}
-        </div>
-      {% endfor %}
-
-      {% if redirect_field_value %}
-        <input
-          type="hidden"
-          name="{{ redirect_field_name }}"
-          value="{{ redirect_field_value }}"
-        />
-      {% endif %}
-      <button type="submit" class="btn btn-success">
-        {% trans "Sign Up" %}
-      </button>
-      <p class="mt-3">
-        {% blocktrans %}Already have an account? <a href="{{ login_url }}">Sign in</a>.{% endblocktrans %}
-      </p>
-    </form>
-  </div>
+<section class="site-container grid min-h-[70vh] gap-12 py-16 lg:grid-cols-[0.8fr_1.2fr] lg:items-center lg:py-24">
+  <div><p class="eyebrow">Private client access</p><h1 class="page-title mt-5">Join the<br><em class="font-normal text-brass">club.</em></h1><p class="mt-7 max-w-md text-sm leading-7 text-cream/50">Save your details, manage reservations and keep every purchase documented in one private place.</p><ul class="mt-9 space-y-3 text-sm text-cream/55"><li>✓ Secure vehicle reservation</li><li>✓ Personal order history</li><li>✓ Faster future checkout</li></ul></div>
+  <div class="surface-card mx-auto w-full max-w-xl p-7 md:p-10"><h2 class="font-display text-4xl">Create an account</h2><p class="mt-3 text-sm text-cream/45">Already a member? <a class="text-brass underline underline-offset-4" href="{{ login_url }}">Sign in</a>.</p><form method="post" action="{% url 'account_signup' %}" class="mt-8">{% csrf_token %}{% if form.non_field_errors %}<div class="alert alert-danger mb-6">{{ form.non_field_errors }}</div>{% endif %}{% for field in form %}<div class="mb-5"><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% if field.errors %}<div class="mt-2 text-sm text-red-300">{{ field.errors }}</div>{% endif %}{% if field.help_text %}<div class="mt-2 text-xs leading-5 text-cream/35">{{ field.help_text|safe }}</div>{% endif %}</div>{% endfor %}{% if redirect_field_value %}<input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}">{% endif %}<button type="submit" class="button-primary mt-2 w-full">Create my account</button></form></div>
+</section>
 {% endblock %}

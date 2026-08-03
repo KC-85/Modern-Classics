@@ -1,46 +1,35 @@
 {% extends "base.html" %}
-{% block title %}Your Cart{% endblock %}
+{% load static humanize %}
+{% block title %}Your Garage — Modern Classics{% endblock %}
 
 {% block content %}
-  <h1>Shopping Cart</h1>
+<header class="border-b border-white/10 bg-carbon py-20"><div class="site-container"><p class="eyebrow">Your shortlist</p><h1 class="page-title mt-5">The garage</h1><p class="mt-5 max-w-xl text-sm leading-7 text-cream/50">Review your selection before beginning the secure reservation process.</p></div></header>
 
+<section class="site-container py-14 md:py-20">
   {% if cart.items.exists %}
-    <ul>
-      {% for item in cart.items.all %}
-        <li>
-          {# Car name and unit price #}
-          {{ item.car.make.name }}
-          {{ item.car.model.name }} ({{ item.car.year }})
-          — £{{ item.car.price|floatformat:2 }}
-          — Quantity: {{ item.quantity }}
+    <div class="grid gap-12 lg:grid-cols-[1.35fr_0.65fr]">
+      <div class="divide-y divide-white/10 border-y border-white/10">
+        {% for item in cart.items.all %}
+          <article class="grid gap-6 py-7 sm:grid-cols-[12rem_1fr_auto] sm:items-center">
+            <a class="block overflow-hidden bg-ash" href="{{ item.car.get_absolute_url }}">
+              {% if item.car.image %}<img class="aspect-[4/3] w-full object-cover" src="{{ item.car.image.url }}" alt="{{ item.car.make.name }} {{ item.car.model.name }}" data-fallback-src="{% static 'images/placeholder-car.svg' %}">{% else %}<img class="aspect-[4/3] w-full object-cover" src="{% static 'images/placeholder-car.svg' %}" alt="{{ item.car }}">{% endif %}
+            </a>
+            <div><p class="eyebrow">{{ item.car.year }} · {{ item.car.get_condition_display }}</p><h2 class="mt-2 font-display text-3xl"><a href="{{ item.car.get_absolute_url }}">{{ item.car.make.name }} {{ item.car.model.name }}</a></h2><p class="mt-3 text-sm text-cream/45">Reserved quantity: {{ item.quantity }}</p></div>
+            <div class="sm:text-right"><p class="font-display text-2xl">£{{ item.car.price|floatformat:0|intcomma }}</p><form method="post" action="{% url 'trailer:update_cart_item' item.pk %}" class="mt-4">{% csrf_token %}<input type="hidden" name="quantity" value="0"><button type="submit" class="text-[0.65rem] font-bold uppercase tracking-widest text-cream/40 underline decoration-white/20 underline-offset-4 hover:text-red-300">Remove</button></form></div>
+          </article>
+        {% endfor %}
+      </div>
 
-          {# Remove form #}
-          <form
-            method="post"
-            action="{% url 'trailer:update_cart_item' item.pk %}"
-            style="display:inline"
-          >
-            {% csrf_token %}
-            <input type="hidden" name="quantity" value="0">
-            <button type="submit" class="btn btn-link p-0 align-baseline">
-              Remove
-            </button>
-          </form>
-        </li>
-      {% endfor %}
-    </ul>
-
-    {# Cart total, formatted #}
-    <p>
-      <strong>Total:</strong>
-      £{{ cart.total_amount|floatformat:2 }}
-    </p>
-
-    <form method="post" action="{% url 'checkout:create_order' %}" style="display:inline">
-      {% csrf_token %}
-      <button type="submit" class="btn btn-success">Checkout</button>
-    </form>
+      <aside class="h-fit border border-white/10 bg-white/[0.035] p-7 lg:sticky lg:top-28">
+        <p class="eyebrow">Reservation summary</p>
+        <div class="mt-7 flex items-center justify-between border-y border-white/10 py-6"><span class="text-sm text-cream/50">Vehicle total</span><strong class="font-display text-3xl">£{{ cart.total_amount|floatformat:0|intcomma }}</strong></div>
+        <p class="mt-6 text-xs leading-6 text-cream/40">Delivery is calculated securely at checkout. Your selection is not confirmed until payment completes.</p>
+        <form method="post" action="{% url 'checkout:create_order' %}" class="mt-7">{% csrf_token %}<button type="submit" class="button-primary w-full">Continue securely <span aria-hidden="true">→</span></button></form>
+        <a class="mt-5 block text-center text-xs font-bold uppercase tracking-widest text-cream/45 hover:text-brass" href="{% url 'showroom:car_list' %}">Continue browsing</a>
+      </aside>
+    </div>
   {% else %}
-    <p>Your cart is empty.</p>
+    <div class="py-20 text-center"><span class="mx-auto grid size-20 place-items-center rounded-full border border-white/10 font-display text-3xl text-brass">MC</span><h2 class="section-title mt-8">Your garage is waiting.</h2><p class="mx-auto mt-5 max-w-lg text-sm leading-7 text-cream/45">Explore the collection and save the car that deserves the empty space.</p><a class="button-primary mt-9" href="{% url 'showroom:car_list' %}">Explore the collection</a></div>
   {% endif %}
+</section>
 {% endblock %}

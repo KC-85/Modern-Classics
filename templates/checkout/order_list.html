@@ -1,83 +1,16 @@
-{# templates/checkout/order_list.html #}
 {% extends "base.html" %}
-{% load static %}
-
-{% block title %}Order History{% endblock %}
-
+{% load humanize %}
+{% block title %}Your Orders — Modern Classics{% endblock %}
 {% block content %}
-<div class="container my-5">
-  <h1 class="mb-4">Your Orders</h1>
-
+<header class="border-b border-white/10 bg-carbon py-20"><div class="site-container"><p class="eyebrow">Your collection</p><h1 class="page-title mt-5">Order history</h1></div></header>
+<section class="site-container py-14 md:py-20">
   {% if orders %}
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>Order #</th>
-          <th>Date</th>
-          <th>Total</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for order in orders %}
-          <tr>
-            <td>{{ order.order_number }}</td>
-            <td>{{ order.date|date:"SHORT_DATE_FORMAT" }}</td>
-            <td>£{{ order.grand_total|floatformat:2 }}</td>
-            <td>
-              <a href="{% url 'checkout:order_detail' order.order_number %}" class="btn btn-sm btn-outline-primary">
-                View
-              </a>
-            </td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-
-    {# pagination controls #}
-    {% if is_paginated %}
-      <nav aria-label="Order navigation">
-        <ul class="pagination justify-content-center">
-          {# Previous page #}
-          {% if page_obj.has_previous %}
-            <li class="page-item">
-              <a class="page-link" href="?page={{ page_obj.previous_page_number }}">&laquo; Prev</a>
-            </li>
-          {% else %}
-            <li class="page-item disabled">
-              <span class="page-link">&laquo; Prev</span>
-            </li>
-          {% endif %}
-
-          {# page numbers #}
-          {% for num in paginator.page_range %}
-            {% if num == page_obj.number %}
-              <li class="page-item active">
-                <span class="page-link">{{ num }}</span>
-              </li>
-            {% else %}
-              <li class="page-item">
-                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
-              </li>
-            {% endif %}
-          {% endfor %}
-
-          {# Next page #}
-          {% if page_obj.has_next %}
-            <li class="page-item">
-              <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next &raquo;</a>
-            </li>
-          {% else %}
-            <li class="page-item disabled">
-              <span class="page-link">Next &raquo;</span>
-            </li>
-          {% endif %}
-        </ul>
-      </nav>
-    {% endif %}
-
+    <div class="divide-y divide-white/10 border-y border-white/10">
+      {% for order in orders %}<a href="{% url 'checkout:order_detail' order.order_number %}" class="group grid gap-5 py-7 transition hover:bg-white/[0.025] sm:grid-cols-[1fr_auto_auto] sm:items-center sm:px-5"><div><p class="text-[0.62rem] font-bold uppercase tracking-widest text-brass">Order {{ order.order_number|stringformat:"s"|slice:":8" }}</p><p class="mt-2 font-display text-3xl">{{ order.date|date:"j F Y" }}</p></div><div class="sm:text-right"><p class="text-xs text-cream/40">Order total</p><p class="mt-1 font-display text-2xl">£{{ order.grand_total|floatformat:2|intcomma }}</p></div><span class="grid size-11 place-items-center rounded-full border border-white/15 transition group-hover:border-brass group-hover:text-brass">→</span></a>{% endfor %}
+    </div>
+    {% if is_paginated %}<nav class="mt-12 flex justify-center gap-3" aria-label="Order pages">{% if page_obj.has_previous %}<a class="button-secondary" href="?page={{ page_obj.previous_page_number }}">← Previous</a>{% endif %}{% if page_obj.has_next %}<a class="button-secondary" href="?page={{ page_obj.next_page_number }}">Next →</a>{% endif %}</nav>{% endif %}
   {% else %}
-    <p>You have no past orders.</p>
+    <div class="py-20 text-center"><h2 class="section-title">The first chapter is still ahead.</h2><p class="mt-5 text-sm text-cream/45">When you purchase a car, its details will live here.</p><a class="button-primary mt-8" href="{% url 'showroom:car_list' %}">Explore the collection</a></div>
   {% endif %}
-</div>
+</section>
 {% endblock %}

@@ -1,26 +1,3 @@
 {% extends "base.html" %}
-{% load static %}
-
-{% block title %}Page not found — Modern Classics{% endblock %}
-
-{% block content %}
-<div class="container py-5">
-  <div class="row justify-content-center text-center">
-    <div class="col-lg-7">
-      <h1 class="display-5 fw-bold mb-2">404</h1>
-      <p class="lead mb-4">
-        Sorry, it looks like you tried to access a page that doesn't exist.
-      </p>
-
-      <div class="d-flex gap-2 justify-content-center flex-wrap">
-        <a class="btn btn-primary" href="{% url 'showroom:car_list' %}">Browse Showroom</a>
-        <a class="btn btn-outline-secondary" href="{% url 'home' %}">Back to Home</a>
-      </div>
-
-      <p class="text-muted mt-4">
-        If you typed the address, check the spelling and try again.
-      </p>
-    </div>
-  </div>
-</div>
-{% endblock %}
+{% block title %}Road Not Found — Modern Classics{% endblock %}
+{% block content %}<section class="site-container py-24 text-center md:py-36"><p class="font-display text-[9rem] leading-none text-white/[0.04] md:text-[14rem]">404</p><div class="-mt-20 md:-mt-32"><p class="eyebrow">Wrong turning</p><h1 class="page-title mt-5">This road goes nowhere.</h1><p class="mx-auto mt-6 max-w-lg text-sm leading-7 text-cream/45">The page may have moved, or perhaps it never existed. The collection is a better place to continue.</p><div class="mt-9 flex flex-wrap justify-center gap-3"><a class="button-primary" href="{% url 'showroom:car_list' %}">Browse the collection</a><a class="button-secondary" href="{% url 'home' %}">Return home</a></div></div></section>{% endblock %}

@@ -12,7 +12,7 @@
   });
 
   // 1) Reveal-on-scroll for cards
-  const cards = document.querySelectorAll(".row.g-3 .card");
+  const cards = document.querySelectorAll("[data-car-card], .row.g-3 .card");
   if (cards.length) {
     cards.forEach(c => c.setAttribute("data-reveal", ""));
 
@@ -78,9 +78,9 @@
 
   // 5) Make cards feel tappable on mobile: click anywhere reveals link
   document.addEventListener("click", (e) => {
-    const card = e.target.closest(".card");
+    const card = e.target.closest("[data-car-card], .card");
     if (!card) return;
-    const link = card.querySelector(".stretched-link");
+    const link = card.querySelector("a[href]");
     // Ignore clicks on buttons/links/inputs already
     if (e.target.closest("a,button,.btn,.form-control,.form-select")) return;
     if (link) {

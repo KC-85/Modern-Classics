@@ -1,13 +1,1 @@
-{% extends "base.html" %}
-
-{% block title %}Confirm Delete{% endblock %}
-
-{% block content %}
-<h1>Delete Delivery Option?</h1>
-<p>Are you sure you want to delete “{{ object.name }}” (£{{ object.price }})?</p>
-<form method="post">
-  {% csrf_token %}
-  <button type="submit" class="btn btn-danger">Yes, delete</button>
-  <a href="{% url 'delivery:option_list' %}" class="btn btn-link">Cancel</a>
-</form>
-{% endblock %}
+{% extends "base.html" %}{% block title %}Delete Delivery Option — Modern Classics{% endblock %}{% block content %}<section class="site-container py-20"><div class="mx-auto max-w-2xl"><p class="eyebrow !text-red-300">Operations</p><h1 class="page-title mt-5">Delete {{ object.name }}?</h1><p class="mt-6 text-cream/50">This delivery option costs £{{ object.price }}.</p><form method="post" class="mt-8 flex gap-3">{% csrf_token %}<button class="button-danger" type="submit">Delete option</button><a class="button-secondary" href="{% url 'delivery:option_list' %}">Cancel</a></form></div></section>{% endblock %}

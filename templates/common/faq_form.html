@@ -1,19 +1,3 @@
-{% extends "base.html" %}
-{% load crispy_forms_tags %}
-
-{% block title %}{% if form.instance.pk %}Edit FAQ{% else %}Add FAQ{% endif %} · Modern Classics{% endblock %}
-
-{% block content %}
-<div class="container my-5" style="max-width: 760px;">
-  <h1 class="h3 fw-bold mb-4">{% if form.instance.pk %}Edit FAQ{% else %}Add FAQ{% endif %}</h1>
-
-  <form method="post" novalidate>
-    {% csrf_token %}
-    {{ form|crispy }}
-    <div class="d-flex gap-2 mt-3">
-      <button type="submit" class="btn btn-primary">Save FAQ</button>
-      <a href="{% url 'common:faq_list' %}" class="btn btn-outline-secondary">Cancel</a>
-    </div>
-  </form>
-</div>
-{% endblock %}
+{% extends "base.html" %}{% load crispy_forms_tags %}
+{% block title %}{% if form.instance.pk %}Edit Question{% else %}Add Question{% endif %} — Modern Classics{% endblock %}
+{% block content %}<section class="site-container py-20"><div class="mx-auto max-w-3xl"><p class="eyebrow">Content management</p><h1 class="page-title mt-5">{% if form.instance.pk %}Edit question{% else %}Add a question{% endif %}</h1><form method="post" class="surface-card mt-10 p-7 md:p-10">{% csrf_token %}{{ form|crispy }}<div class="mt-8 flex gap-3"><button class="button-primary" type="submit">Save question</button><a class="button-secondary" href="{% url 'common:faq_list' %}">Cancel</a></div></form></div></section>{% endblock %}

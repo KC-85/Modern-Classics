@@ -1,33 +1,3 @@
-{% extends "base.html" %}
-{% load crispy_forms_tags %}
-{% load i18n %}
-{% load account %}
-
-{% block title %}{% trans "Confirm E-mail Address" %}{% endblock %}
-
-
-{% block content %}
-<hr>
-<h2 class="logo-font mb-4">{% trans "Confirm E-mail Address" %}</h2>
-<hr>
-
-{% if confirmation %}
-
-{% user_display confirmation.email_address.user as user_display %}
-
-<p>{% blocktrans with confirmation.email_address.email as email %}Please confirm that <a href="mailto:{{ email }}">{{ email }}</a> is an e-mail address for user {{ user_display }}.{% endblocktrans %}</p>
-
-<form method="post" action="{% url 'account_confirm_email' confirmation.key %}">
-{% csrf_token %}
-    <button type="submit">{% trans 'Confirm' %}</button>
-</form>
-
-{% else %}
-
-{% url 'account_email' as email_url %}
-
-<p>{% blocktrans %}This e-mail confirmation link expired or is invalid. Please <a href="{{ email_url }}">issue a new e-mail confirmation request</a>.{% endblocktrans %}</p>
-
-{% endif %}
-
-{% endblock %}
+{% extends "base.html" %}{% load account %}
+{% block title %}Confirm Email — Modern Classics{% endblock %}
+{% block content %}<section class="site-container py-20"><div class="surface-card mx-auto max-w-xl p-7 text-center md:p-10">{% if confirmation %}{% user_display confirmation.email_address.user as user_display %}<p class="eyebrow">Account verification</p><h1 class="section-title mt-5">Confirm your email</h1><p class="mt-6 text-sm leading-7 text-cream/50">Confirm <strong class="text-cream">{{ confirmation.email_address.email }}</strong> for {{ user_display }}.</p><form method="post" action="{% url 'account_confirm_email' confirmation.key %}" class="mt-8">{% csrf_token %}<button class="button-primary w-full" type="submit">Confirm email address</button></form>{% else %}<p class="eyebrow !text-red-300">Link unavailable</p><h1 class="section-title mt-5">This confirmation link is invalid.</h1><a class="button-primary mt-8" href="{% url 'account_email' %}">Request another</a>{% endif %}</div></section>{% endblock %}

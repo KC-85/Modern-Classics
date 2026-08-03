@@ -1,149 +1,69 @@
 {% extends "base.html" %}
-{% load static %}
-{% load humanize %}
-{% load cloudinary %}
-
-{% block title %}Showroom{% endblock %}
-
-{% block head_extra %}
-  {{ block.super }}
-  <link rel="stylesheet" href="{% static 'css/pages/showroom.css' %}">
-{% endblock %}
+{% load static humanize %}
+{% block title %}The Collection — Modern Classics{% endblock %}
+{% block meta_description %}Explore our hand-picked collection of exceptional modern classic cars.{% endblock %}
 
 {% block content %}
-<div class="container my-4">
-  <!-- Header -->
-  <h1 class="h3 fw-bold mb-3 d-flex align-items-center justify-content-between">
-    <span>All Cars Currently For Sale</span>
-  </h1>
-
-  {% if request.user.is_superuser %}
-  <div class="row">
-    <div class="col-12 col-xl-10">
-      <div class="d-flex gap-2 mb-3" id="car-admin-toolbar">
-        <a href="{% url 'showroom:car_create' %}" class="btn btn-success btn-sm">+ Add Car</a>
-      </div>
-    </div>
+<header class="border-b border-white/10 bg-carbon py-20 md:py-28">
+  <div class="site-container flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+    <div><p class="eyebrow">Available now</p><h1 class="page-title mt-5">The collection</h1><p class="mt-6 max-w-xl text-sm leading-7 text-cream/55">Cars with a point of view. Carefully selected, clearly described and ready for their next chapter.</p></div>
+    {% if request.user.is_superuser %}<a href="{% url 'showroom:car_create' %}" class="button-primary">Add a car</a>{% endif %}
   </div>
-  {% endif %}
+</header>
 
-
-  <!-- Filters -->
-  <form method="get" class="row g-2 align-items-end mb-4">
-    <div class="col-12 col-md-6">
-      <label class="form-label mb-1" for="q">Search</label>
-      <input
-        type="search"
-        id="q"
-        name="q"
-        value="{{ q }}"
-        placeholder="Make, model, or year"
-        class="form-control"
-      />
-    </div>
-
-    <div class="col-8 col-md-4">
-      <label class="form-label mb-1" for="sort">Sort</label>
-      <select id="sort" name="sort" class="form-select">
-        <option value="new" {% if sort == "new" %}selected{% endif %}>Newest</option>
-        <option value="price_asc" {% if sort == "price_asc" %}selected{% endif %}>Price: Low → High</option>
-        <option value="price_desc" {% if sort == "price_desc" %}selected{% endif %}>Price: High → Low</option>
-      </select>
-    </div>
-
-    <div class="col-4 col-md-2">
-      <button class="btn btn-primary w-100" type="submit">Apply</button>
-    </div>
+<section class="site-container py-10 md:py-14">
+  <form method="get" class="surface-card grid gap-4 p-5 md:grid-cols-2 lg:grid-cols-6" aria-label="Filter the collection">
+    <div class="lg:col-span-2"><label for="q">Search the collection</label><input type="search" id="q" name="q" value="{{ q }}" placeholder="Make, model or year"></div>
+    <div><label for="{{ filter_form.make.id_for_label }}">Make</label>{{ filter_form.make }}</div>
+    <div><label for="{{ filter_form.condition.id_for_label }}">Condition</label>{{ filter_form.condition }}</div>
+    <div><label for="sort">Sort by</label><select id="sort" name="sort"><option value="new" {% if sort == 'new' %}selected{% endif %}>Newest first</option><option value="price_asc" {% if sort == 'price_asc' %}selected{% endif %}>Price: low to high</option><option value="price_desc" {% if sort == 'price_desc' %}selected{% endif %}>Price: high to low</option></select></div>
+    <div class="flex items-end"><button class="button-primary w-full" type="submit">Apply filters</button></div>
+    <details class="md:col-span-2 lg:col-span-6">
+      <summary class="cursor-pointer py-1 text-xs font-bold uppercase tracking-widest text-cream/45 hover:text-brass">More filters</summary>
+      <div class="mt-4 grid gap-4 sm:grid-cols-3">
+        <div><label for="{{ filter_form.model.id_for_label }}">Model</label>{{ filter_form.model }}</div>
+        <div><label for="{{ filter_form.year_from.id_for_label }}">From year</label>{{ filter_form.year_from }}</div>
+        <div><label for="{{ filter_form.year_to.id_for_label }}">To year</label>{{ filter_form.year_to }}</div>
+      </div>
+    </details>
   </form>
 
-  <!-- Results grid -->
-  {% if object_list %}
-  <div class="row g-3">
-    {% for car in object_list %}
-      <div class="col-12 col-sm-6 col-lg-4">
-        <div class="card h-100 shadow-sm">
-
-          <!-- Image -->
-          <div class="position-relative">
-            {% if car.image %}
-              <img src="{{ car.image.url }}" class="card-img-top" alt="{{ car }}" loading="lazy" data-fallback-src="{% static 'images/placeholder-car.svg' %}">
-            {% else %}
-              <img src="{% static 'images/placeholder-car.svg' %}" class="card-img-top" alt="{{ car }}" loading="lazy">
-            {% endif %}
-
-            {% if car.is_sold %}
-              <span class="badge bg-dark position-absolute top-0 end-0 m-2">SOLD</span>
-            {% endif %}
-          </div>
-
-          <!-- Body -->
-          <div class="card-body d-flex flex-column">
-            <h2 class="h6 card-title mb-1">
-              <a href="{{ car.get_absolute_url }}" class="stretched-link text-decoration-none">
-                {{ car.make.name }} {{ car.model.name }} ({{ car.year }})
-              </a>
-            </h2>
-            <div class="text-muted mb-3">£{{ car.price|floatformat:0|intcomma }}</div>
-
-            <div class="mt-auto d-flex gap-2">
-              <a class="btn btn-outline-secondary btn-sm showroom-details-btn" href="{{ car.get_absolute_url }}">Details</a>
-              {% if request.user.is_superuser %}
-                <a class="btn btn-outline-warning btn-sm" href="{% url 'showroom:car_edit' slug=car.slug %}">Edit</a>
-                <form method="post" action="{% url 'showroom:car_delete' slug=car.slug %}" class="d-inline">
-                  {% csrf_token %}
-                  <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
-                </form>
-              {% endif %}
-            </div>
-          </div>
-
-        </div>
-      </div>
-    {% endfor %}
+  <div class="mt-10 flex items-center justify-between border-b border-white/10 pb-5">
+    <p class="text-xs uppercase tracking-[0.16em] text-cream/45">{{ page_obj.paginator.count }} car{{ page_obj.paginator.count|pluralize }} found</p>
+    {% if q %}<a class="text-xs font-bold text-brass" href="{% url 'showroom:car_list' %}">Clear search ×</a>{% endif %}
   </div>
 
+  {% if object_list %}
+    <div class="mt-10 grid gap-x-7 gap-y-14 md:grid-cols-2 lg:grid-cols-3" data-car-grid>
+      {% for car in object_list %}
+        <article class="group relative" data-car-card>
+          <a class="relative block overflow-hidden bg-ash" href="{{ car.get_absolute_url }}">
+            {% if car.image %}<img src="{{ car.image.url }}" class="aspect-[4/3] w-full object-cover transition duration-700 group-hover:scale-105 {% if car.is_sold %}grayscale{% endif %}" alt="{{ car.make.name }} {{ car.model.name }}" loading="lazy" data-fallback-src="{% static 'images/placeholder-car.svg' %}">{% else %}<img src="{% static 'images/placeholder-car.svg' %}" class="aspect-[4/3] w-full object-cover" alt="{{ car }}" loading="lazy">{% endif %}
+            {% if car.is_sold %}<span class="absolute left-4 top-4 rounded-full bg-ink px-4 py-2 text-[0.6rem] font-extrabold uppercase tracking-widest text-cream">Sold</span>{% endif %}
+            <span class="absolute bottom-4 right-4 grid size-11 translate-y-3 place-items-center rounded-full bg-cream text-lg text-ink opacity-0 transition duration-300 group-hover:translate-y-0 group-hover:opacity-100" aria-hidden="true">↗</span>
+          </a>
+          <div class="mt-5">
+            <div class="flex items-start justify-between gap-5">
+              <div><p class="text-[0.62rem] font-bold uppercase tracking-[0.18em] text-brass">{{ car.year }} · {{ car.get_condition_display }}</p><h2 class="mt-2 font-display text-3xl leading-none"><a href="{{ car.get_absolute_url }}">{{ car.make.name }} {{ car.model.name }}</a></h2></div>
+              <p class="shrink-0 text-sm font-semibold">£{{ car.price|floatformat:0|intcomma }}</p>
+            </div>
+            <p class="mt-4 line-clamp-2 text-sm leading-6 text-cream/45">{{ car.performance }}</p>
+            {% if request.user.is_superuser %}<div class="relative z-10 mt-4 flex gap-2"><a class="text-xs font-bold text-brass" href="{% url 'showroom:car_edit' slug=car.slug %}">Edit</a><a class="text-xs font-bold text-red-300" href="{% url 'showroom:car_delete' slug=car.slug %}">Delete</a></div>{% endif %}
+          </div>
+        </article>
+      {% endfor %}
+    </div>
   {% else %}
-    <div class="alert alert-light border">No cars available.</div>
+    <div class="py-24 text-center"><p class="font-display text-4xl">Nothing matched this time.</p><p class="mt-4 text-sm text-cream/45">Try widening your search, or check back soon for new arrivals.</p><a class="button-secondary mt-8" href="{% url 'showroom:car_list' %}">Reset filters</a></div>
   {% endif %}
 
-  <!-- Pagination -->
   {% if is_paginated %}
-    <nav class="mt-4" aria-label="Car list pagination">
-      <ul class="pagination justify-content-center">
-        {% if page_obj.has_previous %}
-          <li class="page-item">
-            <a class="page-link"
-               href="?page={{ page_obj.previous_page_number }}{% if preserved_querystring %}&{{ preserved_querystring }}{% endif %}">
-              &laquo; Previous
-            </a>
-          </li>
-        {% else %}
-          <li class="page-item disabled"><span class="page-link">&laquo; Previous</span></li>
-        {% endif %}
-
-        <li class="page-item disabled">
-          <span class="page-link">
-            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
-          </span>
-        </li>
-
-        {% if page_obj.has_next %}
-          <li class="page-item">
-            <a class="page-link"
-               href="?page={{ page_obj.next_page_number }}{% if preserved_querystring %}&{{ preserved_querystring }}{% endif %}">
-              Next &raquo;
-            </a>
-          </li>
-        {% else %}
-          <li class="page-item disabled"><span class="page-link">Next &raquo;</span></li>
-        {% endif %}
-      </ul>
+    <nav class="mt-20 flex items-center justify-between border-t border-white/10 pt-8" aria-label="Collection pages">
+      {% if page_obj.has_previous %}<a class="button-secondary" href="?page={{ page_obj.previous_page_number }}{% if preserved_querystring %}&{{ preserved_querystring }}{% endif %}">← Previous</a>{% else %}<span></span>{% endif %}
+      <span class="text-[0.65rem] font-bold uppercase tracking-widest text-cream/40">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+      {% if page_obj.has_next %}<a class="button-secondary" href="?page={{ page_obj.next_page_number }}{% if preserved_querystring %}&{{ preserved_querystring }}{% endif %}">Next →</a>{% endif %}
     </nav>
   {% endif %}
-</div>
+</section>
 {% endblock %}
-
-{% block scripts %}
-{{ block.super }}
- <script src="{% static 'js/pages/showroom.js' %}" defer></script>
- {% endblock %}
+{% block scripts %}<script src="{% static 'js/pages/showroom.js' %}" defer></script>{% endblock %}

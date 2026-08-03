@@ -24,4 +24,15 @@ describe('global frontend behavior', () => {
 
     expect(image.getAttribute('src')).toContain('/static/images/placeholder-car.svg');
   });
+
+  test('reveals editorial content when IntersectionObserver is unavailable', () => {
+    const originalObserver = window.IntersectionObserver;
+    delete window.IntersectionObserver;
+    document.body.innerHTML = '<article data-reveal></article>';
+
+    require('../js/main.js');
+
+    expect(document.querySelector('[data-reveal]').classList.contains('in-view')).toBe(true);
+    window.IntersectionObserver = originalObserver;
+  });
 });

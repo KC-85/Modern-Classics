@@ -1,76 +1,8 @@
-{# templates/checkout/success.html #}
 {% extends "base.html" %}
-
+{% load humanize %}
+{% block title %}Purchase Confirmed — Modern Classics{% endblock %}
 {% block content %}
-<div class="container my-5">
-  <div class="alert alert-success">
-    Checkout successful{% if order.full_name %}, {{ order.full_name }}{% endif %}! Your order has been received.
-  </div>
-
-  <div class="card mb-4">
-    <div class="card-header">
-      Order <strong>{{ order.order_number }}</strong>
-      <span class="text-muted"> · placed {{ order.date|date:"j M Y, H:i" }}</span>
-    </div>
-    <div class="card-body p-0">
-      <table class="table mb-0">
-        <thead>
-          <tr>
-            <th>Item</th>
-            <th>Qty</th>
-            <th>Unit</th>
-            <th class="text-right">Subtotal</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for li in order.lineitems.all %}
-          <tr>
-            <td>{{ li.car }}</td>
-            <td>{{ li.quantity }}</td>
-            <td>£{{ li.unit_price|floatformat:2 }}</td>
-            <td class="text-right">£{{ li.lineitem_total|floatformat:2 }}</td>
-          </tr>
-          {% endfor %}
-          <tr>
-            <td colspan="3"><strong>Subtotal</strong></td>
-            <td class="text-right">£{{ order.order_total|floatformat:2 }}</td>
-          </tr>
-          <tr>
-            <td colspan="3"><strong>Delivery</strong></td>
-            <td class="text-right">£{{ order.delivery_cost|floatformat:2 }}</td>
-          </tr>
-          <tr>
-            <td colspan="3"><strong>Grand Total</strong></td>
-            <td class="text-right"><strong>£{{ order.grand_total|floatformat:2 }}</strong></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-md-6 mb-3">
-      <h5>Contact</h5>
-      <p class="mb-0">
-        {% if order.full_name %}{{ order.full_name }}<br>{% endif %}
-        {% if order.email %}{{ order.email }}<br>{% endif %}
-        {% if order.phone_number %}{{ order.phone_number }}{% endif %}
-      </p>
-    </div>
-    <div class="col-md-6 mb-3">
-      <h5>Delivery address</h5>
-      <p class="mb-0">
-        {{ order.street_address1 }}{% if order.street_address2 %}<br>{{ order.street_address2 }}{% endif %}<br>
-        {{ order.town_or_city }}{% if order.county %}, {{ order.county }}{% endif %}<br>
-        {{ order.postcode }}<br>
-        {{ order.country }}
-      </p>
-    </div>
-  </div>
-
-  <div class="mt-4">
-    <a class="btn btn-outline-primary" href="/showroom/">Continue shopping</a>
-    <a class="btn btn-primary" href="/checkout/list/">View my orders</a>
-  </div>
-</div>
+<section class="site-container py-20 text-center md:py-28"><span class="mx-auto grid size-20 place-items-center rounded-full border border-emerald-400/40 text-3xl text-emerald-300">✓</span><p class="eyebrow mt-8">Purchase confirmed</p><h1 class="page-title mx-auto mt-5 max-w-4xl">Congratulations{% if order.full_name %}, {{ order.full_name }}{% endif %}.</h1><p class="mx-auto mt-6 max-w-xl text-sm leading-7 text-cream/50">The car is yours. A confirmation has been sent to {{ order.email }}, and we’ll be in touch personally to arrange the handover.</p><p class="mt-7 text-xs uppercase tracking-widest text-cream/35">Order {{ order.order_number }}</p></section>
+<section class="border-y border-white/10 bg-white/[0.025]"><div class="site-container grid gap-10 py-12 md:grid-cols-3"><div><p class="eyebrow">Total paid</p><p class="mt-3 font-display text-3xl">£{{ order.grand_total|floatformat:2|intcomma }}</p></div><div><p class="eyebrow">Delivery to</p><p class="mt-3 text-sm leading-6 text-cream/60">{{ order.town_or_city }}<br>{{ order.postcode }}, {{ order.country }}</p></div><div><p class="eyebrow">What happens next</p><p class="mt-3 text-sm leading-6 text-cream/60">We’ll contact you to agree collection or enclosed delivery.</p></div></div></section>
+<div class="site-container flex flex-wrap justify-center gap-3 py-14"><a class="button-primary" href="{% url 'checkout:list' %}">View my orders</a><a class="button-secondary" href="{% url 'showroom:car_list' %}">Return to collection</a></div>
 {% endblock %}

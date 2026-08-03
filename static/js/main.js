@@ -48,6 +48,28 @@
 		}
 	});
 
+	// Reveal editorial cards wherever they appear, including the homepage.
+	const revealItems = document.querySelectorAll("[data-reveal]");
+	if (revealItems.length) {
+		const reducedMotion = window.matchMedia?.(
+			"(prefers-reduced-motion: reduce)"
+		)?.matches;
+
+		if (!("IntersectionObserver" in window) || reducedMotion) {
+			revealItems.forEach((item) => item.classList.add("in-view"));
+		} else {
+			const revealObserver = new IntersectionObserver((entries, observer) => {
+				entries.forEach((entry) => {
+					if (!entry.isIntersecting) return;
+					entry.target.classList.add("in-view");
+					observer.unobserve(entry.target);
+				});
+			}, { rootMargin: "80px 0px", threshold: 0.08 });
+
+			revealItems.forEach((item) => revealObserver.observe(item));
+		}
+	}
+
 	document.querySelectorAll(".alert").forEach((alertEl) => {
 		if (alertEl.classList.contains("alert-danger")) {
 			return;

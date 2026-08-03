@@ -1,10 +1,3 @@
 {% extends "base.html" %}
-{% block title %}Confirm Delete{% endblock %}
-{% block content %}
-<h1>Really delete “{{ object }}”?</h1>
-<form method="post">
-  {% csrf_token %}
-  <button type="submit" class="btn btn-danger">Yes, delete</button>
-  <a href="{% url 'showroom:car_detail' object.slug %}">Cancel</a>
-</form>
-{% endblock %}
+{% block title %}Delete Car — Modern Classics{% endblock %}
+{% block content %}<section class="site-container py-20"><div class="mx-auto max-w-2xl"><p class="eyebrow !text-red-300">Collection management</p><h1 class="page-title mt-5">Remove this car?</h1><div class="surface-card mt-8 p-6"><p class="font-display text-3xl">{{ object }}</p><p class="mt-3 text-sm text-cream/45">This permanently removes the listing from the collection.</p></div><form method="post" class="mt-8 flex flex-wrap gap-3">{% csrf_token %}<button type="submit" class="button-danger">Yes, delete it</button><a class="button-secondary" href="{{ object.get_absolute_url }}">Keep the car</a></form></div></section>{% endblock %}

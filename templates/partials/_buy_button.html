@@ -1,16 +1,16 @@
 {% if request.user.is_authenticated %}
   {% if car.is_sold %}
-    <button class="btn btn-danger btn-sm" disabled>SOLD OUT</button>
+    <button class="button-danger w-full" disabled>Already sold</button>
   {% else %}
-  <form method="post" action="{% url 'trailer:add_to_cart' car.pk %}" class="d-inline">
+  <form method="post" action="{% url 'trailer:add_to_cart' car.pk %}">
     {% csrf_token %}
     <input type="hidden" name="quantity" value="1">
-    <button type="submit" class="btn btn-primary btn-sm">Add to cart</button>
+    <button type="submit" class="button-primary w-full">Reserve this car <span aria-hidden="true">→</span></button>
   </form>
   {% endif %}
 {% else %}
-  <a class="btn btn-outline-secondary btn-sm"
+  <a class="button-primary w-full"
      href="{% url 'account_login' %}?next={{ request.path }}">
-    Sign in to buy
+    Sign in to reserve
   </a>
 {% endif %}

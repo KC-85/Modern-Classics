@@ -1,48 +1,10 @@
-{# templates/orders/order_detail.html #}
 {% extends "base.html" %}
-{% block title %}Order #{{ order.id }}{% endblock %}
-
+{% load humanize %}
+{% block title %}Order {{ order.order_number|stringformat:"s"|slice:":8" }} — Modern Classics{% endblock %}
 {% block content %}
-<div class="container my-5">
-  <h1>Order #{{ order.id }}</h1>
-
-  <p><strong>Date:</strong> {{ order.date|date:"SHORT_DATETIME_FORMAT" }}</p>
-  {# If you later add a status field, show it here #}
-
-  <h2>Items</h2>
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Car</th>
-        <th>Qty</th>
-        <th>Unit Price</th>
-        <th>Line Total</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for li in order.lineitems.all %}
-      <tr>
-        <td>{{ li.car }}</td>
-        <td>{{ li.quantity }}</td>
-        <td>£{{ li.unit_price|floatformat:2 }}</td>
-        <td>£{{ li.lineitem_total|floatformat:2 }}</td>
-      </tr>
-      {% empty %}
-      <tr>
-        <td colspan="4" class="text-muted">No items on this order.</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-
-  <h3 class="mt-4">Summary</h3>
-  <ul class="list-unstyled">
-    <li>Subtotal: £{{ order.order_total|floatformat:2 }}</li>
-    <li>Delivery: £{{ order.delivery_cost|floatformat:2 }}</li>
-    <li><strong>Total: £{{ order.grand_total|floatformat:2 }}</strong></li>
-  </ul>
-
-  <a href="{% url 'checkout:list' %}" class="btn btn-link">← Back to all orders</a>
-</div>
+<header class="border-b border-white/10 bg-carbon py-16"><div class="site-container"><a class="text-xs font-bold uppercase tracking-widest text-cream/45 hover:text-brass" href="{% url 'checkout:list' %}">← Order history</a><p class="eyebrow mt-10">Confirmed {{ order.date|date:"j F Y" }}</p><h1 class="page-title mt-4">Order {{ order.order_number|stringformat:"s"|slice:":8" }}</h1></div></header>
+<section class="site-container grid gap-12 py-14 lg:grid-cols-[1fr_22rem]">
+  <div><p class="eyebrow">Vehicles</p><div class="mt-6 divide-y divide-white/10 border-y border-white/10">{% for li in order.lineitems.all %}<div class="flex justify-between gap-6 py-6"><div><p class="font-display text-2xl">{{ li.car.make.name }} {{ li.car.model.name }}</p><p class="mt-2 text-xs text-cream/40">{{ li.car.year }} · Quantity {{ li.quantity }}</p></div><p class="font-display text-2xl">£{{ li.lineitem_total|floatformat:2|intcomma }}</p></div>{% empty %}<p class="py-8 text-cream/45">No vehicles recorded.</p>{% endfor %}</div></div>
+  <aside class="surface-card h-fit p-7"><p class="eyebrow">Summary</p><dl class="mt-6 space-y-4 text-sm"><div class="flex justify-between text-cream/50"><dt>Subtotal</dt><dd>£{{ order.order_total|floatformat:2|intcomma }}</dd></div><div class="flex justify-between text-cream/50"><dt>Delivery</dt><dd>£{{ order.delivery_cost|floatformat:2|intcomma }}</dd></div><div class="flex justify-between border-t border-white/10 pt-5"><dt class="font-display text-2xl">Total</dt><dd class="font-display text-2xl">£{{ order.grand_total|floatformat:2|intcomma }}</dd></div></dl></aside>
+</section>
 {% endblock %}
-

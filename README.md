@@ -204,7 +204,7 @@ I've used [Balsamiq](https://balsamiq.com/wireframes) to design my site wirefram
 | [![badge](https://img.shields.io/badge/JavaScript-grey?logo=javascript&logoColor=F7DF1E)](https://www.javascript.com) | User interaction on the site. |
 | [![badge](https://img.shields.io/badge/Python-grey?logo=python&logoColor=3776AB)](https://www.python.org) | Back-end programming language. |
 | [![badge](https://img.shields.io/badge/Heroku-grey?logo=heroku&logoColor=430098)](https://www.heroku.com) | Hosting the deployed back-end site. |
-| [![badge](https://img.shields.io/badge/Bootstrap-grey?logo=bootstrap&logoColor=7952B3)](https://getbootstrap.com) | Front-end CSS framework for modern responsiveness and pre-built components. |
+| [![badge](https://img.shields.io/badge/Tailwind_CSS-grey?logo=tailwindcss&logoColor=06B6D4)](https://tailwindcss.com) | Compiled utility-first styling and the custom Modern Classics design system. |
 | [![badge](https://img.shields.io/badge/Django-grey?logo=django&logoColor=092E20)](https://www.djangoproject.com) | Python framework for the site. |
 | [![badge](https://img.shields.io/badge/PostgreSQL-grey?logo=postgresql&logoColor=4169E1)](https://www.postgresql.org) | Relational database management. |
 | [![badge](https://img.shields.io/badge/Cloudinary-grey?logo=cloudinary&logoColor=3448C5)](https://cloudinary.com) | Online static file storage. |
@@ -619,8 +619,13 @@ source venv/bin/activate
 pip3/pip install -r requirements.txt
 python3 manage.py migrate
 python3 manage.py createsuperuser
+npm install
+npm run css:build
 python3 manage.py runserver
 ```
+
+During front-end development, use `npm run css:watch` in a second terminal
+to rebuild `static/css/app.css` whenever templates or styles change.
 
 Local environment variables should be provided via `.env` (loaded by `python-dotenv`) and should mirror required config vars used in deployment.
 
@@ -668,7 +673,7 @@ There are no remaining major differences between the local version when compared
 | Source | Notes |
 | --- | --- |
 | [Chris Beams](https://chris.beams.io/posts/git-commit) | "How to Write a Git Commit Message" |
-| [Bootstrap](https://getbootstrap.com) | Various components / responsive front-end framework |
+| [Tailwind CSS](https://tailwindcss.com) | Utility-first CSS build tooling used by the responsive front end |
 | [AWS S3](https://aws.amazon.com/s3) | Cloud storage for static/media files |
 | [Whitenoise](https://whitenoise.readthedocs.io) | Static file service |
 | [Stripe](https://docs.stripe.com/payments/elements) | Online payment services |

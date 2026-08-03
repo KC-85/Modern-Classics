@@ -1,50 +1,10 @@
 {% extends "base.html" %}
-
-{% block title %}My Profile{% endblock %}
-
+{% block title %}Your Profile — Modern Classics{% endblock %}
 {% block content %}
-<div class="container my-5">
-  <div class="row">
-    <div class="col-lg-8 mx-auto">
-      <h1 class="mb-4">My Profile</h1>
-
-      <div class="card mb-4">
-        <div class="card-header">
-          <h5 class="mb-0">Account Summary</h5>
-        </div>
-        <div class="card-body">
-          <div class="row">
-            <div class="col-md-6">
-              <p class="mb-1"><small class="text-muted">Username</small></p>
-              <p class="mb-3">{{ user.username }}</p>
-
-              <p class="mb-1"><small class="text-muted">Email</small></p>
-              <p class="mb-3">{{ user.email|default:"Not set" }}</p>
-
-              <p class="mb-1"><small class="text-muted">Member since</small></p>
-              <p class="mb-0">{{ user.date_joined|date:"j M Y" }}</p>
-            </div>
-
-            <div class="col-md-6">
-              <p class="mb-1"><small class="text-muted">Full name</small></p>
-              <p class="mb-3">{{ user.first_name }} {{ user.last_name|default:"" }}</p>
-
-              <p class="mb-1"><small class="text-muted">Phone</small></p>
-              <p class="mb-3">{{ user.phone_number|default:"Not set" }}</p>
-
-              <p class="mb-1"><small class="text-muted">City</small></p>
-              <p class="mb-0">{{ user.city|default:"Not set" }}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="d-flex flex-wrap gap-2">
-        <a href="{% url 'users:profile_edit' %}" class="btn btn-primary btn-lg">Update Profile</a>
-        <a href="{% url 'users:profile_delete' %}" class="btn btn-outline-danger btn-lg">Delete Profile</a>
-        <a href="{% url 'home' %}" class="btn btn-outline-secondary btn-lg">Back Home</a>
-      </div>
-    </div>
-  </div>
-</div>
+<header class="border-b border-white/10 bg-carbon py-20"><div class="site-container flex flex-col gap-8 md:flex-row md:items-end md:justify-between"><div><p class="eyebrow">Private client</p><h1 class="page-title mt-5">Hello, {{ user.first_name|default:user.username }}.</h1></div><a class="button-primary" href="{% url 'users:profile_edit' %}">Update details</a></div></header>
+<section class="site-container grid gap-8 py-14 md:grid-cols-3 md:py-20">
+  <div class="surface-card p-7 md:col-span-2"><p class="eyebrow">Account details</p><dl class="mt-7 grid gap-7 sm:grid-cols-2"><div><dt class="text-xs text-cream/35">Full name</dt><dd class="mt-2 font-display text-2xl">{{ user.first_name|default:"Not set" }} {{ user.last_name }}</dd></div><div><dt class="text-xs text-cream/35">Email</dt><dd class="mt-2 text-sm">{{ user.email|default:"Not set" }}</dd></div><div><dt class="text-xs text-cream/35">Telephone</dt><dd class="mt-2 text-sm">{{ user.phone_number|default:"Not set" }}</dd></div><div><dt class="text-xs text-cream/35">Member since</dt><dd class="mt-2 text-sm">{{ user.date_joined|date:"j F Y" }}</dd></div></dl></div>
+  <div class="surface-card p-7"><p class="eyebrow">Your garage</p><p class="mt-5 font-display text-3xl">Every journey, documented.</p><a class="mt-7 inline-flex text-xs font-bold uppercase tracking-widest text-brass" href="{% url 'checkout:list' %}">View order history →</a></div>
+  <div class="md:col-span-3 flex flex-wrap gap-3 border-t border-white/10 pt-8"><a class="button-secondary" href="{% url 'account_change_password' %}">Change password</a><a class="button-danger" href="{% url 'users:profile_delete' %}">Delete profile</a></div>
+</section>
 {% endblock %}

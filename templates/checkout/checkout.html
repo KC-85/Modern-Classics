@@ -1,193 +1,48 @@
 {% extends "base.html" %}
-{% load static %}
-
-{# 1) Inject your CSS into <head> #}
-{% block head_extra %}
-<link
-  rel="stylesheet"
-  href="{% static 'css/pages/checkout.css' %}"
->
-{% endblock %}
+{% load static humanize %}
+{% block title %}Secure Checkout — Modern Classics{% endblock %}
 
 {% block content %}
-<div class="container my-5">
-  <h2 class="mb-4">Checkout</h2>
+<header class="border-b border-white/10 bg-carbon py-16"><div class="site-container"><p class="eyebrow">Secure reservation</p><h1 class="page-title mt-5">Complete your purchase</h1></div></header>
 
-  {# --- ORDER SUMMARY --- #}
-  <div class="card mb-5">
-    <div class="card-header">
-      Order Summary ({{ line_items|length }} items)
-    </div>
-    <div class="card-body p-0">
-      <table class="table mb-0">
-        <thead>
-          <tr>
-            <th>Car</th>
-            <th>Qty</th>
-            <th>Unit</th>
-            <th class="text-right">Subtotal</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for item in line_items %}
-          <tr>
-            <td>{{ item.name }}</td>
-            <td>{{ item.quantity }}</td>
-            <td>£{{ item.unit|floatformat:2 }}</td>
-            <td class="text-right">£{{ item.subtotal|floatformat:2 }}</td>
-          </tr>
-          {% endfor %}
-          <tr>
-            <td colspan="3"><strong>Subtotal</strong></td>
-            <td class="text-right">£{{ total|floatformat:2 }}</td>
-          </tr>
-          <tr>
-            <td colspan="3"><strong>Delivery</strong></td>
-            <td class="text-right">£{{ delivery|floatformat:2 }}</td>
-          </tr>
-          <tr>
-            <td colspan="3"><strong>Total</strong></td>
-            <td class="text-right"><strong>£{{ grand_total|floatformat:2 }}</strong></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  {# --- PAYMENT FORM --- #}
-  <form id="payment-form" method="post" action="{% url 'checkout:checkout' order.id %}">
+<section class="site-container grid gap-12 py-14 lg:grid-cols-[1fr_25rem] lg:py-20">
+  <form id="payment-form" method="post" action="{% url 'checkout:checkout' order.id %}" class="space-y-12">
     {% csrf_token %}
-
-    <fieldset class="border p-4 mb-4">
-      <legend class="w-auto px-2">Contact Details</legend>
-      <div class="mb-3">
-        {{ order_form.full_name.label_tag }}
-        {{ order_form.full_name }}
-        {{ order_form.full_name.errors }}
-      </div>
-      <div class="mb-3">
-        {{ order_form.email.label_tag }}
-        {{ order_form.email }}
-        {{ order_form.email.errors }}
-      </div>
-      <div class="mb-3">
-        {{ order_form.phone_number.label_tag }}
-        {{ order_form.phone_number }}
-        {{ order_form.phone_number.errors }}
-      </div>
-    </fieldset>
-
-    <fieldset class="border p-4 mb-4">
-      <legend class="w-auto px-2">Delivery Address</legend>
-      <div class="mb-3">
-        {{ order_form.street_address1.label_tag }}
-        {{ order_form.street_address1 }}
-        {{ order_form.street_address1.errors }}
-      </div>
-      <div class="mb-3">
-        {{ order_form.street_address2.label_tag }}
-        {{ order_form.street_address2 }}
-        {{ order_form.street_address2.errors }}
-      </div>
-      <div class="mb-3">
-        {{ order_form.town_or_city.label_tag }}
-        {{ order_form.town_or_city }}
-        {{ order_form.town_or_city.errors }}
-      </div>
-      <div class="mb-3">
-        {{ order_form.county.label_tag }}
-        {{ order_form.county }}
-        {{ order_form.county.errors }}
-      </div>
-      <div class="mb-3">
-        {{ order_form.postcode.label_tag }}
-        {{ order_form.postcode }}
-        {{ order_form.postcode.errors }}
-      </div>
-      <div class="mb-3">
-        {{ order_form.country.label_tag }}
-        {{ order_form.country }}
-        {{ order_form.country.errors }}
-      </div>
-    </fieldset>
-
-    <fieldset class="border p-4 mb-4">
-      <legend class="w-auto px-2">Payment</legend>
-      <div id="card-element" class="mb-3"></div>
-      <div id="card-errors" class="text-danger mb-3" role="alert"></div>
-      {# pass through the client secret #}
-      <input
-        type="hidden"
-        name="client_secret"
-        value="{{ client_secret }}"
-      >
-    </fieldset>
-
-    <div class="text-right">
-      <button
-        id="submit-button"
-        class="btn btn-primary"
-      >
-        Pay £{{ grand_total|floatformat:2 }}
-      </button>
-    </div>
+    <section><div class="flex items-center gap-4 border-b border-white/10 pb-4"><span class="grid size-8 place-items-center rounded-full border border-brass text-xs font-bold text-brass">1</span><h2 class="font-display text-3xl">Contact details</h2></div><div class="mt-7 grid gap-5 sm:grid-cols-2"><div class="sm:col-span-2">{{ order_form.full_name.label_tag }}{{ order_form.full_name }}{{ order_form.full_name.errors }}</div><div>{{ order_form.email.label_tag }}{{ order_form.email }}{{ order_form.email.errors }}</div><div>{{ order_form.phone_number.label_tag }}{{ order_form.phone_number }}{{ order_form.phone_number.errors }}</div></div></section>
+    <section><div class="flex items-center gap-4 border-b border-white/10 pb-4"><span class="grid size-8 place-items-center rounded-full border border-brass text-xs font-bold text-brass">2</span><h2 class="font-display text-3xl">Delivery address</h2></div><div class="mt-7 grid gap-5 sm:grid-cols-2"><div class="sm:col-span-2">{{ order_form.street_address1.label_tag }}{{ order_form.street_address1 }}{{ order_form.street_address1.errors }}</div><div class="sm:col-span-2">{{ order_form.street_address2.label_tag }}{{ order_form.street_address2 }}{{ order_form.street_address2.errors }}</div><div>{{ order_form.town_or_city.label_tag }}{{ order_form.town_or_city }}{{ order_form.town_or_city.errors }}</div><div>{{ order_form.county.label_tag }}{{ order_form.county }}{{ order_form.county.errors }}</div><div>{{ order_form.postcode.label_tag }}{{ order_form.postcode }}{{ order_form.postcode.errors }}</div><div>{{ order_form.country.label_tag }}{{ order_form.country }}{{ order_form.country.errors }}</div></div></section>
+    <section><div class="flex items-center gap-4 border-b border-white/10 pb-4"><span class="grid size-8 place-items-center rounded-full border border-brass text-xs font-bold text-brass">3</span><h2 class="font-display text-3xl">Payment</h2></div><p class="mt-6 text-sm leading-7 text-cream/50">Your card details are encrypted and handled directly by Stripe. Modern Classics never stores your card number.</p><div id="card-element" class="mt-6 rounded border border-white/15 bg-white/[0.045] p-4"></div><div id="card-errors" class="mt-3 text-sm text-red-300" role="alert"></div><input type="hidden" name="client_secret" value="{{ client_secret }}"></section>
+    <button id="submit-button" class="button-primary w-full sm:w-auto">Pay £{{ grand_total|floatformat:2|intcomma }} securely <span aria-hidden="true">→</span></button>
   </form>
-</div>
+
+  <aside class="h-fit border border-white/10 bg-white/[0.035] p-7 lg:sticky lg:top-28">
+    <p class="eyebrow">Order summary</p>
+    <div class="mt-6 divide-y divide-white/10 border-y border-white/10">
+      {% for item in line_items %}<div class="flex justify-between gap-5 py-5"><div><p class="font-display text-xl leading-tight">{{ item.name }}</p><p class="mt-1 text-xs text-cream/40">Quantity {{ item.quantity }}</p></div><p class="shrink-0 text-sm">£{{ item.subtotal|floatformat:2|intcomma }}</p></div>{% endfor %}
+    </div>
+    <dl class="space-y-4 py-6 text-sm"><div class="flex justify-between text-cream/50"><dt>Vehicle subtotal</dt><dd>£{{ total|floatformat:2|intcomma }}</dd></div><div class="flex justify-between text-cream/50"><dt>Delivery</dt><dd>{% if delivery == 0 %}Included{% else %}£{{ delivery|floatformat:2|intcomma }}{% endif %}</dd></div><div class="flex justify-between border-t border-white/10 pt-5 text-lg"><dt class="font-display text-2xl">Total</dt><dd class="font-display text-2xl">£{{ grand_total|floatformat:2|intcomma }}</dd></div></dl>
+    <div class="border-t border-white/10 pt-6 text-xs leading-6 text-cream/40"><p>✓ Secure Stripe payment</p><p>✓ Personal purchase confirmation</p><p>✓ Nationwide delivery available</p></div>
+  </aside>
+</section>
 {% endblock %}
 
-{# 2) Pull in Stripe.js and your payment logic after main.js #}
 {% block scripts %}
-  <script src="https://js.stripe.com/v3/"></script>
-  <script>
-    const stripe   = Stripe("{{ stripe_public }}");
-    const elements = stripe.elements();
-    const card     = elements.create("card", { hidePostalCode: true });
-    card.mount("#card-element");
-
-    card.on("change", ({error}) => {
-      document.getElementById("card-errors").textContent =
-        error ? error.message : "";
-    });
-
-    const get  = (n) => form.elements[n]; // robust lookup by name;
-    let form = document.getElementById("payment-form");
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      document.getElementById("submit-button").disabled = true;
-
-      const {error, paymentIntent} = await stripe.confirmCardPayment(
-        "{{ client_secret }}",
-        {
-          payment_method: {
-            card,
-            billing_details: {
-              name:  get("full_name")?.value || "",
-              email: get("email")?.value || "",
-            },
-          },
-          shipping: {
-            name: get("full_name")?.value || "",
-            address: {
-              line1:       get("street_address1")?.value || "",
-              line2:       get("street_address2")?.value || "",
-              city:        get("town_or_city")?.value || "",
-              state:       get("county")?.value || "",
-              postal_code: get("postcode")?.value || "",
-              country:     get("country")?.value || "",
-            },
-          },
-        }
-      );
-
-      if (error) {
-        document.getElementById("card-errors").textContent = error.message;
-        document.getElementById("submit-button").disabled = false;
-      } else if (paymentIntent.status === "succeeded") {
-        form.submit();
-      } else {
-        document.getElementById("card-errors").textContent = "Payment not completed.";
-        document.getElementById("submit-button").disabled = false;
-      }
-    });
-  </script>
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+  const stripe = Stripe("{{ stripe_public|escapejs }}");
+  const elements = stripe.elements({appearance: {theme: "night", variables: {colorPrimary: "#c9a96e", colorBackground: "#111516", colorText: "#f4f0e8", colorDanger: "#fca5a5", borderRadius: "4px", fontFamily: "Manrope, sans-serif"}}});
+  const card = elements.create("card", {hidePostalCode: true});
+  card.mount("#card-element");
+  card.on("change", ({error}) => { document.getElementById("card-errors").textContent = error ? error.message : ""; });
+  const form = document.getElementById("payment-form");
+  const get = (name) => form.elements[name];
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const button = document.getElementById("submit-button");
+    button.disabled = true; button.textContent = "Processing securely…";
+    const {error, paymentIntent} = await stripe.confirmCardPayment("{{ client_secret|escapejs }}", {payment_method: {card, billing_details: {name: get("full_name")?.value || "", email: get("email")?.value || ""}}, shipping: {name: get("full_name")?.value || "", address: {line1: get("street_address1")?.value || "", line2: get("street_address2")?.value || "", city: get("town_or_city")?.value || "", state: get("county")?.value || "", postal_code: get("postcode")?.value || "", country: get("country")?.value || ""}}});
+    if (error) { document.getElementById("card-errors").textContent = error.message; button.disabled = false; button.textContent = "Try payment again"; }
+    else if (paymentIntent.status === "succeeded") form.submit();
+    else { document.getElementById("card-errors").textContent = "Payment not completed."; button.disabled = false; }
+  });
+</script>
 {% endblock %}

@@ -1,11 +1,8 @@
 {% extends "base.html" %}
-{% load crispy_forms_tags %}
-{% block title %}Contact Us{% endblock %}
+{% block title %}Contact — Modern Classics{% endblock %}
 {% block content %}
-<h1>Send us a message</h1>
-<form method="post">
-  {% csrf_token %}
-  {{ form|crispy }}
-  <button type="submit" class="btn btn-primary">Send</button>
-</form>
+<section class="site-container grid gap-14 py-20 lg:grid-cols-[0.8fr_1.2fr] lg:py-28">
+  <div><p class="eyebrow">Start a conversation</p><h1 class="page-title mt-5">Let’s talk<br><em class="font-normal text-brass">cars.</em></h1><p class="mt-7 max-w-md text-sm leading-7 text-cream/50">Whether you’re asking about a car, considering a sale, or arranging a private viewing, you’ll hear back from a real person.</p><div class="mt-12 border-t border-white/10 pt-8 text-sm leading-8 text-cream/55"><p>Viewings by appointment</p><p>Monday—Saturday</p><p>United Kingdom</p></div></div>
+  <form method="post" class="surface-card p-7 md:p-10">{% csrf_token %}<div class="grid gap-6"><div><label for="{{ form.name.id_for_label }}">Your name</label>{{ form.name }}{{ form.name.errors }}</div><div><label for="{{ form.email.id_for_label }}">Email address</label>{{ form.email }}{{ form.email.errors }}</div><div><label for="{{ form.message.id_for_label }}">How can we help?</label>{{ form.message }}{{ form.message.errors }}</div></div><button type="submit" class="button-primary mt-8">Send your enquiry <span aria-hidden="true">→</span></button></form>
+</section>
 {% endblock %}

@@ -1,33 +1,11 @@
 {% extends "base.html" %}
-{% block title %}Newsletter · Modern Classics{% endblock %}
-
+{% block title %}The Journal — Modern Classics{% endblock %}
 {% block content %}
-<div class="container my-5" style="max-width: 560px;">
-  <h1 class="h3 fw-bold mb-2">Newsletter</h1>
-  <p class="text-muted mb-4">Get new car arrivals and updates. Unsubscribe anytime.</p>
-
-  <form method="post" novalidate class="card p-3 p-md-4 shadow-sm">
-    {% csrf_token %}
-
-    <div class="mb-3">
-      <label for="id_email" class="form-label">Email address</label>
-      {{ form.email }}
-      {% if form.email.errors %}
-        <div class="text-danger small mt-1">{{ form.email.errors.0 }}</div>
-      {% endif %}
-    </div>
-
-    <div class="form-check mb-3">
-      {{ form.consent }}
-      <label for="id_consent" class="form-check-label">
-        I agree to receive Modern Classics emails.
-      </label>
-      {% if form.consent.errors %}
-        <div class="text-danger small mt-1">{{ form.consent.errors.0 }}</div>
-      {% endif %}
-    </div>
-
-    <button class="btn btn-primary" type="submit">Subscribe</button>
-  </form>
-</div>
+<section class="relative overflow-hidden bg-parchment py-24 text-ink md:py-36">
+  <div class="absolute -right-24 -top-24 size-96 rounded-full border border-brass-dark/20"></div><div class="absolute -right-10 -top-10 size-72 rounded-full border border-brass-dark/20"></div>
+  <div class="site-container relative grid gap-14 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
+    <div><p class="eyebrow !text-brass-dark">Newsletter · The Modern Classics journal</p><h1 class="page-title mt-6">Worth opening.<br><em class="font-normal text-brass-dark">Never inbox filler.</em></h1><p class="mt-7 max-w-xl text-sm leading-7 text-ink/60">Be first to see significant new arrivals, thoughtful market notes and the occasional road worth getting up early for.</p></div>
+    <form method="post" novalidate class="border border-ink/15 bg-cream/60 p-7 md:p-9">{% csrf_token %}<div><label class="!text-ink/60" for="id_email">Email address</label>{{ form.email }}{% if form.email.errors %}<div class="mt-2 text-sm text-red-700">{{ form.email.errors.0 }}</div>{% endif %}</div><div class="mt-5 flex items-start gap-3">{{ form.consent }}<label class="!mb-0 !text-xs !font-medium !normal-case !tracking-normal !text-ink/55" for="id_consent">I agree to receive occasional Modern Classics emails.</label></div>{% if form.consent.errors %}<div class="mt-2 text-sm text-red-700">{{ form.consent.errors.0 }}</div>{% endif %}<button class="button-primary mt-7 w-full" type="submit">Join the journal</button><p class="mt-4 text-center text-xs text-ink/40">No noise. Unsubscribe whenever you like.</p></form>
+  </div>
+</section>
 {% endblock %}
