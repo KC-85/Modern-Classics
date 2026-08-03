@@ -1,6 +1,8 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
+from django.contrib.messages import get_messages
 from django.urls import reverse
+from apps.checkout.models import Order, OrderLineItem
 from apps.showroom.models import CarMake, CarModel, Car
 
 User = get_user_model()
@@ -196,3 +198,35 @@ class CarViewsTests(TestCase):
         self.assertEqual(resp.status_code, 302)
         self.assertEqual(resp.url, reverse("showroom:car_list"))
         self.assertFalse(Car.objects.filter(pk=self.c3.pk).exists())
+
+    def test_delete_car_in_order_is_refused_without_server_error(self):
+        order = Order.objects.create(
+            full_name="Existing Customer",
+            email="customer@example.com",
+            phone_number="01234567890",
+            country="GB",
+            postcode="SW1A 1AA",
+            town_or_city="London",
+            street_address1="1 Test Street",
+            original_trailer={},
+        )
+        OrderLineItem.objects.create(
+            order=order,
+            car=self.c2,
+            quantity=1,
+            unit_price=self.c2.price,
+        )
+        self.client.force_login(self.admin)
+
+        response = self.client.post(reverse(
+            "showroom:car_delete", kwargs={"slug": self.c2.slug}
+        ))
+
+        self.assertRedirects(response, self.c2.get_absolute_url())
+        self.assertTrue(Car.objects.filter(pk=self.c2.pk).exists())
+        messages = [str(message) for message in get_messages(response.wsgi_request)]
+        self.assertIn(
+            "This car cannot be deleted because it forms part of a "
+            "customer's order history. Mark it as sold instead.",
+            messages,
+        )

@@ -6,6 +6,8 @@ and returns rendered responses."""
 # apps/showroom/views.py
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
+from django.db.models.deletion import ProtectedError
+from django.shortcuts import redirect
 from django.utils.decorators import method_decorator
 from django.urls import reverse_lazy
 from urllib.parse import urlencode
@@ -122,7 +124,15 @@ class CarDeleteView(DeleteView):
 
     def form_valid(self, form):
         car_label = str(self.object)
-        response = super().form_valid(form)
+        try:
+            response = super().form_valid(form)
+        except ProtectedError:
+            messages.error(
+                self.request,
+                "This car cannot be deleted because it forms part of a "
+                "customer's order history. Mark it as sold instead."
+            )
+            return redirect(self.object.get_absolute_url())
         messages.success(
             self.request, f"Car deleted successfully: {car_label}")
         return response
